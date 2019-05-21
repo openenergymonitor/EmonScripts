@@ -1,8 +1,8 @@
 # emonSD image build script
 
-The following build script is currently development in progress April 2019. It is already more comprehensive than the altenative debian install guides. To see what is installed open each script as listed below.
+The following build script is currently development in progress. It is already more comprehensive than the altenative debian install guides. To see what is installed open each script as listed below.
 
-**Todo 1st release (Target: Early May 2019)**
+**Todo 1st release (Target: Late May 2019)**
 
 - finalise emoncms log locations i.e: /var/log/emon/emoncms/sync.log
 - update emoncms & modules with configurable log directory paths for sync/update etc.
