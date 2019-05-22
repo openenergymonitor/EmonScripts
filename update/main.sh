@@ -35,76 +35,36 @@ if [ "$emonSD_pi_env" = "1" ]; then
     fi
     echo "Hardware detected: $hardware"
     
-    # Stop emonPi LCD servcice
-    echo "Stopping emonPiLCD service"
-    sudo service emonPiLCD stop
+    if [ $hardware == "EmonPi" ]; then    
+        # Stop emonPi LCD servcice
+        echo "Stopping emonPiLCD service"
+        sudo service emonPiLCD stop
 
-    # Display update message on LCD
-    echo "Display update message on LCD"
-    sudo $usrdir/emonpi/lcd/./emonPiLCD_update.py
+        # Display update message on LCD
+        echo "Display update message on LCD"
+        sudo $usrdir/emonpi/lcd/./emonPiLCD_update.py
+    fi
 fi
 
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ]; then
+    sudo rm -rf hardware/emonpi/emonpi2c/
 
-    if [ -d $usrdir/emonpi ]; then
-        echo "git pull $usrdir/emonpi"
-        cd $usrdir/emonpi
-        sudo rm -rf hardware/emonpi/emonpi2c/
-        git branch
-        git status
-        git pull
-    fi
-
-    if [ -d $usrdir/RFM2Pi ]; then
-        echo "git pull $usrdir/RFM2Pi"
-        cd $usrdir/RFM2Pi
-        git branch
-        git status
-        git pull
-        echo
-    fi
-
-    if [ -d $usrdir/usefulscripts ]; then
-        echo "git pull $usrdir/usefulscripts"
-        cd $usrdir/usefulscripts
-        git branch
-        git status
-        git pull
-        echo
-    fi
-
-    if [ -d $usrdir/huawei-hilink-status ]; then
-        echo "git pull $usrdir/huawei-hilink-status"
-        cd $usrdir/huawei-hilink-status
-        git branch
-        git status
-        git pull
-        echo
-    fi
-
-    if [ -d $usrdir/oem_openHab ]; then
-        echo "git pull $usrdir/oem_openHab"
-        cd $usrdir/oem_openHab
-        git branch
-        git status
-        git pull
-        echo
-    fi
-
-    if [ -d $usrdir/oem_node-red ]; then
-        echo "git pull $usrdir/oem_node-red"
-        cd $usrdir/oem_node-red
-        git branch
-        git status
-        git pull
-        echo
-    fi
+    for repo in "emonpi" "RFM2Pi" "usefulscripts" "huawei-hilink-status" "oem_openHab" "oem_node-red"; do
+        if [ -d $usrdir/$repo ]; then
+            echo "git pull $usrdir/$repo"
+            cd $usrdir/$repo
+            git branch
+            git status
+            git pull
+        fi
+    done
 fi
 cd $usrdir/EmonScripts/update
 
 # -----------------------------------------------------------------
+
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
@@ -124,7 +84,6 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
     echo "Start emonhub update script:"
-    # Run emonHub update script to update emonhub.conf nodes
     $usrdir/EmonScripts/update/emonhub.sh
     echo
 fi
@@ -133,7 +92,6 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
     echo "Start emoncms update:"
-    # Run emoncms update script to pull in latest emoncms & emonhub updates
     $usrdir/EmonScripts/update/emoncms_core.sh
     $usrdir/EmonScripts/update/emoncms_modules.sh
     echo
@@ -141,17 +99,13 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ "$emonSD_pi_env" = "1" ]; then
+if [ $hardware == "EmonPi" ]; then
     echo
     # Wait for update to finish
     echo "Starting emonPi LCD service.."
     sleep 5
     sudo service emonPiLCD restart
     echo
-
-    if [ -f /usr/bin/rpi-ro ]; then
-        rpi-ro
-    fi
 fi
 
 # -----------------------------------------------------------------
@@ -167,9 +121,5 @@ echo "-------------------------------------------------------------"
 
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then
     echo "restarting service-runner"
-    # old service runner
-    killall service-runner
-    # new service runner
     sudo systemctl restart service-runner.service 
 fi
-
