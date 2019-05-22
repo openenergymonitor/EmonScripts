@@ -15,7 +15,7 @@ if [ -d $usrdir/emonhub ]; then
     git pull
     
     # can be used to change service source location in future
-    # sudo ln -sf $usrdir/emonhub/service/emonhub.service.new /lib/systemd/system/emonhub.service
+    # sudo ln -sf $usrdir/emonhub/service/emonhub.service /lib/systemd/system
     
     sudo systemctl restart $service.service
     state=$(systemctl show $service | grep ActiveState)
