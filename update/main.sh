@@ -1,14 +1,9 @@
 #!/bin/bash
+source config.ini
 
 echo "-------------------------------------------------------------"
 echo "Main Update Script"
 echo "-------------------------------------------------------------"
-# -----------------------------------------------------------------
-# Check environment
-# -----------------------------------------------------------------
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-usrdir=${DIR/\/EmonScripts\/update/}
 
 type=$1
 firmware=$2
@@ -21,35 +16,7 @@ echo "usrdir: $usrdir"
 echo "type: $type"
 echo "firmware: $firmware"
 
-echo "Checking environment:"
-
-emonSD_pi_env=0
-# Check for pi user
-pi=$(id -u pi)
-if [ $pi ]; then
-  echo "- pi user found"
-  emonSD_pi_env=1
-else 
-  echo "- could not find pi user"
-  emonSD_pi_env=0
-fi
-
-# Check emonSD version
-image_version=$(ls /boot | grep emonSD)
-if [ "$image_version" = "" ]; then
-    echo "- Could not find emonSD version file"
-    emonSD_pi_env=0
-fi
-
-if [ "$emonSD_pi_env" = "0" ]; then
-    echo "- Assuming non emonSD install"
-fi
-
-echo
-uid=`id -u`
-echo "EUID: $uid"
-
-if [ "$uid" = "0" ] ; then
+if [ "$EUID" = "0" ] ; then
     # update is being ran mistakenly as root, switch to user
     echo "update running as root, switch to user"
     exit 0
@@ -77,20 +44,18 @@ if [ "$emonSD_pi_env" = "1" ]; then
     sudo $usrdir/emonpi/lcd/./emonPiLCD_update.py
 fi
 
-# OS & Packages
-if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then
-    echo "-------------------------------------------------------------"
-    sudo apt-get update
-    # Ensure rpi gpio is latest version and gpiozero is installed, required for V2.2.0 LCD script
-    # rng-tools used to speed up entropy generation https://community.openenergymonitor.org/t/cant-connect-to-local-emoncms/9498/7
-    sudo apt-get install python-gpiozero python-rpi.gpio rng-tools -y
-    sudo pip install paho-mqtt --upgrade
-    echo "-------------------------------------------------------------"
-fi
-
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ]; then
+
+    if [ -d $usrdir/emonpi ]; then
+        echo "git pull $usrdir/emonpi"
+        cd $usrdir/emonpi
+        sudo rm -rf hardware/emonpi/emonpi2c/
+        git branch
+        git status
+        git pull
+    fi
 
     if [ -d $usrdir/RFM2Pi ]; then
         echo "git pull $usrdir/RFM2Pi"
@@ -137,9 +102,9 @@ if [ "$type" == "all" ]; then
         echo
     fi
 fi
+cd $usrdir/EmonScripts/update
 
 # -----------------------------------------------------------------
-
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
@@ -169,7 +134,8 @@ fi
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
     echo "Start emoncms update:"
     # Run emoncms update script to pull in latest emoncms & emonhub updates
-    $usrdir/EmonScripts/update/emoncms.sh $emonSD_pi_env
+    $usrdir/EmonScripts/update/emoncms_core.sh
+    $usrdir/EmonScripts/update/emoncms_modules.sh
     echo
 fi
 

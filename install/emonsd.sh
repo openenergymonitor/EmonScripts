@@ -56,3 +56,7 @@ sudo apt-get install -y ufw
 
 # Review automated install: Emoncms Language Support
 # sudo dpkg-reconfigure locales
+
+# Setup user group to enable reading GPU temperature (pi only)
+# sudo usermod -a -G video www-data
+

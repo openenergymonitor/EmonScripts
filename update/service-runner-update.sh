@@ -57,12 +57,5 @@ git branch
 git status
 git pull
 
-echo "git pull $usrdir/emonpi"
-cd $usrdir/emonpi
-sudo rm -rf hardware/emonpi/emonpi2c/
-git branch
-git status
-git pull
-
 # Run update in main update script
 $usrdir/EmonScripts/update/main.sh $type $firmware

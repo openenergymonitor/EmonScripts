@@ -1,10 +1,10 @@
 #!/bin/bash
+source config.ini
+
 echo "-------------------------------------------------------------"
-echo "emonHub update started"
+echo "emonHub update"
 echo "-------------------------------------------------------------"
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-usrdir=${DIR/\/EmonScripts\/update/}
-echo "- usr directory: $usrdir"
+cd $usrdir
 
 if [ -d $usrdir/emonhub ]; then
 
@@ -21,11 +21,11 @@ if [ -d $usrdir/emonhub ]; then
     
     service="emonhub"
     servicepath="$usrdir/emonhub/service/emonhub.service"
-    $usrdir/EmonScripts/update/install_emoncms_service.sh $servicepath $service
+    $usrdir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
 
-    echo
-    echo "Running emonhub automatic node addition script"
-    $usrdir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $usrdir
+    # echo
+    # echo "Running emonhub automatic node addition script"
+    # $usrdir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $usrdir
 
 else
     echo "EmonHub not found"

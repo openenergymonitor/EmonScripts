@@ -66,7 +66,7 @@ echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
 for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
     servicepath=$emoncms_www/scripts/services/$service/$service.service
-    $usrdir/EmonScripts/update/install_emoncms_service.sh $servicepath $service
+    $usrdir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
 done
 echo
 

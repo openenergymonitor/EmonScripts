@@ -1,9 +1,9 @@
 #!/bin/bash
+source config.ini
+
 echo "-------------------------------------------------------------"
 echo "EmonPi Firmware Update"
 echo "-------------------------------------------------------------"
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-usrdir=${DIR/\/EmonScripts\/update/}
 
 sudo service emonhub stop
 

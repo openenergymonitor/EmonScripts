@@ -1,9 +1,9 @@
 #!/bin/bash
+source config.ini
+
 echo "-------------------------------------------------------------"
 echo "RFM69Pi Firmware Update"
 echo "-------------------------------------------------------------"
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-usrdir=${DIR/\/EmonScripts\/update/}
 
 echo "Getting latest RFM69Pi release info from github"
 download_url="$(curl -s https://api.github.com/repos/openenergymonitor/RFM2Pi/releases | grep browser_download_url | head -n 1 | cut -d '"' -f 4)"

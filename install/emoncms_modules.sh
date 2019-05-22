@@ -73,4 +73,4 @@ if [ -d $usrdir/modules/backup ]; then
 fi
 
 echo "Update Emoncms database"
-php $usrdir/EmonScripts/update/emoncmsdbupdate.php
+php $usrdir/EmonScripts/common/emoncmsdbupdate.php
