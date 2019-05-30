@@ -59,10 +59,8 @@ option='authoritative;'
 sudo sed -i "s~^#$option~$option~" /etc/dhcp/dhcpd.conf
 
 # -------------------------------------------------------------
-
-echo "Creating: "$usrdir/data/dhcpd.leases
-sudo touch $usrdir/data/dhcpd.leases
-
+# echo "Creating: "$usrdir/data/dhcpd.leases
+# sudo touch $usrdir/data/dhcpd.leases
 # -------------------------------------------------------------
 
 echo "Applying modifications to dhcpd.conf"
