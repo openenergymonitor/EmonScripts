@@ -16,19 +16,21 @@ else
     echo "- emoncms already installed"
 fi
 
-# Create emoncms logfile (review)
+# Create emoncms logfolder
 if [ ! -f $emoncms_log_location ]; then
-    echo "- creating emoncms log file"
-    sudo touch $emoncms_log_location
-    sudo chmod 666 $emoncms_log_location
+    echo "- creating emoncms log folder"
+    sudo mkdir $emoncms_log_location
+    sudo chown pi $emoncms_log_location
+    sudo touch "$emoncms_log_location/emoncms.log"
+    sudo chmod 666 "$emoncms_log_location/emoncms.log"
 else
-    echo "- emoncms.log already exists"
+    echo "- log folder already exists"
 fi
 
 # Copy and install default.settings.php
 if [ ! -f $emoncms_www/settings.php ]; then
     echo "- installing default emoncms settings.php"
-    cp $usrdir/EmonScripts/install/default.settings.php $emoncms_www/settings.php
+    cp $usrdir/EmonScripts/defaults/default.settings.php $emoncms_www/settings.php
     sed -i "s~USRDIR~$usrdir~" $emoncms_www/settings.php
 else
     echo "- emoncms settings.php already exists"

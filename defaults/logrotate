@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# test -x /usr/sbin/logrotate || exit 0
+# /usr/sbin/logrotate /etc/logrotate.conf
+
+# logrotate now triggered by log2ram
+# see /etc/cron.hourly/log2ram

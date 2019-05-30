@@ -26,12 +26,7 @@ sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
 
 # Install emoncms modules that do not reside in /var/www/emoncms/Modules
 if [ ! -d $usrdir/modules ]; then
-    # sudo mkdir $usrdir
-    # sudo chown $user $usrdir
     mkdir $usrdir/modules
-    # emoncms-sync.log is written to data folder
-    # change to /var/log or use emoncms logger
-    mkdir $usrdir/modules/data
 fi
 
 cd $usrdir/modules

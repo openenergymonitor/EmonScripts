@@ -1,0 +1,9 @@
+rotate 1
+size 1M
+copytruncate
+nomail
+su root root
+missingok
+notifempty
+
+/var/log/*.log /var/log/*/*.log /var/log/syslog /var/log/messages /var/log/btmp /var/log/* {}
