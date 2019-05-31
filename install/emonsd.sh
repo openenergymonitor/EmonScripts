@@ -25,6 +25,7 @@ fi
 sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.CUSTOM /etc/logrotate.CUSTOM
 sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
 sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
+sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
 
 sudo chown root /etc/logrotate.CUSTOM
 # log2ram cron hourly entry
