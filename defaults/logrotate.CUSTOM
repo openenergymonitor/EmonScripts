@@ -1,10 +1,11 @@
-rotate 2
+rotate 5
 size 1M
 copytruncate
 nomail
 su root root
 missingok
 notifempty
+delaycompress
 compress
 
 /var/log/*.log /var/log/*/*.log /var/log/syslog /var/log/messages /var/log/btmp /var/log/* {}
