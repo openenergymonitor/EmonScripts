@@ -4,7 +4,7 @@ The following build script is currently development in progress. It is already m
 
 **Todo 1st release (Target: Late May 2019)**
 
-- finalise emoncms log locations i.e: /var/log/emon/emoncms.log
+- finalise emoncms log locations i.e: /var/log/emoncms/emoncms.log
 - finalise logrotate config
 
 **Todo 2nd release**

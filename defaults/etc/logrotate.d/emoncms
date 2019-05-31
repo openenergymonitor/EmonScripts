@@ -1,3 +1,3 @@
-/var/log/emon/*.log {
+/var/log/emoncms/*.log {
 
 }
