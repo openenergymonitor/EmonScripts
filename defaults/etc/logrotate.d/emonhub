@@ -1,0 +1,5 @@
+/var/log/emonhub/emonhub.log {
+    norenamecopy
+    copytruncate
+    su root root
+}

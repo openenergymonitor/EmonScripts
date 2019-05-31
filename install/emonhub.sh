@@ -10,7 +10,7 @@ if [ ! -d $usrdir/emonhub ]; then
     git clone https://github.com/openenergymonitor/emonhub.git
     cd emonhub
     git checkout env_example
-    sudo cp $usrdir/EmonScripts/defaults/emonhub.env /etc/emonhub/emonhub.env
+    sudo cp $usrdir/EmonScripts/defaults/etc/emonhub/emonhub.env /etc/emonhub/emonhub.env
     cd $usrdir
 else 
     echo "- emonhub repository already installed"
