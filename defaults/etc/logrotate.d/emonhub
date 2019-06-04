@@ -2,4 +2,5 @@
     norenamecopy
     copytruncate
     su root root
+    compress
 }
