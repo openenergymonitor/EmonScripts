@@ -3,4 +3,7 @@
     copytruncate
     su root root
     compress
+    
+    olddir /var/log.old/emonhub
+    createolddir 775 root emonhub
 }
