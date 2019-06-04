@@ -6,6 +6,10 @@ The following build script is currently development in progress. It is already m
 
 - finalise logrotate config
 
+**Todo 2nd release**
+
+- SSL https://community.openenergymonitor.org/t/emonsd-next-steps-filesystem-logrotate/10693/188
+
 The following build script can be used to build a fully fledged emoncms installation on debian operating systems, including: installation of LAMP server and related packages, redis, mqtt, emoncms core, emoncms modules, emonhub and if applicable: raspberrypi support for serial port and wifi access point.
 
 Tested on: 
