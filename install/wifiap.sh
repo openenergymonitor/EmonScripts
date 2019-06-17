@@ -107,6 +107,6 @@ sudo sed -i "s~^#$option~$option~" /etc/default/isc-dhcp-server
 sudo ln -s $usrdir/emonpi/wifiAP/wifiAP.sh /usr/local/sbin/wifiAP
 
 sudo systemctl unmask hostapd
-sudo systemctl enable hostapd
+# sudo systemctl enable hostapd
 
 echo "-------------------------------------------------------------"
