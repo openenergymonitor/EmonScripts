@@ -11,6 +11,7 @@ The following build script is currently development in progress. It is already m
 - SSL https://community.openenergymonitor.org/t/emonsd-next-steps-filesystem-logrotate/10693/188
 - Review .env configuration 
 - Review logrotate configuration
+- Review disk wear results from 1st release, investigate ext filesystem commit interval vs app level buffering
 
 The following build script can be used to build a fully fledged emoncms installation on debian operating systems, including: installation of LAMP server and related packages, redis, mqtt, emoncms core, emoncms modules, emonhub and if applicable: raspberrypi support for serial port and wifi access point.
 
