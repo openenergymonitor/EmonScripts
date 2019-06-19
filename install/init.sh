@@ -11,7 +11,7 @@ sudo mkdir $openenergymonitor_dir
 sudo chown $user $openenergymonitor_dir
 
 sudo mkdir $emoncms_dir
-sudo chown $user $openenergymonitor_dir
+sudo chown $user $emoncms_dir
 
 cd $openenergymonitor_dir
 
