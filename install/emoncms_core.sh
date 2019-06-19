@@ -30,8 +30,9 @@ fi
 # Copy and install default.settings.php
 if [ ! -f $emoncms_www/settings.php ]; then
     echo "- installing default emoncms settings.php"
-    cp $usrdir/EmonScripts/defaults/emoncms/default.settings.php $emoncms_www/settings.php
-    sed -i "s~USRDIR~$usrdir~" $emoncms_www/settings.php
+    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/default.settings.php $emoncms_www/settings.php
+    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.php
+    sed -i "s~OPENENERGYMONITOR_DIR~$emoncms_dir~" $emoncms_www/settings.php
 else
     echo "- emoncms settings.php already exists"
 fi
@@ -58,8 +59,8 @@ if [ ! -d /var/www/html/emoncms ]; then
     
     # Redirect (review)
     echo "- creating redirect to $emoncms_www"
-    echo "<?php header('Location: ../emoncms'); ?>" > $usrdir/index.php
-    sudo mv $usrdir/index.php /var/www/html/index.php
+    echo "<?php header('Location: ../emoncms'); ?>" > $emoncms_dir/index.php
+    sudo mv $emoncms_dir/index.php /var/www/html/index.php
     sudo rm /var/www/html/index.html
 fi
 
@@ -68,13 +69,13 @@ echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
 for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
     servicepath=$emoncms_www/scripts/services/$service/$service.service
-    $usrdir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
+    $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
 done
 echo
 
 # Sudoers entry (review)
-sudo visudo -cf $usrdir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
-sudo cp $usrdir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
+sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
+sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
 sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
 echo "- Install emonPi Emoncms admin reboot button sudoers entry"
 

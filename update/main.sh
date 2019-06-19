@@ -12,7 +12,7 @@ datestr=$(date)
 
 echo "Date:" $datestr
 echo "EUID: $EUID"
-echo "usrdir: $usrdir"
+echo "openenergymonitor_dir: $openenergymonitor_dir"
 echo "type: $type"
 echo "firmware: $firmware"
 
@@ -25,8 +25,8 @@ fi
 if [ "$emonSD_pi_env" = "1" ]; then
     # Check if we have an emonpi LCD connected, 
     # if we do assume EmonPi hardware else assume RFM69Pi
-    lcd27=$(sudo $usrdir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
-    lcd3f=$(sudo $usrdir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
+    lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
+    lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
 
     if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
         hardware="EmonPi"
@@ -42,7 +42,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
 
         # Display update message on LCD
         echo "Display update message on LCD"
-        sudo $usrdir/emonpi/lcd/./emonPiLCD_update.py
+        sudo $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
 fi
 
@@ -52,31 +52,31 @@ if [ "$type" == "all" ]; then
     sudo rm -rf hardware/emonpi/emonpi2c/
 
     for repo in "emonpi" "RFM2Pi" "usefulscripts" "huawei-hilink-status" "oem_openHab" "oem_node-red"; do
-        if [ -d $usrdir/$repo ]; then
-            echo "git pull $usrdir/$repo"
-            cd $usrdir/$repo
+        if [ -d $openenergymonitor_dir/$repo ]; then
+            echo "git pull $openenergymonitor_dir/$repo"
+            cd $openenergymonitor_dir/$repo
             git branch
             git status
             git pull
         fi
     done
 fi
-cd $usrdir/EmonScripts/update
+cd $openenergymonitor_dir/EmonScripts/update
 
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
-        $usrdir/EmonScripts/update/emonpi.sh
+        $openenergymonitor_dir/EmonScripts/update/emonpi.sh
     fi
 
     if [ "$firmware" == "rfm69pi" ]; then
-        $usrdir/EmonScripts/update/rfm69pi.sh
+        $openenergymonitor_dir/EmonScripts/update/rfm69pi.sh
     fi
     
     if [ "$firmware" == "rfm12pi" ]; then
-        $usrdir/EmonScripts/update/rfm12pi.sh
+        $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
     fi
 fi
 
@@ -84,7 +84,7 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
     echo "Start emonhub update script:"
-    $usrdir/EmonScripts/update/emonhub.sh
+    $openenergymonitor_dir/EmonScripts/update/emonhub.sh
     echo
 fi
 
@@ -92,8 +92,8 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
     echo "Start emoncms update:"
-    $usrdir/EmonScripts/update/emoncms_core.sh
-    $usrdir/EmonScripts/update/emoncms_modules.sh
+    $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
+    $openenergymonitor_dir/EmonScripts/update/emoncms_modules.sh
     echo
 fi
 

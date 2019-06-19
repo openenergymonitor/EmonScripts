@@ -97,8 +97,8 @@ On reboot, login and run:
 
 Create a directory that will be a mount point for the rw data partition
 
-    sudo mkdir /var/opt/emon
-    sudo chwon www-data /var/opt/emon
+    sudo mkdir /var/opt/emoncms
+    sudo chwon www-data /var/opt/emoncms
 
 Use modified fstab
 

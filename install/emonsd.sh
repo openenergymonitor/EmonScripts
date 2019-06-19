@@ -6,7 +6,7 @@ source config.ini
 # Logs are written to disk every hour or at shutdown
 # log2ram forked from @pb66 repo here https://github.com/pb66/log2ram
 # --------------------------------------------------------------------------------
-cd $usrdir
+cd $openenergymonitor_dir
 git clone -b rsync_mods https://github.com/openenergymonitor/log2ram.git
 cd log2ram
 chmod +x install.sh && sudo ./install.sh
@@ -22,10 +22,10 @@ if [ ! -d /var/log/logrotate ]; then
   sudo chown -R root:adm /var/log/logrotate
 fi
 # custom logrotate config
-sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.CUSTOM /etc/logrotate.CUSTOM
-sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
-sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
-sudo ln -sf $usrdir/EmonScripts/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.CUSTOM /etc/logrotate.CUSTOM
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
 
 sudo chown root /etc/logrotate.CUSTOM
 sudo chown root /etc/logrotate.d/00_defaults
@@ -33,10 +33,10 @@ sudo chown root /etc/logrotate.d/emonhub
 sudo chown root /etc/logrotate.d/emoncms
 
 # log2ram cron hourly entry
-sudo ln -sf $usrdir/EmonScripts/defaults/etc/cron.hourly/log2ram /etc/cron.hourly/log2ram
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/cron.hourly/log2ram /etc/cron.hourly/log2ram
 sudo chmod +x /etc/cron.hourly/log2ram
 # copy in commented out placeholder logrotate file
-sudo cp $usrdir/EmonScripts/defaults/etc/cron.daily/logrotate /etc/cron.daily/logrotate
+sudo cp $openenergymonitor_dir/EmonScripts/defaults/etc/cron.daily/logrotate /etc/cron.daily/logrotate
 
 # --------------------------------------------------------------------------------
 # Misc

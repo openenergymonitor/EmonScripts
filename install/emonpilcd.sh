@@ -17,10 +17,6 @@ if [ ! -d /var/log/emonpilcd ]; then
     touch /var/log/emonpilcd/emonpilcd.log
 fi
 
-# EmonBase / EmonPi flags are stored in /home/pi/data (needs removing)
-cd
-if [ ! -d data ]; then mkdir data; fi
-
 # ---------------------------------------------------------
 # Install service
 # ---------------------------------------------------------
@@ -36,14 +32,14 @@ else
 fi
 
 # Install emonpi repo if it doesnt already exist
-if [ ! -d $usrdir/emonpi ]; then
+if [ ! -d $openenergymonitor_dir/emonpi ]; then
     echo "Installing emonpi repository"
-    cd $usrdir
+    cd $openenergymonitor_dir
     git clone https://github.com/openenergymonitor/emonpi.git
 fi
 
-sudo cp $usrdir/emonpi/lcd/$service.service /lib/systemd/system
-sudo sed -i "s~ExecStart=.*~ExecStart=/usr/bin/python $usrdir/emonpi/lcd/emonPiLCD.py~" /lib/systemd/system/$service.service
+sudo cp $openenergymonitor_dir/emonpi/lcd/$service.service /lib/systemd/system
+sudo sed -i "s~ExecStart=.*~ExecStart=/usr/bin/python $openenergymonitor_dir/emonpi/lcd/emonPiLCD.py~" /lib/systemd/system/$service.service
 sudo systemctl enable $service.service
 sudo systemctl restart $service.service
 

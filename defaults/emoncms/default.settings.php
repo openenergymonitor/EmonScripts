@@ -69,8 +69,9 @@
             'keyspace' => 'emoncms'
         )
     );
-
-    $homedir = "USRDIR";
+    
+    $emoncms_dir = "EMONCMS_DIR";
+    $openenergymonitor_dir = "OPENENERGYMONITOR_DIR";
 
     // Max number of allowed different inputs per user. For limiting garbage rf data
     $max_node_id_limit = 32;

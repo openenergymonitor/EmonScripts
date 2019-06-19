@@ -12,11 +12,11 @@ sudo sed -i "s/^CustomLog/#CustomLog/" /etc/apache2/conf-available/other-vhosts-
 sudo a2enmod rewrite
 
 # Default apache2 configuration
-sudo cp $usrdir/EmonScripts/defaults/apache2/emonsd.conf /etc/apache2/conf-available/emonsd.conf
+sudo cp $openenergymonitor_dir/EmonScripts/defaults/apache2/emonsd.conf /etc/apache2/conf-available/emonsd.conf
 sudo a2enconf emonsd.conf
 
 # Configure virtual host
-sudo cp $usrdir/EmonScripts/defaults/apache2/emoncms.conf /etc/apache2/sites-available/emoncms.conf
+sudo cp $openenergymonitor_dir/EmonScripts/defaults/apache2/emoncms.conf /etc/apache2/sites-available/emoncms.conf
 sudo a2dissite 000-default.conf
 sudo a2ensite emoncms
 
