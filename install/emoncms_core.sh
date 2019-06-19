@@ -32,7 +32,7 @@ if [ ! -f $emoncms_www/settings.php ]; then
     echo "- installing default emoncms settings.php"
     cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/default.settings.php $emoncms_www/settings.php
     sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.php
-    sed -i "s~OPENENERGYMONITOR_DIR~$emoncms_dir~" $emoncms_www/settings.php
+    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.php
 else
     echo "- emoncms settings.php already exists"
 fi
