@@ -101,10 +101,11 @@ sudo sed -i "s~^#$option~$option~" /etc/default/isc-dhcp-server
 # Now edit the file /etc/network/interfaces and add the following line to the bottom of the file:
 # up iptables-restore < /etc/iptables.ipv4.nat
 
-# Add /etc/rc.local:
-# /opt/emon/emonpi/wifiAP/startAP.sh
-
 sudo ln -s $openenergymonitor_dir/emonpi/wifiAP/wifiAP.sh /usr/local/sbin/wifiAP
+
+# Add /etc/rc.local:
+# /opt/openenergymonitor/emonpi/wifiAP/startAP.sh
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 
 sudo systemctl unmask hostapd
 # sudo systemctl enable hostapd
