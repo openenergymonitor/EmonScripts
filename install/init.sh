@@ -2,6 +2,7 @@
 
 user=$USER
 openenergymonitor_dir=/opt/openenergymonitor
+emoncms_dir=/opt/emoncms
 
 sudo apt-get update -y
 sudo apt-get install -y git-core
@@ -15,6 +16,8 @@ sudo chown $user $openenergymonitor_dir
 cd $openenergymonitor_dir
 
 git clone https://github.com/openenergymonitor/EmonScripts.git
+cd EmonScripts
+git checkout oem_emoncms_dirs
 
 cd $openenergymonitor_dir/EmonScripts/install
 ./main.sh
