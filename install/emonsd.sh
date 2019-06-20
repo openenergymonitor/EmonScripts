@@ -22,12 +22,10 @@ if [ ! -d /var/log/logrotate ]; then
   sudo chown -R root:adm /var/log/logrotate
 fi
 # custom logrotate config
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.CUSTOM /etc/logrotate.CUSTOM
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
 
-sudo chown root /etc/logrotate.CUSTOM
 sudo chown root /etc/logrotate.d/00_defaults
 sudo chown root /etc/logrotate.d/emonhub
 sudo chown root /etc/logrotate.d/emoncms
