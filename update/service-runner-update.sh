@@ -1,6 +1,5 @@
 #!/bin/bash
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-usrdir=${DIR/\/EmonScripts/}
+source config.ini
 
 if [ -z "$2" ]; then
     type="all"
@@ -11,7 +10,7 @@ else
 fi
 
 # Clear log update file
-cat /dev/null > $usrdir/data/emonupdate.log
+cat /dev/null > $openenergymonitor_dir/data/emonupdate.log
 
 echo "Starting update via service-runner-update.sh (v2.0) >"
 
@@ -51,11 +50,11 @@ fi
 # -----------------------------------------------------------------
 
 # Pull in latest EmonScripts repo before then running updated update scripts
-echo "git pull $usrdir/EmonScripts"
-cd $usrdir/EmonScripts
+echo "git pull $openenergymonitor_dir/EmonScripts"
+cd $openenergymonitor_dir/EmonScripts
 git branch
 git status
 git pull
 
 # Run update in main update script
-$usrdir/EmonScripts/update/main.sh $type $firmware
+$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware

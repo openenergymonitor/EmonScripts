@@ -17,32 +17,32 @@ for module in ${!emoncms_modules[@]}; do
 done
 
 # wifi module sudoers entry
-sudo visudo -cf $usrdir/EmonScripts/sudoers.d/wifi-sudoers && \
-sudo cp $usrdir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
+sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers && \
+sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
 sudo chmod 0440 /etc/sudoers.d/wifi-sudoers
 echo "wifi sudoers entry installed"
 # wpa_supplicant permissions
 sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf 
 
 # Install emoncms modules that do not reside in /var/www/emoncms/Modules
-if [ ! -d $usrdir/modules ]; then
-    mkdir $usrdir/modules
+if [ ! -d $emoncms_dir/modules ]; then
+    mkdir $emoncms_dir/modules
 fi
 
-cd $usrdir/modules
-for module in ${!emoncms_modules_usrdir[@]}; do
-    branch=${emoncms_modules_usrdir[$module]}
+cd $emoncms_dir/modules
+for module in ${!symlinked_emoncms_modules[@]}; do
+    branch=${symlinked_emoncms_modules[$module]}
     if [ ! -d $module ]; then
         echo "- Installing module: $module"
         git clone -b $branch https://github.com/emoncms/$module.git
         # If module contains emoncms UI folder, symlink to $emoncms_www/Modules
-        if [ -d $usrdir/modules/$module/$module-module ]; then
+        if [ -d $emoncms_dir/modules/$module/$module-module ]; then
             echo "-- UI directory symlink"
-            ln -s $usrdir/modules/$module/$module-module $emoncms_www/Modules/$module
+            ln -s $emoncms_dir/modules/$module/$module-module $emoncms_www/Modules/$module
         fi
         # run module install script if present
-        if [ -f $usrdir/modules/$module/install.sh ]; then
-            $usrdir/modules/$module/install.sh $usrdir
+        if [ -f $emoncms_dir/modules/$module/install.sh ]; then
+            $emoncms_dir/modules/$module/install.sh $emoncms_dir
             echo
         fi
     else
@@ -51,21 +51,21 @@ for module in ${!emoncms_modules_usrdir[@]}; do
 done
 
 # backup module
-if [ -d $usrdir/modules/backup ]; then
-    cd backup
+if [ -d $emoncms_dir/modules/backup ]; then
+    cd $emoncms_dir/modules/backup
     if [ ! -f config.cfg ]; then
         cp default.config.cfg config.cfg
         sed -i "s~USER~$user~" config.cfg
-        sed -i "s~BACKUP_SCRIPT_LOCATION~$usrdir/modules/backup~" config.cfg
+        sed -i "s~BACKUP_SCRIPT_LOCATION~$emoncms_dir/modules/backup~" config.cfg
         sed -i "s~EMONCMS_LOCATION~$emoncms_www~" config.cfg
-        sed -i "s~BACKUP_LOCATION~$usrdir/data~" config.cfg
+        sed -i "s~BACKUP_LOCATION~$openenergymonitor_dir/data~" config.cfg
         sed -i "s~DATABASE_PATH~$emoncms_datadir~" config.cfg
-        sed -i "s~EMONHUB_CONFIG_PATH~$usrdir/data~" config.cfg
-        sed -i "s~EMONHUB_SPECIMEN_CONFIG~$usrdir/emonhub/conf~" config.cfg
-        sed -i "s~BACKUP_SOURCE_PATH~$usrdir/data/uploads~" config.cfg
+        sed -i "s~EMONHUB_CONFIG_PATH~/etc/emonhub~" config.cfg
+        sed -i "s~EMONHUB_SPECIMEN_CONFIG~$openenergymonitor_dir/emonhub/conf~" config.cfg
+        sed -i "s~BACKUP_SOURCE_PATH~$openenergymonitor_dir/data/uploads~" config.cfg
     fi
     cd
 fi
 
 echo "Update Emoncms database"
-php $usrdir/EmonScripts/common/emoncmsdbupdate.php
+php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php

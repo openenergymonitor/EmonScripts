@@ -37,24 +37,27 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     sudo apt --fix-broken install
 fi
 
+# Required for backup, emonpiLCD, wifi, rfm69pi firmware (review)
+if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
+
 echo "-------------------------------------------------------------"
 sudo apt-get install -y git build-essential python-pip python-dev gettext
 echo "-------------------------------------------------------------"
 
-if [ "$install_apache" = true ]; then $usrdir/EmonScripts/install/apache.sh; fi
-if [ "$install_mysql" = true ]; then $usrdir/EmonScripts/install/mysql.sh; fi
-if [ "$install_php" = true ]; then $usrdir/EmonScripts/install/php.sh; fi
-if [ "$install_redis" = true ]; then $usrdir/EmonScripts/install/redis.sh; fi
-if [ "$install_mosquitto" = true ]; then $usrdir/EmonScripts/install/mosquitto.sh; fi
-if [ "$install_emoncms_core" = true ]; then $usrdir/EmonScripts/install/emoncms_core.sh; fi
-if [ "$install_emoncms_modules" = true ]; then $usrdir/EmonScripts/install/emoncms_modules.sh; fi
-if [ "$install_emonhub" = true ]; then $usrdir/EmonScripts/install/emonhub.sh; fi
+if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi
+if [ "$install_mysql" = true ]; then $openenergymonitor_dir/EmonScripts/install/mysql.sh; fi
+if [ "$install_php" = true ]; then $openenergymonitor_dir/EmonScripts/install/php.sh; fi
+if [ "$install_redis" = true ]; then $openenergymonitor_dir/EmonScripts/install/redis.sh; fi
+if [ "$install_mosquitto" = true ]; then $openenergymonitor_dir/EmonScripts/install/mosquitto.sh; fi
+if [ "$install_emoncms_core" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_core.sh; fi
+if [ "$install_emoncms_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_modules.sh; fi
+if [ "$install_emonhub" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonhub.sh; fi
 
 if [ "$emonSD_pi_env" = "1" ]; then
-    if [ "$install_firmware" = true ]; then $usrdir/EmonScripts/install/firmware.sh; fi
-    if [ "$install_emonpilcd" = true ]; then $usrdir/EmonScripts/install/emonpilcd.sh; fi
-    if [ "$install_wifiap" = true ]; then $usrdir/EmonScripts/install/wifiap.sh; fi
-    if [ "$install_emonsd" = true ]; then $usrdir/EmonScripts/install/emonsd.sh; fi
+    if [ "$install_firmware" = true ]; then $openenergymonitor_dir/EmonScripts/install/firmware.sh; fi
+    if [ "$install_emonpilcd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonpilcd.sh; fi
+    if [ "$install_wifiap" = true ]; then $openenergymonitor_dir/EmonScripts/install/wifiap.sh; fi
+    if [ "$install_emonsd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonsd.sh; fi
 
     # Enable service-runner update
     # update checks for image type and only runs with a valid image name file in the boot partition

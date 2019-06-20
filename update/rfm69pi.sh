@@ -12,20 +12,20 @@ echo "Latest RFM69Pi firmware: V"$version
 
 echo "downloading latest RFM69Pi firmware from github releases:"
 echo $download_url
-echo "Saving to $usrdir/data/firmware/rfm69pi-"$version".hex"
+echo "Saving to $openenergymonitor_dir/data/firmware/rfm69pi-"$version".hex"
 
-if [ ! -d $usrdir/data/firmware ]; then
-  mkdir $usrdir/data/firmware
+if [ ! -d $openenergymonitor_dir/data/firmware ]; then
+  mkdir $openenergymonitor_dir/data/firmware
 fi
 
-wget -q $download_url -O $usrdir/data/firmware/rfm69pi-$version.hex
+wget -q $download_url -O $openenergymonitor_dir/data/firmware/rfm69pi-$version.hex
 
-if [ -f $usrdir/data/firmware/rfm69pi-$version.hex ]; then
+if [ -f $openenergymonitor_dir/data/firmware/rfm69pi-$version.hex ]; then
   sudo service emonhub stop
   echo
   echo "Flashing RFM69Pi with V" $version
   echo
-  avrdude -v -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 38400 -U flash:w:$usrdir/data/firmware/rfm69pi-$version.hex
+  avrdude -v -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 38400 -U flash:w:$openenergymonitor_dir/data/firmware/rfm69pi-$version.hex
   sudo service emonhub start
   echo "Flashing RFM69Pi with V" $version " done"
 else

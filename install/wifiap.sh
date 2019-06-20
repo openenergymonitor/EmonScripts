@@ -4,9 +4,9 @@ source config.ini
 # Based on https://github.com/openenergymonitor/emonpi/tree/master/wifiAP
 
 # Install emonpi repo if it doesnt already exist
-if [ ! -d $usrdir/emonpi ]; then
+if [ ! -d $openenergymonitor_dir/emonpi ]; then
     echo "Installing emonpi repository"
-    cd $usrdir
+    cd $openenergymonitor_dir
     git clone https://github.com/openenergymonitor/emonpi.git
 fi
 
@@ -24,7 +24,7 @@ echo "-------------------------------------------------------------"
 
 if [ ! -f /etc/hostapd/hostapd.conf ]; then
     echo "Installing hostapd.conf"
-    sudo cp $usrdir/emonpi/wifiAP/hostapd.conf /etc/hostapd/hostapd.conf
+    sudo cp $openenergymonitor_dir/emonpi/wifiAP/hostapd.conf /etc/hostapd/hostapd.conf
     
     # Manual start: you should see a Wifi network called emonPi and emonpi2016 raspberry
     # sudo hostapd -dd /etc/hostapd/hostapd.conf
@@ -41,7 +41,7 @@ if grep -Fq "lease-file-name" /etc/dhcp/dhcpd.conf; then
     echo "dhcpd.conf configuration already exists"
 else
     echo "Appending dhcpd.conf configuration"
-    conf=$(cat $usrdir/emonpi/wifiAP/append-dhcpd.conf)
+    conf=$(cat $openenergymonitor_dir/emonpi/wifiAP/append-dhcpd.conf)
     echo "$conf" | sudo tee -a /etc/dhcp/dhcpd.conf
 fi
 
@@ -59,8 +59,8 @@ option='authoritative;'
 sudo sed -i "s~^#$option~$option~" /etc/dhcp/dhcpd.conf
 
 # -------------------------------------------------------------
-# echo "Creating: "$usrdir/data/dhcpd.leases
-# sudo touch $usrdir/data/dhcpd.leases
+# echo "Creating: "$openenergymonitor_dir/data/dhcpd.leases
+# sudo touch $openenergymonitor_dir/data/dhcpd.leases
 # -------------------------------------------------------------
 
 echo "Applying modifications to dhcpd.conf"
@@ -101,10 +101,11 @@ sudo sed -i "s~^#$option~$option~" /etc/default/isc-dhcp-server
 # Now edit the file /etc/network/interfaces and add the following line to the bottom of the file:
 # up iptables-restore < /etc/iptables.ipv4.nat
 
-# Add /etc/rc.local:
-# /opt/emon/emonpi/wifiAP/startAP.sh
+sudo ln -s $openenergymonitor_dir/emonpi/wifiAP/wifiAP.sh /usr/local/sbin/wifiAP
 
-sudo ln -s $usrdir/emonpi/wifiAP/wifiAP.sh /usr/local/sbin/wifiAP
+# Add /etc/rc.local:
+# /opt/openenergymonitor/emonpi/wifiAP/startAP.sh
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 
 sudo systemctl unmask hostapd
 # sudo systemctl enable hostapd

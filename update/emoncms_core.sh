@@ -17,10 +17,10 @@ fi
 # -----------------------------------------------------------------
 cd
 echo
-current_settings_md5="$($usrdir/EmonScripts/common/./md5sum.py $emoncms_www/settings.php)"
+current_settings_md5="$($openenergymonitor_dir/EmonScripts/common/./md5sum.py $emoncms_www/settings.php)"
 echo "current settings.php md5: $current_settings_md5"
 
-current_default_settings_md5="$($usrdir/EmonScripts/common/md5sum.py $emoncms_www/default.emonpi.settings.php)"
+current_default_settings_md5="$($openenergymonitor_dir/EmonScripts/common/md5sum.py $emoncms_www/default.emonpi.settings.php)"
 echo "Default settings.php md5: $current_default_settings_md5"
 
 if [ "$current_default_settings_md5" == "$current_settings_md5" ]; then
@@ -53,7 +53,7 @@ fi
 # check to see if user has modifed settings.php and if update is need. Auto apply of possible
 # -----------------------------------------------------------------
 echo
-new_default_settings_md5="$($usrdir/EmonScripts/common/md5sum.py $emoncms_www/default.emonpi.settings.php)"
+new_default_settings_md5="$($openenergymonitor_dir/EmonScripts/common/md5sum.py $emoncms_www/default.emonpi.settings.php)"
 echo "NEW default settings.php md5: $new_default_settings_md5"
 
 # check to see if there is an update waiting for settings.php
@@ -72,7 +72,7 @@ fi
 #########################################################################################
 
 echo "Update Emoncms database"
-php $usrdir/EmonScripts/common/emoncmsdbupdate.php
+php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php
 echo
 
 echo "-------------------------------------------------------------"
@@ -80,7 +80,7 @@ echo "Update Emoncms Services"
 echo "-------------------------------------------------------------"
 for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
     servicepath=$emoncms_www/scripts/services/$service/$service.service
-    $usrdir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
+    $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
 done
 echo
 
@@ -106,8 +106,8 @@ if [ "$emonSD_pi_env" = "1" ]; then
   # Sudoers installation (provides sudo access to specific commands from emoncms)
   for sudoersfile in "emoncms-rebootbutton"; do
       if [ ! -f /etc/sudoers.d/$sudoersfile ]; then
-          sudo visudo -cf $usrdir/EmonScripts/sudoers.d/$sudoersfile && \
-          sudo cp $usrdir/EmonScripts/sudoers.d/$sudoersfile /etc/sudoers.d/
+          sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/$sudoersfile && \
+          sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/$sudoersfile /etc/sudoers.d/
           sudo chmod 0440 /etc/sudoers.d/$sudoersfile
           echo
           echo "$sudoersfile sudoers entry installed"
