@@ -10,14 +10,9 @@ else
 fi
 
 # Clear log update file
-cat /dev/null > $openenergymonitor_dir/data/emonupdate.log
+cat /dev/null > /var/log/emoncms/emonupdate.log
 
-echo "Starting update via service-runner-update.sh (v2.0) >"
-
-# make file system read-write
-if [ -f /usr/bin/rpi-rw ]; then
-  rpi-rw
-fi
+echo "Starting update via service-runner-update.sh (v3.0) >"
 
 # -----------------------------------------------------------------
 
