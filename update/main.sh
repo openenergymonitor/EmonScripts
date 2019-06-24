@@ -116,7 +116,7 @@ datestr=$(date)
 
 echo
 echo "-------------------------------------------------------------"
-echo "Update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
+echo "emonPi update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
 echo "-------------------------------------------------------------"
 
 # -----------------------------------------------------------------
