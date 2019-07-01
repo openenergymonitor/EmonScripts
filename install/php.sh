@@ -8,7 +8,7 @@ echo "-------------------------------------------------------------"
 sudo apt-get install -y php7.3
 
 if [ "$install_apache" = true ]; then
-    sudo apt-get install -y libapache2-mod-php
+    sudo apt-get install -y libapache2-mod-php7.3
 fi
 
 if [ "$install_mysql" = true ]; then
