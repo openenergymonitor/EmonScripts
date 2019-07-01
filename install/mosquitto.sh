@@ -30,6 +30,6 @@ if [ "$install_mosquitto_client" = true ]; then
     printf "\n" | sudo pecl install Mosquitto-beta
     echo "-------------------------------------------------------------"
     # Add mosquitto to php mods available
-    printf "extension=mosquitto.so" | sudo tee /etc/php/7.0/mods-available/mosquitto.ini 1>&2
+    printf "extension=mosquitto.so" | sudo tee /etc/php/7.3/mods-available/mosquitto.ini 1>&2
     sudo phpenmod mosquitto
 fi

@@ -4,7 +4,7 @@ source config.ini
 echo "-------------------------------------------------------------"
 echo "Setup the Mariadb server (MYSQL)"
 echo "-------------------------------------------------------------"
-sudo apt-get install -y mariadb-server mysql-client
+sudo apt-get install -y mariadb-server mariadb-client
 
 # Secure mysql
 echo "- Secure MYSQL"

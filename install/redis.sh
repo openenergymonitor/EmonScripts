@@ -12,7 +12,7 @@ if [ "$install_php" = true ]; then
     echo "-------------------------------------------------------------"
 
     # Add redis to php mods available 
-    printf "extension=redis.so" | sudo tee /etc/php/7.0/mods-available/redis.ini 1>&2
+    printf "extension=redis.so" | sudo tee /etc/php/7.3/mods-available/redis.ini 1>&2
     sudo phpenmod redis
 fi
 
