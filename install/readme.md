@@ -18,6 +18,8 @@ The following build script can be used to build a fully fledged emoncms installa
 Tested on: 
 
 - [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/), Version: November 2018, Release date: 2018-11-13
+- [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-06-20
+
 
 **Before starting it is recommended to create an ext2 partition for emoncms data, see below.**
 
