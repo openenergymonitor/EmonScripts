@@ -23,7 +23,7 @@ Tested on:
 
 Run default install:
 
-    wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/install/init.sh
+    wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/buster/install/init.sh
     chmod +x init.sh
     ./init.sh
     
