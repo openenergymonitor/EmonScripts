@@ -5,16 +5,17 @@ echo "-------------------------------------------------------------"
 echo "Install PHP"
 echo "-------------------------------------------------------------"
 
-sudo apt-get install -y php7.3
+sudo apt-get install -y php
 
-if [ "$install_apache" = true ]; then
-    sudo apt-get install -y libapache2-mod-php7.3
-fi
+# if [ "$install_apache" = true ]; then
+#     sudo apt-get install -y libapache2-mod-php
+# fi
 
 if [ "$install_mysql" = true ]; then
-    sudo apt-get install -y php7.3-mysql
+    sudo apt-get install -y php-mysql
 fi
 
-sudo apt-get install -y php7.3-gd php7.3-opcache php7.3-curl php-pear php7.3-dev php-mcrypt php7.3-common php7.3-mbstring
+sudo apt-get install -y php-gd php7.3-opcache php-curl php-pear php-dev php-mcrypt php-common php-mbstring
 
 sudo pecl channel-update pecl.php.net
+
