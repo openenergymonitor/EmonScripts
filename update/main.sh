@@ -92,6 +92,14 @@ fi
 
 # -----------------------------------------------------------------
 
+if [ "$type" == "all" ] || [ "$type" == "emonmuc" ]; then
+    echo "Start emonmuc update script:"
+    $openenergymonitor_dir/EmonScripts/update/emonmuc.sh
+    echo
+fi
+
+# -----------------------------------------------------------------
+
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
     echo "Start emoncms update:"
     $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
