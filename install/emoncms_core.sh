@@ -5,12 +5,16 @@ echo "-------------------------------------------------------------"
 echo "Install Emoncms Core"
 echo "-------------------------------------------------------------"
 
-# Give user ownership over /var/www/ folder
-sudo chown $user /var/www
+# Give user ownership over www folder
+root_www=$(dirname "$emoncms_www")
+if [ ! -d $root_www ]; then
+    sudo mkdir -p $root_www
+fi
+sudo chown $user $root_www
 
 # Install emoncms core repository with git
 if [ ! -d $emoncms_www ]; then
-    cd /var/www && git clone -b $emoncms_core_branch https://github.com/emoncms/emoncms.git
+    cd $root_www && git clone -b $emoncms_core_branch https://github.com/emoncms/emoncms.git
     cd
 else
     echo "- emoncms already installed"
@@ -20,7 +24,7 @@ fi
 if [ ! -f $emoncms_log_location ]; then
     echo "- creating emoncms log folder"
     sudo mkdir $emoncms_log_location
-    sudo chown pi $emoncms_log_location
+    sudo chown $user $emoncms_log_location
     sudo touch "$emoncms_log_location/emoncms.log"
     sudo chmod 666 "$emoncms_log_location/emoncms.log"
 else
@@ -31,10 +35,23 @@ fi
 if [ ! -f $emoncms_www/settings.php ]; then
     echo "- installing default emoncms settings.php"
     cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/default.settings.php $emoncms_www/settings.php
+    
     sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.php
     sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.php
+    
+    sed -i "s~database = \"emoncms\"~database = \"$mysql_database\"~" $emoncms_www/settings.php
+    sed -i "s~username = \"emoncms\"~username = \"$mysql_user\"~" $emoncms_www/settings.php
+    sed -i "s~password = \"emonpiemoncmsmysql2016\"~database = \"$mysql_password\"~" $emoncms_www/settings.php
+    
+    sed -i "s~'user'     => 'emonpi'~'user'     => '$mqtt_user'~" $emoncms_www/settings.php
+    sed -i "s~'password' => 'emonpimqtt2016'~'password' => '$mqtt_password'~" $emoncms_www/settings.php
 else
     echo "- emoncms settings.php already exists"
+fi
+
+if [ ! -d $emoncms_dir ]; then
+    sudo mkdir -p $emoncms_dir
+    sudo chown $user $emoncms_dir
 fi
 
 if [ ! -d $emoncms_datadir ]; then
@@ -55,16 +72,17 @@ done
 # Create a symlink to reference emoncms within the web root folder (review):
 if [ "$emoncms_www" != "/var/www/emoncms" ]; then
     echo "- symlinking emoncms folder to /var/www/emoncms"
-    sudo ln -s $emoncms_www /var/www/emoncms
+    sudo -u www-data ln -s $emoncms_www /var/www/emoncms
 fi
 if [ ! -d /var/www/html/emoncms ]; then
     echo "- symlinking emoncms folder to /var/www/html/emoncms"
-    sudo ln -s $emoncms_www /var/www/html/emoncms
+    sudo -u www-data ln -s $emoncms_www /var/www/html/emoncms
     
     # Redirect (review)
     echo "- creating redirect to $emoncms_www"
     echo "<?php header('Location: ../emoncms'); ?>" > $emoncms_dir/index.php
     sudo mv $emoncms_dir/index.php /var/www/html/index.php
+	sudo chown www-data /var/www/html/index.php
     sudo rm /var/www/html/index.html
 fi
 

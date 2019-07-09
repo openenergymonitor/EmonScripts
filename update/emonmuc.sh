@@ -6,7 +6,7 @@ echo "Update EmonMUC"
 echo "-------------------------------------------------------------"
 
 if [ -d $emonmuc_dir ]; then
-    bash $emonmuc_dir/update.sh
+    sudo bash $emonmuc_dir/update.sh
 else
-    echo "EmonMUC not found at "
+    echo "EmonMUC not found at $emonmuc_dir"
 fi
