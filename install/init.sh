@@ -18,7 +18,7 @@ cd $openenergymonitor_dir
 git clone https://github.com/openenergymonitor/EmonScripts.git
 
 cd $openenergymonitor_dir/EmonScripts/install
-./main.sh
-cd
+bash ./main.sh
 
+cd
 rm init.sh
