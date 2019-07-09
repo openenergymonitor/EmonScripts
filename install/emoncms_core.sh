@@ -41,7 +41,7 @@ if [ ! -f $emoncms_www/settings.php ]; then
     
     sed -i "s~database = \"emoncms\"~database = \"$mysql_database\"~" $emoncms_www/settings.php
     sed -i "s~username = \"emoncms\"~username = \"$mysql_user\"~" $emoncms_www/settings.php
-    sed -i "s~password = \"emonpiemoncmsmysql2016\"~database = \"$mysql_password\"~" $emoncms_www/settings.php
+    sed -i "s~password = \"emonpiemoncmsmysql2016\"~password = \"$mysql_password\"~" $emoncms_www/settings.php
     
     sed -i "s~'user'     => 'emonpi'~'user'     => '$mqtt_user'~" $emoncms_www/settings.php
     sed -i "s~'password' => 'emonpimqtt2016'~'password' => '$mqtt_password'~" $emoncms_www/settings.php
@@ -56,6 +56,7 @@ fi
 
 if [ ! -d $emoncms_datadir ]; then
     sudo mkdir $emoncms_datadir
+    sudo chown $user $emoncms_datadir
 fi
 
 # Create data directories for emoncms feed engines:
@@ -72,7 +73,7 @@ done
 # Create a symlink to reference emoncms within the web root folder (review):
 if [ "$emoncms_www" != "/var/www/emoncms" ]; then
     echo "- symlinking emoncms folder to /var/www/emoncms"
-    sudo -u www-data ln -s $emoncms_www /var/www/emoncms
+    sudo ln -s $emoncms_www /var/www/emoncms
 fi
 if [ ! -d /var/www/html/emoncms ]; then
     echo "- symlinking emoncms folder to /var/www/html/emoncms"
