@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 
 # Check emoncms directory
 if [ ! -d $emoncms_www ]; then
-    echo "emoncms directory at $emoncms_www not found"
+    echo "Not found at $emoncms_www"
     exit 0
 fi
 

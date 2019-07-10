@@ -8,5 +8,5 @@ echo "-------------------------------------------------------------"
 if [ -d $emonmuc_dir ]; then
     sudo bash $emonmuc_dir/update.sh
 else
-    echo "EmonMUC not found at $emonmuc_dir"
+    echo "Not found at $emonmuc_dir"
 fi

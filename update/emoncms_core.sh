@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 
 # Check emoncms directory
 if [ ! -d $emoncms_www ]; then
-    echo "emoncms directory at $emoncms_www not found"
+    echo "Not found at $emoncms_www"
     exit 0
 fi
 
@@ -16,9 +16,8 @@ fi
 # This needs to be run prior to emoncms git pull
 # -----------------------------------------------------------------
 cd
-echo
 current_settings_md5="$($openenergymonitor_dir/EmonScripts/common/./md5sum.py $emoncms_www/settings.php)"
-echo "current settings.php md5: $current_settings_md5"
+echo "Current settings.php md5: $current_settings_md5"
 
 current_default_settings_md5="$($openenergymonitor_dir/EmonScripts/common/md5sum.py $emoncms_www/default.emonpi.settings.php)"
 echo "Default settings.php md5: $current_default_settings_md5"
@@ -96,7 +95,7 @@ for service in "feedwriter" "emoncms_mqtt" "emonhub"; do
     echo "- sudo systemctl restart $service.service"
     sudo systemctl restart $service.service
     state=$(systemctl show $service | grep ActiveState)
-    echo "--- $state ---"
+    echo "-- $state"
   fi
 done
 

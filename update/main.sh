@@ -25,15 +25,19 @@ if [ "$EUID" = "0" ] ; then
 fi
 
 if [ "$emonSD_pi_env" = "1" ]; then
-    # Check if we have an emonpi LCD connected, 
-    # if we do assume EmonPi hardware else assume RFM69Pi
-    lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
-    lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
-
-    if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
-        hardware="EmonPi"
+    if [ -f /dev/i2c-1 ] || [ -f /dev/i2c/1 ]; then
+        # Check if we have an emonpi LCD connected, 
+        # if we do assume EmonPi hardware else assume rfm2pi
+        lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
+        lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
+        
+        if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
+            hardware="EmonPi"
+        else
+            hardware="rfm2pi"
+        fi
     else
-        hardware="rfm2pi"
+        hardware="custom"
     fi
     echo "Hardware detected: $hardware"
     
@@ -60,6 +64,7 @@ if [ "$type" == "all" ]; then
             git branch
             git status
             git pull
+			echo
         fi
     done
 fi
@@ -71,21 +76,23 @@ if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
         $openenergymonitor_dir/EmonScripts/update/emonpi.sh
+		echo
     fi
 
     if [ "$firmware" == "rfm69pi" ]; then
         $openenergymonitor_dir/EmonScripts/update/rfm69pi.sh
+		echo
     fi
-    
+
     if [ "$firmware" == "rfm12pi" ]; then
         $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
+		echo
     fi
 fi
 
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
-    echo "Start emonhub update script:"
     $openenergymonitor_dir/EmonScripts/update/emonhub.sh
     echo
 fi
@@ -93,15 +100,13 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "emonmuc" ]; then
-    echo "Start emonmuc update script:"
     $openenergymonitor_dir/EmonScripts/update/emonmuc.sh
     echo
 fi
 
 # -----------------------------------------------------------------
 
-if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
-    echo "Start emoncms update:"
+if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then
     $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
     $openenergymonitor_dir/EmonScripts/update/emoncms_modules.sh
     echo
@@ -121,8 +126,6 @@ fi
 # -----------------------------------------------------------------
 
 datestr=$(date)
-
-echo
 echo "-------------------------------------------------------------"
 echo "emonPi update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
 echo "-------------------------------------------------------------"
