@@ -19,4 +19,4 @@ cd $oem_dir/EmonScripts/install
 bash ./main.sh
 
 cd
-rm -f init.sh > 
+rm -f init.sh
