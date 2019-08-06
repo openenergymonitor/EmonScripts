@@ -2,7 +2,7 @@
 source config.ini
 
 echo "-------------------------------------------------------------"
-echo "Apache configuration"
+echo "Install Apache2"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y apache2
 

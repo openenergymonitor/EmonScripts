@@ -3,7 +3,7 @@ source config.ini
 
 if [ "$install_mosquitto_server" = true ]; then
     echo "-------------------------------------------------------------"
-    echo "Mosquitto Server installation and configuration"
+    echo "Install Mosquitto Server"
     echo "-------------------------------------------------------------"
     sudo apt-get install -y mosquitto
     sudo apt-get install -y libmosquitto-dev
@@ -24,7 +24,7 @@ fi
 
 if [ "$install_mosquitto_client" = true ]; then
     echo "-------------------------------------------------------------"
-    echo "Mosquitto Client installation and configuration"
+    echo "Install Mosquitto Client"
     echo "-------------------------------------------------------------"
     sudo apt-get install -y libmosquitto-dev
     printf "\n" | sudo pecl install Mosquitto-beta

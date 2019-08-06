@@ -2,7 +2,7 @@
 source config.ini
 
 echo "-------------------------------------------------------------"
-echo "Redis configuration"
+echo "Install Redis"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y redis-server
 

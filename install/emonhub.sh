@@ -2,7 +2,7 @@
 source config.ini
 
 echo "-------------------------------------------------------------"
-echo "emonHub install"
+echo "Install EmonHub"
 echo "-------------------------------------------------------------"
 cd $openenergymonitor_dir
 
