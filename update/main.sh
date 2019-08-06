@@ -14,7 +14,7 @@ datestr=$(date)
 
 echo "Date:" $datestr
 echo "EUID: $EUID"
-echo "openenergymonitor_dir: $openenergymonitor_dir"
+echo "root: $openenergymonitor_dir"
 echo "type: $type"
 echo "firmware: $firmware"
 
@@ -41,7 +41,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     fi
     echo "Hardware detected: $hardware"
     
-    if [ $hardware == "EmonPi" ]; then    
+    if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
         sudo service emonPiLCD stop
@@ -114,7 +114,7 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ $hardware == "EmonPi" ]; then
+if [ -z "$hardware" ] && [ "$hardware" == "EmonPi" ]; then
     echo
     # Wait for update to finish
     echo "Starting emonPi LCD service.."

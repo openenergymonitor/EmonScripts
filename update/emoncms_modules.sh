@@ -1,10 +1,6 @@
 #!/bin/bash
 source config.ini
 
-echo "-------------------------------------------------------------"
-echo "Update Emoncms Modules"
-echo "-------------------------------------------------------------"
-
 # Check emoncms directory
 if [ ! -d $emoncms_www ]; then
     echo "Not found at $emoncms_www"
@@ -15,7 +11,7 @@ fi
 for M in $emoncms_www/Modules/*; do
   if [ -d "$M/.git" ]; then
     echo "------------------------------------------"
-    echo "Updating $M module"
+    echo "Update Emoncms Module $M"
     echo "------------------------------------------"
     
     branch=$(git -C $M branch | grep \* | cut -d ' ' -f2)
@@ -45,7 +41,7 @@ done
 for M in $emoncms_dir/modules/*; do
   if [ -d "$M/.git" ]; then
     echo "------------------------------------------"
-    echo "Updating $M module"
+    echo "Update Emoncms Module $M"
     echo "------------------------------------------"
     
     branch=$(git -C $M branch | grep \* | cut -d ' ' -f2)
@@ -88,5 +84,8 @@ if [ -d $emoncms_dir/modules/backup ]; then
     cd
 fi
 
-echo "Update Emoncms database"
+echo "------------------------------------------"
+echo "Update Emoncms Database"
+echo "------------------------------------------"
+
 php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php
