@@ -83,7 +83,7 @@ if [ ! -d /var/www/html/emoncms ]; then
     echo "- creating redirect to $emoncms_www"
     echo "<?php header('Location: ../emoncms'); ?>" > $emoncms_dir/index.php
     sudo mv $emoncms_dir/index.php /var/www/html/index.php
-	sudo chown www-data /var/www/html/index.php
+    sudo chown www-data /var/www/html/index.php
     sudo rm /var/www/html/index.html
 fi
 

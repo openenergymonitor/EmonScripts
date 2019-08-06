@@ -28,4 +28,3 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
 else
     echo "Not found at $openenergymonitor_dir/emonhub"
 fi
-
