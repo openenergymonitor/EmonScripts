@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 
 sudo apt-get install -y php
 
-PHP_VER=$(php -v | head -n 1 | cut -d " " -f 2 | cut -f1-2 -d"." )
+# PHP_VER=$(php -v | head -n 1 | cut -d " " -f 2 | cut -f1-2 -d"." )
 
 # if [ "$install_apache" = true ]; then
 #     sudo apt-get install -y libapache2-mod-php
