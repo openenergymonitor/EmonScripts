@@ -11,8 +11,9 @@ if [ "$install_php" = true ]; then
     printf "\n" | sudo pecl install redis
     echo "-------------------------------------------------------------"
 
+    PHP_VER=$(php -v | head -n 1 | cut -d " " -f 2 | cut -f1-2 -d"." )
     # Add redis to php mods available 
-    printf "extension=redis.so" | sudo tee /etc/php/7.0/mods-available/redis.ini 1>&2
+    printf "extension=redis.so" | sudo tee /etc/php/$PHP_VER/mods-available/redis.ini 1>&2
     sudo phpenmod redis
 fi
 

@@ -78,3 +78,14 @@ sudo apt-get install -y ufw
 # Setup user group to enable reading GPU temperature (pi only)
 # sudo usermod -a -G video www-data
 
+# Wifi setup
+sudo ln -s $openenergymonitor_dir/emonpi/wifi-check /usr/local/bin/wifi-check
+
+sudo crontab -l > mycron
+if grep -Fq "wifi-check" mycron; then
+    echo "wifi-check already present in crontab"
+else
+    echo "*/5 * * * * /usr/local/bin/wifi-check > /var/log/emoncms/wificheck.log 2>&1" >> mycron
+    sudo crontab mycron
+    rm mycron
+fi
