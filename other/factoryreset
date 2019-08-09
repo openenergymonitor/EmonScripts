@@ -13,11 +13,11 @@ sudo rm -rf /var/opt/emoncms/phpfina/*
 sudo rm -rf /var/opt/emoncms/phpfiwa/*
 sudo rm -rf /var/opt/emoncms/phptimeseries/*
 
-# Mysql 
+# Mysql
 echo "deleting mysql emoncms database"
-mysql -u emoncms -e "drop database emoncms" -pemonpimysql2016
+mysql -u emoncms -e "drop database emoncms" -pemonpiemoncmsmysql2016
 echo "creating new mysql emoncms database"
-mysql -u emoncms -e "create database emoncms" -pemonpimysql2016
+mysql -u emoncms -e "create database emoncms" -pemonpiemoncmsmysql2016
 
 # Clear logs
 sudo rm -rf /var/log/emoncms/*
