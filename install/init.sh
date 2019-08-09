@@ -15,7 +15,7 @@ sudo chown $user $emoncms_dir
 
 cd $openenergymonitor_dir
 
-git clone -b buster https://github.com/openenergymonitor/EmonScripts.git
+git clone https://github.com/openenergymonitor/EmonScripts.git
 
 cd $openenergymonitor_dir/EmonScripts/install
 ./main.sh
