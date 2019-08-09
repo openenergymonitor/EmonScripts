@@ -4,7 +4,6 @@ The following build script is currently development in progress. It is already m
 
 **Todo**
 
-- Fix/test Wifi AP Support, results inconsistent so far
 - SSL https://community.openenergymonitor.org/t/emonsd-next-steps-filesystem-logrotate/10693/188
 - Review .env configuration 
 - Review logrotate configuration
