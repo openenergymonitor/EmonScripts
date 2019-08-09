@@ -15,18 +15,18 @@ sudo rm -rf /var/opt/emoncms/phptimeseries/*
 
 # Mysql 
 echo "deleting mysql emoncms database"
-mysql -u root -e "drop database emoncms" -pemonpimysql2016
+mysql -u emoncms -e "drop database emoncms" -pemonpimysql2016
 echo "creating new mysql emoncms database"
-mysql -u root -e "create database emoncms" -pemonpimysql2016
+mysql -u emoncms -e "create database emoncms" -pemonpimysql2016
 
 # Clear logs
 sudo rm -rf /var/log/emoncms/*
 
+sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
 echo "clear WiFi config /etc/wpa_supplicant/wpa_supplicant.conf"
 echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" > /etc/wpa_supplicant/wpa_supplicant.conf
 echo "update_config=1" >> /etc/wpa_supplicant/wpa_supplicant.conf
 echo "country=GB" >> /etc/wpa_supplicant/wpa_supplicant.conf
-sudo chmod 776 /etc/wpa_supplicant/wpa_supplicant.conf
 
 echo "remove git user credentials"
 sudo rm /home/pi/.gitconfig
