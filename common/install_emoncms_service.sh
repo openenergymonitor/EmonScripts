@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# most of the following is here to remove the older ways the services have been installed 
+# including init.d and direct installation in /etc/systemd/system and hard copies to /lib/systemd/system
+# the intended correct installation is a symlink of the original service to /lib/systemd/system
+# systemd itself then symlinks this service further to /etc/systemd/system as part of systemctl enable
+
 servicepath=$1
 service=$2
 
