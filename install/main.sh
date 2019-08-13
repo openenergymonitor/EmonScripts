@@ -20,6 +20,17 @@ echo "-------------------------------------------------------------"
 echo "EmonSD Install"
 echo "-------------------------------------------------------------"
 
+echo "Warning: The default configuration of this script applies"
+echo "significant modification to the underlying system!"
+echo "Would you like to review the build script config before starting? (y/n)"
+read start_confirm
+
+if [ $start_confirm == "y" ]; then 
+    echo "You selected 'yes' to review config"
+    echo "Please review config.ini and restart the build script to continue"
+    exit 0
+fi
+
 if [ "$apt_get_upgrade_and_clean" = true ]; then
     echo "apt-get update"
     sudo apt-get update -y
