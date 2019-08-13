@@ -96,10 +96,12 @@ for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
 done
 echo
 
-# Sudoers entry (review)
-sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
-sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
-sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
-echo "- Install emonPi Emoncms admin reboot button sudoers entry"
+if [ "$emonSD_pi_env" = "1" ]; then  
+  # Sudoers entry (review)
+  sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
+  sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
+  sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
+  echo "emonPi emoncms admin reboot button sudoers updated"
+fi
 
 echo

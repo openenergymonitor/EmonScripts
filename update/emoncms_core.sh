@@ -101,17 +101,12 @@ done
 
 #########################################################################################
 
-if [ "$emonSD_pi_env" = "1" ]; then
-  # Sudoers installation (provides sudo access to specific commands from emoncms)
-  for sudoersfile in "emoncms-rebootbutton"; do
-      if [ ! -f /etc/sudoers.d/$sudoersfile ]; then
-          sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/$sudoersfile && \
-          sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/$sudoersfile /etc/sudoers.d/
-          sudo chmod 0440 /etc/sudoers.d/$sudoersfile
-          echo
-          echo "$sudoersfile sudoers entry installed"
-      fi
-  done
+if [ "$emonSD_pi_env" = "1" ]; then  
+  # Sudoers entry (review)
+  sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
+  sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
+  sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
+  echo "emonPi emoncms admin reboot button sudoers updated"
 fi
 
 echo

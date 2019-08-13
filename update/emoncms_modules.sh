@@ -37,6 +37,14 @@ for M in $emoncms_www/Modules/*; do
   fi
 done
 
+if [ -d $emoncms_www/Modules/wifi ]; then
+    # wifi module sudoers entry
+    sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers && \
+    sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
+    sudo chmod 0440 /etc/sudoers.d/wifi-sudoers
+    echo "wifi sudoers entry updated"
+fi
+
 # Update modules installed in the $emoncms_dir/modules folder
 for M in $emoncms_dir/modules/*; do
   if [ -d "$M/.git" ]; then

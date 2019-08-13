@@ -37,18 +37,6 @@ sudo chmod +x /etc/cron.hourly/log2ram
 sudo cp $openenergymonitor_dir/EmonScripts/defaults/etc/cron.daily/logrotate /etc/cron.daily/logrotate
 
 # --------------------------------------------------------------------------------
-# Misc
-# --------------------------------------------------------------------------------
-# Review: provide configuration file for default password and hostname
-
-# Set default SSH password:
-printf "raspberry\n$ssh_password\n$ssh_password" | passwd
-
-# Set hostname
-sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
-printf $hostname | sudo tee /etc/hostname > /dev/null
-
-# --------------------------------------------------------------------------------
 # UFW firewall
 # --------------------------------------------------------------------------------
 # Review: reboot required before running:
@@ -78,3 +66,28 @@ sudo apt-get install -y ufw
 # Setup user group to enable reading GPU temperature (pi only)
 # sudo usermod -a -G video www-data
 
+# Wifi setup
+sudo ln -s $openenergymonitor_dir/emonpi/wifi-check /usr/local/bin/wifi-check
+
+sudo crontab -l > mycron
+if grep -Fq "wifi-check" mycron; then
+    echo "wifi-check already present in crontab"
+else
+    echo "*/5 * * * * /usr/local/bin/wifi-check > /var/log/emoncms/wificheck.log 2>&1" >> mycron
+    sudo crontab mycron
+    rm mycron
+fi
+
+# --------------------------------------------------------------------------------
+# Misc
+# --------------------------------------------------------------------------------
+# Review: provide configuration file for default password and hostname
+
+# Set hostname
+sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
+printf $hostname | sudo tee /etc/hostname > /dev/null
+
+echo "Please enter a new SSH password to secure your system"
+read ssh_password
+# Set default SSH password:
+printf "raspberry\n$ssh_password\n$ssh_password" | passwd

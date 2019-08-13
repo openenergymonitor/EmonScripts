@@ -16,13 +16,15 @@ for module in ${!emoncms_modules[@]}; do
     fi
 done
 
-# wifi module sudoers entry
-sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers && \
-sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
-sudo chmod 0440 /etc/sudoers.d/wifi-sudoers
-echo "wifi sudoers entry installed"
-# wpa_supplicant permissions
-sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf 
+if [ -d $emoncms_www/Modules/wifi ]; then
+    # wifi module sudoers entry
+    sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers && \
+    sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
+    sudo chmod 0440 /etc/sudoers.d/wifi-sudoers
+    echo "wifi sudoers entry installed"
+    # wpa_supplicant permissions
+    sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
+fi
 
 # Install emoncms modules that do not reside in /var/www/emoncms/Modules
 if [ ! -d $emoncms_dir/modules ]; then
@@ -66,6 +68,9 @@ if [ -d $emoncms_dir/modules/backup ]; then
     fi
     cd
 fi
+
+# setup module
+ln -s $openenergymonitor_dir/emonpi/emoncms-setup $emoncms_www/Modules/setup
 
 echo "Update Emoncms database"
 php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php
