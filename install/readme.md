@@ -17,9 +17,29 @@ Tested on:
 
 - [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-07-10
 
-### 1. Setup ext2 data partition
+### 1. Write Buster Lite image to SD card
 
-Use a partition editor to resize the raspbian stretch OS partition, select 3-4GB for the OS partition and expand the new partition to the remaining space.
+Download the buster image and write it to an SD card with at least 8GB of space. Balena provide a nice tool called Etcher which makes this process really easy: https://www.balena.io/etcher
+
+After writing the image to the SD card, open the SD card on your computer and create a file called ssh on the boot partition - to enable SSH access to the system.
+
+Place the SD card in your RaspberryPi & power up. After a couple of minutes you will be able to SSH into the new Buster image e.g:
+
+    ssh pi@192.168.1.100 (password: raspbian)
+    
+Buster will have automatically expanded the OS partition to fill the available space on your SD card.
+
+Shutdown your RPi ready for the next step:
+
+    sudo halt
+
+### 2. Setup ext2 data partition
+
+We create here an ext2 partition and filesystem with a blocksize of 1024 bytes instead of the default 4096 bytes - to store emoncms feed data. A lower block size results in significant write load reduction when using an application like emoncms that only makes small but frequent and across many files updates to disk. Ext2 is choosen because it supports multiple linux user ownership options which are needed for the mysql data folder. Ext2 is non-journaling which reduces the write load a little although it may make data recovery harder vs Ext4, The data disk size is small however and the downtime from running fsck is perhaps less critical.*
+
+Use a partition editor to resize the raspbian stretch OS partition, select 3-4GB for the OS partition and expand the new partition to the remaining space. 
+
+GParted is a nice tool for doing this on a Ubuntu machine. Once complete place the SD card back in the RPi, power up and SSH back in.
 
 Steps for creating 3rd partition for data using fdisk and mkfs:
 
@@ -36,8 +56,6 @@ Steps for creating 3rd partition for data using fdisk and mkfs:
 On reboot, login and run:
 
     sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3
-
-*Note: We create here an ext2 filesystem with a blocksize of 1024 bytes instead of the default 4096 bytes. A lower block size results in significant write load reduction when using an application like emoncms that only makes small but frequent and across many files updates to disk. Ext2 is choosen because it supports multiple linux user ownership options which are needed for the mysql data folder. Ext2 is non-journaling which reduces the write load a little although it may make data recovery harder vs Ext4, The data disk size is small however and the downtime from running fsck is perhaps less critical.*
 
 Create a directory that will be a mount point for the rw data partition
 
