@@ -37,18 +37,6 @@ sudo chmod +x /etc/cron.hourly/log2ram
 sudo cp $openenergymonitor_dir/EmonScripts/defaults/etc/cron.daily/logrotate /etc/cron.daily/logrotate
 
 # --------------------------------------------------------------------------------
-# Misc
-# --------------------------------------------------------------------------------
-# Review: provide configuration file for default password and hostname
-
-# Set default SSH password:
-printf "raspberry\n$ssh_password\n$ssh_password" | passwd
-
-# Set hostname
-sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
-printf $hostname | sudo tee /etc/hostname > /dev/null
-
-# --------------------------------------------------------------------------------
 # UFW firewall
 # --------------------------------------------------------------------------------
 # Review: reboot required before running:
@@ -89,3 +77,17 @@ else
     sudo crontab mycron
     rm mycron
 fi
+
+# --------------------------------------------------------------------------------
+# Misc
+# --------------------------------------------------------------------------------
+# Review: provide configuration file for default password and hostname
+
+# Set hostname
+sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
+printf $hostname | sudo tee /etc/hostname > /dev/null
+
+echo "Please enter a new SSH password to secure your system"
+read ssh_password
+# Set default SSH password:
+printf "raspberry\n$ssh_password\n$ssh_password" | passwd
