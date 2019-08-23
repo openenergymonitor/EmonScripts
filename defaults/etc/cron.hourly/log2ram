@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
 
 test -x /usr/sbin/logrotate || exit 0
-/usr/sbin/logrotate -v -s /var/log/logrotate/logrotate.status /etc/logrotate.conf 2>&1 | tee /var/log/logrotate/logrotate.log
+# /usr/sbin/logrotate -v -s /var/log/logrotate/logrotate.status /etc/logrotate.conf 2>&1 | tee /var/log/logrotate/logrotate.log
+/usr/sbin/logrotate -v -s /var/log/logrotate/logrotate.status /etc/logrotate.conf >> /var/log/logrotate/logrotate.log 2>&1
 
 systemctl reload log2ram
 
