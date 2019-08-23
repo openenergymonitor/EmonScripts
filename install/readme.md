@@ -4,42 +4,87 @@ The following build script is currently development in progress. It is already m
 
 **Todo**
 
-- Fix/test Wifi AP Support, results inconsistent so far
 - SSL https://community.openenergymonitor.org/t/emonsd-next-steps-filesystem-logrotate/10693/188
 - Review .env configuration 
 - Review logrotate configuration
 - Review disk wear results from 1st release, investigate ext filesystem commit interval vs app level buffering
-- Review service install path: /lib/systemd/system or /etc/systemd/system
 
 [Forum: EmonSD build script progress update and alpha release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-alpha-release/11222)
 
 The following build script can be used to build a fully fledged emoncms installation on debian operating systems, including: installation of LAMP server and related packages, redis, mqtt, emoncms core, emoncms modules, emonhub and if applicable: raspberrypi support for serial port and wifi access point.
 
-Tested on: 
+Tested on:
 
-- [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/), Version: November 2018, Release date: 2018-11-13
-- [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-06-20
+- [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-07-10
 
+### 1. Write Buster Lite image to SD card
 
-**Before starting it is recommended to create an ext2 partition for emoncms data, see below.**
+Download the buster image and write it to an SD card with at least 8GB of space. Balena provide a nice tool called Etcher which makes this process really easy: https://www.balena.io/etcher
 
-Run default install:
+After writing the image to the SD card, open the SD card on your computer and create a file called ssh on the boot partition - to enable SSH access to the system.
+
+Place the SD card in your RaspberryPi & power up. After a couple of minutes you will be able to SSH into the new Buster image e.g:
+
+    ssh pi@192.168.1.100 (password: raspbian)
+    
+Buster will have automatically expanded the OS partition to fill the available space on your SD card.
+
+Shutdown your RPi ready for the next step:
+
+    sudo halt
+
+### 2. Setup ext2 data partition
+
+We create here an ext2 partition and filesystem with a blocksize of 1024 bytes instead of the default 4096 bytes - to store emoncms feed data. A lower block size results in significant write load reduction when using an application like emoncms that only makes small but frequent and across many files updates to disk. Ext2 is choosen because it supports multiple linux user ownership options which are needed for the mysql data folder. Ext2 is non-journaling which reduces the write load a little although it may make data recovery harder vs Ext4, The data disk size is small however and the downtime from running fsck is perhaps less critical.*
+
+Use a partition editor to resize the raspbian stretch OS partition, select 3-4GB for the OS partition and expand the new partition to the remaining space. 
+
+GParted is a nice tool for doing this on a Ubuntu machine. Once complete place the SD card back in the RPi, power up and SSH back in.
+
+Steps for creating 3rd partition for data using fdisk and mkfs:
+
+    sudo fdisk -l
+    Note end of last partition (5785599 on standard sd card)
+    sudo fdisk /dev/mmcblk0
+    enter: n->p->3
+    enter: 5785600
+    enter: default or 7626751
+    enter: w (write partition to disk)
+    fails with error, will write at reboot
+    sudo reboot
+
+On reboot, login and run:
+
+    sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3
+
+Create a directory that will be a mount point for the rw data partition
+
+    sudo mkdir /var/opt/emoncms
+    sudo chown www-data /var/opt/emoncms
+
+Use modified fstab
+
+    wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/defaults/etc/fstab
+    sudo cp fstab /etc/fstab
+    sudo reboot
+
+### 2. Configure install
+
+The default configuration is for the RaspberryPi platform and Raspbian Stretch image specifically. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment.
+
+See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/master/install/config.ini) 
+
+### 3. Run install:
 
     wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/install/init.sh
     chmod +x init.sh
     ./init.sh
-    
-### Configure install
 
-The default configuration is for the RaspberryPi platform and Raspbian Stretch image specifically. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment.
-
-See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/master/install/config.ini)
+---
 
 ### Running scripts individually
 
 The installation process is broken out into seperate scripts that can be run individually.
-
----
 
 **[init.sh:](https://github.com/openenergymonitor/EmonScripts/blob/master/install/init.sh)** Launches the full installation script, first downloading the EmonScripts repository that contains the rest of the installation scripts.
 
@@ -72,37 +117,3 @@ The installation process is broken out into seperate scripts that can be run ind
 **[wifiap.sh:](https://github.com/openenergymonitor/EmonScripts/blob/master/install/wifiap.sh)** RaspberryPi 3B+ WIFI Access Point support.
 
 **[emonsd.sh:](https://github.com/openenergymonitor/EmonScripts/blob/master/install/emonsd.sh)** RaspberryPi specific configuration e.g: logging, default SSH password and hostname.
-
-### Setup ext2 data partition
-
-Use a partition editor to resize the raspbian stretch OS partition, select 3-4GB for the OS partition and expand the new partition to the remaining space.
-
-Steps for creating 3rd partition for data using fdisk and mkfs:
-
-    sudo fdisk -l
-    Note end of last partition (5785599 on standard sd card)
-    sudo fdisk /dev/mmcblk0
-    enter: n->p->3
-    enter: 5785600
-    enter: default or 7626751
-    enter: w (write partition to disk)
-    fails with error, will write at reboot
-    sudo reboot
-
-On reboot, login and run:
-
-    sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3
-
-*Note: We create here an ext2 filesystem with a blocksize of 1024 bytes instead of the default 4096 bytes. A lower block size results in significant write load reduction when using an application like emoncms that only makes small but frequent and across many files updates to disk. Ext2 is choosen because it supports multiple linux user ownership options which are needed for the mysql data folder. Ext2 is non-journaling which reduces the write load a little although it may make data recovery harder vs Ext4, The data disk size is small however and the downtime from running fsck is perhaps less critical.*
-
-Create a directory that will be a mount point for the rw data partition
-
-    sudo mkdir /var/opt/emoncms
-    sudo chwon www-data /var/opt/emoncms
-
-Use modified fstab
-
-    wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/defaults/etc/fstab
-    sudo cp fstab /etc/fstab
-    sudo reboot
-

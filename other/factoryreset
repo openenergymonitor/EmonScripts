@@ -1,0 +1,56 @@
+#!/bin/bash
+emoncms_datadir=/var/opt/emoncms
+
+sudo systemctl stop emonhub
+sudo systemctl stop emoncms_mqtt
+sudo systemctl stop feedwriter
+sudo systemctl stop service-runner
+# sudo systemctl stop redis-server
+# sudo systemctl stop mosquitto
+
+echo "deleting phpfina and phptimeseries data"
+sudo rm -rf /var/opt/emoncms/phpfina/*
+sudo rm -rf /var/opt/emoncms/phpfiwa/*
+sudo rm -rf /var/opt/emoncms/phptimeseries/*
+
+# Mysql
+echo "deleting mysql emoncms database"
+mysql -u emoncms -e "drop database emoncms" -pemonpiemoncmsmysql2016
+echo "creating new mysql emoncms database"
+mysql -u emoncms -e "create database emoncms" -pemonpiemoncmsmysql2016
+
+# Clear logs
+sudo rm -rf /var/log/emoncms/*
+
+sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
+echo "clear WiFi config /etc/wpa_supplicant/wpa_supplicant.conf"
+echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" > /etc/wpa_supplicant/wpa_supplicant.conf
+echo "update_config=1" >> /etc/wpa_supplicant/wpa_supplicant.conf
+echo "country=GB" >> /etc/wpa_supplicant/wpa_supplicant.conf
+
+echo "remove git user credentials"
+sudo rm /home/pi/.gitconfig
+
+echo "Set default emonpi default git credentials" 
+git config --global user.email "pi@emonpi.com"
+git config --global user.name "emonpi"
+
+# echo "Clear bash history"
+# history -c
+# >~/.bash_history
+# rm /home/pi/.bash_history
+
+# echo "Clear and re-generate SSH keys"
+# sudo rm /home/pi/.ssh/*
+# sudo rm /etc/ssh/ssh_host_*
+# sudo dpkg-reconfigure openssh-server
+
+# echo "Clean up packages"
+# sudo apt-get clean
+
+# if [ "$VERSION" = "stretch" ]; then
+#    echo "Disabling SSH"
+#    sudo update-rc.d ssh disable
+#    sudo invoke-rc.d ssh stop
+#    sudo rm /boot/ssh
+# fi

@@ -69,5 +69,8 @@ if [ -d $emoncms_dir/modules/backup ]; then
     cd
 fi
 
+# setup module
+ln -s $openenergymonitor_dir/emonpi/emoncms-setup $emoncms_www/Modules/setup
+
 echo "Update Emoncms database"
 php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php

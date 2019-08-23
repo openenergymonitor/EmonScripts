@@ -17,7 +17,7 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-/opt/openenergymonitor/emonpi/wifiAP/startAP.sh
+/opt/openenergymonitor/emonpi/wifiAP/startAP.sh >> /var/log/wifiAP.log
 
 exit 0
 
