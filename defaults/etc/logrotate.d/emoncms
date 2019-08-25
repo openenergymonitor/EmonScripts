@@ -1,4 +1,5 @@
 /var/log/emoncms/*.log {
+    maxsize 3M
     olddir /var/log.old/emoncms
     createolddir 775 root root
 }
