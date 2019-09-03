@@ -1,4 +1,6 @@
 /var/log/emonhub/emonhub.log {
+    maxsize 3M
+
     norenamecopy
     copytruncate
     su root root
