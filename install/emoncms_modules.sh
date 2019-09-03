@@ -26,6 +26,12 @@ if [ -d $emoncms_www/Modules/wifi ]; then
     sudo chmod 644 /etc/wpa_supplicant/wpa_supplicant.conf
 fi
 
+if [ ! -d $emoncms_dir ]
+then
+    sudo mkdir $emoncms_dir
+    sudo chown $USER $emoncms_dir
+fi
+
 # Install emoncms modules that do not reside in /var/www/emoncms/Modules
 if [ ! -d $emoncms_dir/modules ]; then
     mkdir $emoncms_dir/modules
