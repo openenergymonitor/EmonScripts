@@ -19,13 +19,13 @@ Tested on:
 
 ### 1. Write Buster Lite image to SD card
 
-Download the buster image and write it to an SD card with at least 8GB of space. Balena provide a nice tool called Etcher which makes this process really easy: https://www.balena.io/etcher
+Download the buster image and write it to an SD card with at least 8GB of space. Balena provide a nice tool called Etcher which makes this process really easy: https://www.balena.io/etcher. After writing the image to the SD card, open the SD card on your computer. 
 
-1. After writing the image to the SD card, open the SD card on your computer and create a file called ssh on the boot partition - to enable SSH access to the system.
+1. Create a file called ssh on the boot partition - to enable SSH access to the system.
 
-2. Copy the default cmdline.txt to cmdline2.txt in the boot folder
+2. Copy the default cmdline.txt to cmdline2.txt in the boot partition.
 
-3. Edit cmdline.txt and remove the init statement (Take out the quiet as well).
+3. Edit cmdline.txt and remove the init statement.
 
 Place the SD card in your RaspberryPi & power up. After a couple of minutes you will be able to SSH into the new Buster image e.g:
 
