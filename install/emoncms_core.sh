@@ -10,7 +10,7 @@ sudo chown $user /var/www
 
 # Install emoncms core repository with git
 if [ ! -d $emoncms_www ]; then
-    cd /var/www && git clone -b $emoncms_core_branch https://github.com/emoncms/emoncms.git
+    cd /var/www && git clone -b $emoncms_core_branch ${git_repo[emoncms_core]}
     cd
 else
     echo "- emoncms already installed"
