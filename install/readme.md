@@ -23,9 +23,7 @@ Download the buster image and write it to an SD card with at least 8GB of space.
 
 1. Create a file called ssh on the boot partition - to enable SSH access to the system.
 
-2. Copy the default cmdline.txt to cmdline2.txt in the boot partition.
-
-3. Edit cmdline.txt and remove: init=/usr/lib/raspi-config/init_resize.sh, this will stop the image from expanding to fill the full SD card size on first boot.
+2. Copy the default cmdline.txt to cmdline2.txt in the boot partition and then open to edit cmdline.txt, remove: init=/usr/lib/raspi-config/init_resize.sh, this will stop the image from expanding to fill the full SD card size on first boot.
 
 Place the SD card in your RaspberryPi & power up. After a couple of minutes you will be able to SSH into the new Buster image e.g:
 
