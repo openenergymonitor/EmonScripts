@@ -52,6 +52,12 @@ for engine in "phpfina" "phpfiwa" "phptimeseries"; do
     fi
 done
 
+if [ ! -d $emoncms_dir ]
+then
+    sudo mkdir $emoncms_dir
+    sudo chown $USER $emoncms_dir
+fi
+
 # Create a symlink to reference emoncms within the web root folder (review):
 if [ ! -d /var/www/html/emoncms ]; then
     echo "- symlinking emoncms folder to /var/www/html/emoncms"
