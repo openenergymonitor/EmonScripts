@@ -55,11 +55,11 @@ sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
 # 6 Sep 2019 decision to leave elevator setting as default
 # option to review in future: elevator=noop
 
+# Setup user group to enable reading GPU temperature (pi only)
+sudo usermod -a -G video www-data
+
 # Review automated install: Emoncms Language Support
 # sudo dpkg-reconfigure locales
-
-# Setup user group to enable reading GPU temperature (pi only)
-# sudo usermod -a -G video www-data
 
 # Wifi setup
 sudo ln -s $openenergymonitor_dir/emonpi/wifi-check /usr/local/bin/wifi-check
