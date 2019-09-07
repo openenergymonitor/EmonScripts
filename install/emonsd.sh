@@ -47,24 +47,19 @@ sudo apt-get install -y ufw
 # sudo ufw allow 1883/tcp #(optional, Mosquitto)
 # sudo ufw enable
 
-# Review: Memory Tweak
-# Append gpu_mem=16 to /boot/config.txt this caps the RAM available to the GPU. 
-# Since we are running headless this will give us more RAM at the expense of the GPU
-# gpu_mem=16
+# Underclock and memory tweak
+# change arm_freq to 1200 and gpu_mem to 16
+# more ram for general purpose, less for GPU
+sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
 
-# Review: change elevator=deadline to elevator=noop
-# sudo nano /boot/cmdline.txt
-# see: https://github.com/openenergymonitor/emonpi/blob/master/docs/SD-card-build.md#raspi-serial-port-setup
+# 6 Sep 2019 decision to leave elevator setting as default
+# option to review in future: elevator=noop
 
-# Review: Force NTP update 
-# is this needed now that image is not read only?
-# 0 * * * * /home/pi/emonpi/ntp_update.sh >> /var/log/ntp_update.log 2>&1
+# Setup user group to enable reading GPU temperature (pi only)
+sudo usermod -a -G video www-data
 
 # Review automated install: Emoncms Language Support
 # sudo dpkg-reconfigure locales
-
-# Setup user group to enable reading GPU temperature (pi only)
-# sudo usermod -a -G video www-data
 
 # Wifi setup
 sudo ln -s $openenergymonitor_dir/emonpi/wifi-check /usr/local/bin/wifi-check
