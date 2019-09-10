@@ -7,7 +7,7 @@ source config.ini
 # log2ram forked from @pb66 repo here https://github.com/pb66/log2ram
 # --------------------------------------------------------------------------------
 cd $openenergymonitor_dir
-git clone -b rsync_mods https://github.com/openenergymonitor/log2ram.git
+git clone -b $log2ram_branch ${git_repo[log2ram]}
 cd log2ram
 chmod +x install.sh && sudo ./install.sh
 cd ..

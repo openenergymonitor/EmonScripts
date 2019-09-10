@@ -7,7 +7,7 @@ source config.ini
 if [ ! -d $openenergymonitor_dir/emonpi ]; then
     echo "Installing emonpi repository"
     cd $openenergymonitor_dir
-    git clone https://github.com/openenergymonitor/emonpi.git
+    git clone ${git_repo[emonpi]}
 fi
 
 echo "-------------------------------------------------------------"
