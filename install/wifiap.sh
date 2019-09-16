@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 # Based on https://github.com/openenergymonitor/emonpi/tree/master/wifiAP
 

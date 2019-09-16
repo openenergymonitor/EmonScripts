@@ -14,7 +14,7 @@
 # Format as documentation
 
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "EmonSD Install"

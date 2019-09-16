@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 sudo apt-get install -y python-smbus i2c-tools python-rpi.gpio python-gpiozero
 sudo pip install xmltodict
