@@ -50,7 +50,7 @@ for module in ${!symlinked_emoncms_modules[@]}; do
         fi
         # run module install script if present
         if [ -f $emoncms_dir/modules/$module/install.sh ]; then
-            $emoncms_dir/modules/$module/install.sh $emoncms_dir
+            $emoncms_dir/modules/$module/install.sh $openenergymonitor_dir
             echo
         fi
     else
