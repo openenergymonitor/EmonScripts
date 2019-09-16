@@ -25,9 +25,15 @@ echo "significant modification to the underlying system!"
 echo "Would you like to review the build script config before starting? (y/n)"
 read start_confirm
 
+
 if [ $start_confirm == "y" ]; then 
     echo "You selected 'yes' to review config"
     echo "Please review config.ini and restart the build script to continue"
+    echo ""
+    echo "    cd $openenergymonitor_dir/EmonScripts/install/"
+    echo "    nano config.ini"
+    echo "    ./main.sh"
+    echo ""
     exit 0
 fi
 
