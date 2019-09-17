@@ -14,8 +14,11 @@
 # Format as documentation
 
 #!/bin/bash
+if [ ! -f config.ini ]; then
+    cp emonsd.config.ini config.ini
+fi
 source load_config.sh
-
+    
 echo "-------------------------------------------------------------"
 echo "EmonSD Install"
 echo "-------------------------------------------------------------"
@@ -24,7 +27,6 @@ echo "Warning: The default configuration of this script applies"
 echo "significant modification to the underlying system!"
 echo "Would you like to review the build script config before starting? (y/n)"
 read start_confirm
-
 
 if [ $start_confirm == "y" ]; then 
     echo "You selected 'yes' to review config"
