@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 # --------------------------------------------------------------------------------
 # Install log2ram, so that logging is on RAM to reduce SD card wear.
