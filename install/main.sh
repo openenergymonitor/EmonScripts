@@ -70,8 +70,8 @@ if [ "$install_redis" = true ]; then $openenergymonitor_dir/EmonScripts/install/
 if [ "$install_mosquitto" = true ]; then $openenergymonitor_dir/EmonScripts/install/mosquitto.sh; fi
 if [ "$install_emoncms_core" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_core.sh; fi
 if [ "$install_emoncms_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_modules.sh; fi
-if [ "$install_emonhub" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonhub.sh; fi
 if [ "$install_emonmuc" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonmuc.sh; fi
+if [ "$install_emonhub" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonhub.sh; fi
 
 if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$install_firmware" = true ]; then $openenergymonitor_dir/EmonScripts/install/firmware.sh; fi

@@ -10,7 +10,7 @@ for module in ${!emoncms_modules[@]}; do
     branch=${emoncms_modules[$module]}
     if [ ! -d $module ]; then
         echo "- Installing module: $module"
-        git clone -b $branch ${git_repo[$module]}
+        git clone -b $branch ${git_repo[$module]} $module
     else
         echo "- Module $module already exists"
     fi
