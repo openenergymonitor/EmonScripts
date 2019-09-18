@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 sudo apt-get install -y python-smbus i2c-tools python-rpi.gpio python-gpiozero
 sudo pip install xmltodict
@@ -35,7 +35,7 @@ fi
 if [ ! -d $openenergymonitor_dir/emonpi ]; then
     echo "Installing emonpi repository"
     cd $openenergymonitor_dir
-    git clone https://github.com/openenergymonitor/emonpi.git
+    git clone ${git_repo[emonpi]}
 fi
 
 sudo cp $openenergymonitor_dir/emonpi/lcd/$service.service /lib/systemd/system

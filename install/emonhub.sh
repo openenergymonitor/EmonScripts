@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "Install EmonHub"
@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 cd $openenergymonitor_dir
 
 if [ ! -d $openenergymonitor_dir/emonhub ]; then
-    git clone https://github.com/openenergymonitor/emonhub.git
+    git clone -b $emonhub_branch ${git_repo[emonhub]}
 else 
     echo "- emonhub repository already installed"
     git pull

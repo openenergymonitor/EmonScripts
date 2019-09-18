@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "Install Emoncms Core"
@@ -14,7 +14,7 @@ sudo chown $user $root_www
 
 # Install emoncms core repository with git
 if [ ! -d $emoncms_www ]; then
-    cd $root_www && git clone -b $emoncms_core_branch https://github.com/emoncms/emoncms.git
+    cd $root_www && git clone -b $emoncms_core_branch ${git_repo[emoncms_core]}
     cd
 else
     echo "- emoncms already installed"
@@ -49,11 +49,6 @@ else
     echo "- emoncms settings.php already exists"
 fi
 
-if [ ! -d $emoncms_dir ]; then
-    sudo mkdir -p $emoncms_dir
-    sudo chown $user $emoncms_dir
-fi
-
 if [ ! -d $emoncms_datadir ]; then
     sudo mkdir $emoncms_datadir
     sudo chown $user $emoncms_datadir
@@ -69,6 +64,12 @@ for engine in "phpfina" "phpfiwa" "phptimeseries"; do
         echo "- datadir $engine already exists"
     fi
 done
+
+if [ ! -d $emoncms_dir ]
+then
+    sudo mkdir $emoncms_dir
+    sudo chown $USER $emoncms_dir
+fi
 
 # Create a symlink to reference emoncms within the web root folder (review):
 if [ "$emoncms_www" != "/var/www/emoncms" ]; then
