@@ -27,14 +27,14 @@ else
     echo "- log folder already exists"
 fi
 
-# Copy and install default.settings.php
-if [ ! -f $emoncms_www/settings.php ]; then
-    echo "- installing default emoncms settings.php"
-    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/default.settings.php $emoncms_www/settings.php
-    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.php
-    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.php
+# Copy and install emonpi.settings.ini
+if [ ! -f $emoncms_www/settings.ini ]; then
+    echo "- installing default emoncms settings.ini"
+    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
+    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.ini
+    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.ini
 else
-    echo "- emoncms settings.php already exists"
+    echo "- emoncms settings.ini already exists"
 fi
 
 if [ ! -d $emoncms_datadir ]; then
