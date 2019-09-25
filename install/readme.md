@@ -40,7 +40,7 @@ Place the SD card in your RaspberryPi & power up. After a couple of minutes you 
 4\. Finish filesystem resize and creation, install new fstab and reboot:
 
     sudo resize2fs /dev/mmcblk0p2
-    sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3      (this step takes ages)
+    sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3      (this step takes ages, depending on the type of SD card - it's faster with the latest generation SanDisks for example)
     sudo mkdir /var/opt/emoncms
     sudo chown www-data /var/opt/emoncms
 
