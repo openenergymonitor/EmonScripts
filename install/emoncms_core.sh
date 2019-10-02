@@ -20,7 +20,7 @@ fi
 if [ ! -f $emoncms_log_location ]; then
     echo "- creating emoncms log folder"
     sudo mkdir $emoncms_log_location
-    sudo chown pi $emoncms_log_location
+    sudo chown $user $emoncms_log_location
     sudo touch "$emoncms_log_location/emoncms.log"
     sudo chmod 666 "$emoncms_log_location/emoncms.log"
 else
