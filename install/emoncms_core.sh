@@ -74,19 +74,29 @@ fi
 echo "-------------------------------------------------------------"
 echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
+# Install service-runner drop-in if system user is different
+if [ $user!="pi" ]; then
+    echo "installing service-runner drop-in User=$user"
+    sudo mkdir /lib/systemd/system/service-runner.service.d
+    echo $'[Service]\nUser='$user > service-runner.conf
+    sudo mv service-runner.conf /lib/systemd/system/service-runner.service.d/service-runner.conf
+
+    echo "installing emoncms_mqtt drop-in User=$user"    
+    sudo mkdir /lib/systemd/system/emoncms_mqtt.service.d
+    echo $'[Service]\nExecStartPre=/bin/chown '$user' ${LOG_PATH}' > emoncms_mqtt.conf
+    sudo mv emoncms_mqtt.conf /lib/systemd/system/emoncms_mqtt.service.d/emoncms_mqtt.conf
+
+    echo "installing feedwriter drop-in User=$user"
+    sudo mkdir /lib/systemd/system/feedwriter.service.d
+    echo $'[Service]\nExecStartPre=/bin/chown '$user' ${LOG_PATH}' > feedwriter.conf
+    sudo mv feedwriter.conf /lib/systemd/system/feedwriter.service.d/feedwriter.conf
+fi
+# Install actual services, enable and start
 for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
     servicepath=$emoncms_www/scripts/services/$service/$service.service
     $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
 done
 echo
-
-# Install service-runner drop-in if system user is different
-if [ $user!="pi" ]; then
-    echo "installing service-runner drop-in User=$user"
-    sudo mkdir /etc/systemd/system/service-runner.service.d
-    echo $'[Service]\nUser='$user > service-runner.conf
-    sudo mv service-runner.conf /etc/systemd/system/service-runner.service.d/service-runner.conf
-fi
 
 if [ "$emonSD_pi_env" = "1" ]; then  
   # Sudoers entry (review)
