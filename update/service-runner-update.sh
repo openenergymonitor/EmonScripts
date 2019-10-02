@@ -28,7 +28,7 @@ else
     echo "- emonSD version: $image_version"
     valid=0
     
-    save_to_update=$(curl -s https://raw.githubusercontent.com/openenergymonitor/emonpi/master/safe-update)
+    save_to_update=$(curl -s https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/safe-update)
     while read -r image_name; do
         if [ "$image_version" == "$image_name" ]; then
             echo "emonSD base image check passed...continue update"

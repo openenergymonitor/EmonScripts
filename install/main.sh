@@ -80,7 +80,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
 
     # Enable service-runner update
     # update checks for image type and only runs with a valid image name file in the boot partition
-    sudo touch /boot/emonSD-30Oct18
+    sudo touch /boot/emonSD-02Oct19
     exit 0
     # Reboot to complete
     sudo reboot
