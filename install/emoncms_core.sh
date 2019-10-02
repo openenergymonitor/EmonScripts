@@ -75,19 +75,25 @@ echo "-------------------------------------------------------------"
 echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
 # Install service-runner drop-in if system user is different
-if [ "$user"!="pi" ]; then
+if [ "$user" != "pi" ]; then
     echo "installing service-runner drop-in User=$user"
-    sudo mkdir /lib/systemd/system/service-runner.service.d
+    if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
+        sudo mkdir /lib/systemd/system/service-runner.service.d
+    fi
     echo $'[Service]\nUser='$user > service-runner.conf
     sudo mv service-runner.conf /lib/systemd/system/service-runner.service.d/service-runner.conf
 
-    echo "installing emoncms_mqtt drop-in User=$user"    
-    sudo mkdir /lib/systemd/system/emoncms_mqtt.service.d
+    echo "installing emoncms_mqtt drop-in User=$user"
+    if [ ! -d /lib/systemd/system/emoncms_mqtt.service.d ]; then
+        sudo mkdir /lib/systemd/system/emoncms_mqtt.service.d
+    fi
     echo $'[Service]\nEnvironment="USER='$user'"' > emoncms_mqtt.conf
     sudo mv emoncms_mqtt.conf /lib/systemd/system/emoncms_mqtt.service.d/emoncms_mqtt.conf
 
     echo "installing feedwriter drop-in User=$user"
-    sudo mkdir /lib/systemd/system/feedwriter.service.d
+    if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
+        sudo mkdir /lib/systemd/system/service-runner.service.d
+    fi
     echo $'[Service]\nEnvironment="USER='$user'"' > feedwriter.conf
     sudo mv feedwriter.conf /lib/systemd/system/feedwriter.service.d/feedwriter.conf
 fi
