@@ -33,6 +33,7 @@ if [ ! -f $emoncms_www/settings.ini ]; then
     cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
     sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.ini
     sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.ini
+    sed -i "s~EMONCMS_DATADIR~$emoncms_datadir~" $emoncms_www/settings.ini
 else
     echo "- emoncms settings.ini already exists"
 fi
