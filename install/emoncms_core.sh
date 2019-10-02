@@ -75,7 +75,7 @@ echo "-------------------------------------------------------------"
 echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
 # Install service-runner drop-in if system user is different
-if [ $user!="pi" ]; then
+if [ "$user"!="pi" ]; then
     echo "installing service-runner drop-in User=$user"
     sudo mkdir /lib/systemd/system/service-runner.service.d
     echo $'[Service]\nUser='$user > service-runner.conf
