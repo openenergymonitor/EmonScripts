@@ -76,15 +76,17 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$install_firmware" = true ]; then $openenergymonitor_dir/EmonScripts/install/firmware.sh; fi
     if [ "$install_emonpilcd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonpilcd.sh; fi
     if [ "$install_wifiap" = true ]; then $openenergymonitor_dir/EmonScripts/install/wifiap.sh; fi
-    if [ "$install_emonsd" = true ]; then 
-        $openenergymonitor_dir/EmonScripts/install/emonsd.sh;
-    else
-        $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
-    fi
+    if [ "$install_emonsd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonsd.sh; fi
 
     # Enable service-runner update
     # update checks for image type and only runs with a valid image name file in the boot partition
     sudo touch /boot/emonSD-30Oct18
+    exit 0
+    # Reboot to complete
+    sudo reboot
+else
+    $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
+    # sudo touch /boot/emonSD-30Oct18
     exit 0
     # Reboot to complete
     sudo reboot
