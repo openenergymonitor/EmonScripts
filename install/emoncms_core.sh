@@ -80,6 +80,14 @@ for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
 done
 echo
 
+# Install service-runner drop-in if system user is different
+if [ $user!="pi" ]; then
+    echo "installing service-runner drop-in User=$user"
+    sudo mkdir /etc/systemd/system/service-runner.service.d
+    echo $'[Service]\nUser='$user > service-runner.conf
+    sudo mv service-runner.conf /etc/systemd/system/service-runner.service.d/service-runner.conf
+fi
+
 if [ "$emonSD_pi_env" = "1" ]; then  
   # Sudoers entry (review)
   sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
