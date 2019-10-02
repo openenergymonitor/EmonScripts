@@ -91,8 +91,8 @@ if [ "$user" != "pi" ]; then
     sudo mv emoncms_mqtt.conf /lib/systemd/system/emoncms_mqtt.service.d/emoncms_mqtt.conf
 
     echo "installing feedwriter drop-in User=$user"
-    if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
-        sudo mkdir /lib/systemd/system/service-runner.service.d
+    if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
+        sudo mkdir /lib/systemd/system/feedwriter.service.d
     fi
     echo $'[Service]\nEnvironment="USER='$user'"' > feedwriter.conf
     sudo mv feedwriter.conf /lib/systemd/system/feedwriter.service.d/feedwriter.conf
