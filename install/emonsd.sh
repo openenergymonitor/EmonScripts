@@ -73,6 +73,9 @@ else
     rm mycron
 fi
 
+# emonSD rc.local includes wifiAP start and first boot update
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
+
 # --------------------------------------------------------------------------------
 # Misc
 # --------------------------------------------------------------------------------

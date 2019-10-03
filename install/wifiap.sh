@@ -103,10 +103,6 @@ sudo sed -i "s~^#$option~$option~" /etc/default/isc-dhcp-server
 
 sudo ln -s $openenergymonitor_dir/emonpi/wifiAP/wifiAP.sh /usr/local/sbin/wifiAP
 
-# Add /etc/rc.local:
-# /opt/openenergymonitor/emonpi/wifiAP/startAP.sh
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
-
 sudo systemctl daemon-reload
 
 sudo systemctl disable hostapd

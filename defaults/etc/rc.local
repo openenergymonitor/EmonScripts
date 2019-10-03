@@ -17,6 +17,10 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
+# Update emonpi on first boot if applicable
+su pi -c '/opt/openenergymonitor/EmonScripts/update/firstbootupdate'
+
+# Start wifi AP if applicable
 /opt/openenergymonitor/emonpi/wifiAP/startAP.sh >> /var/log/wifiAP.log
 
 exit 0
