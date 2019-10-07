@@ -25,10 +25,11 @@ echo "-------------------------------------------------------------"
 
 echo "Warning: The default configuration of this script applies"
 echo "significant modification to the underlying system!"
-echo "Would you like to review the build script config before starting? (y/n)"
-read start_confirm
+echo ""
+read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
 
-if [ $start_confirm == "y" ]; then 
+if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
+    echo ""
     echo "You selected 'yes' to review config"
     echo "Please review config.ini and restart the build script to continue"
     echo ""
