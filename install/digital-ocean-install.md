@@ -69,8 +69,9 @@
     user=oem
     hostname=emonpi
     emonSD_pi_env=0
-    Comment out config, wifi and setup module:
     ```
+
+    Comment out config, wifi and setup module:
 
     ```shell
     #emoncms_modules[config]=stable
@@ -80,12 +81,12 @@
 
 1. Run main installation script:
 
-```shell
-./main.sh
-```
+    ```shell
+    ./main.sh
+    ```
 
 1. Allow access to port 80 in firewall:
 
-```shell
-sudo ufw allow 80/tcp
-```
+    ```shell
+    sudo ufw allow 80/tcp
+    ```
