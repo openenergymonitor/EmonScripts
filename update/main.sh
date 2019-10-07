@@ -1,7 +1,8 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
-source config.ini
+# Use same config.ini as the install
+source $DIR/../install/config.ini
 
 echo "-------------------------------------------------------------"
 echo "Main Update Script"
@@ -37,7 +38,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     fi
     echo "Hardware detected: $hardware"
     
-    if [ $hardware == "EmonPi" ]; then    
+    if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
         sudo service emonPiLCD stop
@@ -101,7 +102,7 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ $hardware == "EmonPi" ]; then
+if [ "$hardware" == "EmonPi" ]; then
     echo
     # Wait for update to finish
     echo "Starting emonPi LCD service.."
