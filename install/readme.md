@@ -80,11 +80,11 @@ To restart the installation:
 ./main.sh
 ```
 
-See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/config.ini)
+See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.config.ini)
 
 ## Run Scripts Individually
 
-It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/master/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
+It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
 
 ## Standard Setup Filepaths
 
