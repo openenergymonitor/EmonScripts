@@ -26,7 +26,7 @@ As at 7 Oct 19 - Tested on:
 
 ### RaspberryPi
 
-To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/rpi-install.md).
+To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](https://github.com/openenergymonitor/EmonScripts/blob/master/install/rpi-install.md).
 
 ### Ubuntu
 
@@ -84,7 +84,7 @@ See explanation and settings in installation configuration file here: [config.in
 
 ## Run Scripts Individually
 
-It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
+It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/master/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
 
 ## Standard Setup Filepaths
 
