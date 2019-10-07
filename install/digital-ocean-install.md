@@ -3,10 +3,10 @@
 **Note:** For a single user with moderate use, a small VM on a cloud service is likely plenty of performance for an emoncms installation. For applications with a large number of users and feeds the performance of emoncms will depend a lot on how the cloud provider implements storage. Networked disk drives will result in slow performance due to the network latency associated with the way the emoncms feed engines are implemented. VM's on machines with local storage should provide much better performance.
 
 1. Click on 'Create' to create a new cloud server
-2. Select Ubuntu, standard $5/month, region e.g London then Create Droplet
-3. DigitalOcean email root login details, ssh in using these credentials.
-4. Change root password
-5. Follow [Initial Server Setup with Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04)
+1. Select Ubuntu, standard $5/month, region e.g London then Create Droplet
+1. DigitalOcean email root login details, ssh in using these credentials.
+1. Change root password
+1. Follow [Initial Server Setup with Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04)
 
     ```shell
     adduser oem
@@ -17,7 +17,7 @@
 
     logout of root and login with oem.
 
-6. Disable root login:
+1. Disable root login:
 
     ```shell
     sudo nano /etc/ssh/sshd_config
@@ -25,7 +25,7 @@
     sudo service ssh restart
     ```
 
-7. Allow created user to run sudo without password.
+1. Allow created user to run sudo without password.
 
     ```shell
     sudo visudo
@@ -39,7 +39,7 @@
 
     Save and exit.
 
-8. Start the script
+1. Start the script
 
     ```shell
     wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/install/init.sh
@@ -47,7 +47,7 @@
     ./init.sh
     ```
 
-9. Modify config.ini for non emonSD installation.
+1. Modify config.ini for non emonSD installation.
 
     Disable emonhub installation
 
@@ -78,13 +78,13 @@
     #emoncms_modules[setup]=stable
     ```
 
-10. Run main installation script:
+1. Run main installation script:
 
 ```shell
 ./main.sh
 ```
 
-11. Allow access to port 80 in firewall:
+1. Allow access to port 80 in firewall:
 
 ```shell
 sudo ufw allow 80/tcp
