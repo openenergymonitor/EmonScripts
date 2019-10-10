@@ -22,8 +22,8 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
     echo "- Service $state"
     # ---------------------------------------------------------
     
-    # echo "Running emonhub automatic node addition script"
-    # $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir
+    echo "Running emonhub automatic node addition script"
+    $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir
 
 else
     echo "Not found at $openenergymonitor_dir/emonhub"

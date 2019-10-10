@@ -1,7 +1,8 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
-source config.ini
+# Use same config.ini as the install
+source $DIR/../install/config.ini
 
 echo "-------------------------------------------------------------"
 echo "Update EmonPi stack"
@@ -114,7 +115,7 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ -z "$hardware" ] && [ "$hardware" == "EmonPi" ]; then
+if [ "$hardware" == "EmonPi" ]; then
     echo
     # Wait for update to finish
     echo "Starting emonPi LCD service.."

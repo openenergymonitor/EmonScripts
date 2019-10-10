@@ -31,22 +31,15 @@ else
     echo "- log folder already exists"
 fi
 
-# Copy and install default.settings.php
-if [ ! -f $emoncms_www/settings.php ]; then
-    echo "- installing default emoncms settings.php"
-    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/default.settings.php $emoncms_www/settings.php
-    
-    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.php
-    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.php
-    
-    sed -i "s~database = \"emoncms\"~database = \"$mysql_database\"~" $emoncms_www/settings.php
-    sed -i "s~username = \"emoncms\"~username = \"$mysql_user\"~" $emoncms_www/settings.php
-    sed -i "s~password = \"emonpiemoncmsmysql2016\"~password = \"$mysql_password\"~" $emoncms_www/settings.php
-    
-    sed -i "s~'user'     => 'emonpi'~'user'     => '$mqtt_user'~" $emoncms_www/settings.php
-    sed -i "s~'password' => 'emonpimqtt2016'~'password' => '$mqtt_password'~" $emoncms_www/settings.php
+# Copy and install emonpi.settings.ini
+if [ ! -f $emoncms_www/settings.ini ]; then
+    echo "- installing default emoncms settings.ini"
+    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
+    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.ini
+    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.ini
+    sed -i "s~EMONCMS_DATADIR~$emoncms_datadir~" $emoncms_www/settings.ini
 else
-    echo "- emoncms settings.php already exists"
+    echo "- emoncms settings.ini already exists"
 fi
 
 if [ ! -d $emoncms_datadir ]; then
@@ -91,6 +84,30 @@ fi
 echo "-------------------------------------------------------------"
 echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
+# Install service-runner drop-in if system user is different
+if [ "$user" != "pi" ]; then
+    echo "installing service-runner drop-in User=$user"
+    if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
+        sudo mkdir /lib/systemd/system/service-runner.service.d
+    fi
+    echo $'[Service]\nUser='$user > service-runner.conf
+    sudo mv service-runner.conf /lib/systemd/system/service-runner.service.d/service-runner.conf
+
+    echo "installing emoncms_mqtt drop-in User=$user"
+    if [ ! -d /lib/systemd/system/emoncms_mqtt.service.d ]; then
+        sudo mkdir /lib/systemd/system/emoncms_mqtt.service.d
+    fi
+    echo $'[Service]\nEnvironment="USER='$user'"' > emoncms_mqtt.conf
+    sudo mv emoncms_mqtt.conf /lib/systemd/system/emoncms_mqtt.service.d/emoncms_mqtt.conf
+
+    echo "installing feedwriter drop-in User=$user"
+    if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
+        sudo mkdir /lib/systemd/system/feedwriter.service.d
+    fi
+    echo $'[Service]\nEnvironment="USER='$user'"' > feedwriter.conf
+    sudo mv feedwriter.conf /lib/systemd/system/feedwriter.service.d/feedwriter.conf
+fi
+# Install actual services, enable and start
 for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
     servicepath=$emoncms_www/scripts/services/$service/$service.service
     $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
