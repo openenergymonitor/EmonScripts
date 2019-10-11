@@ -75,13 +75,12 @@ if [ "$emoncms_www" != "/var/www/emoncms" ]; then
 fi
 if [ ! -d /var/www/html/emoncms ]; then
     echo "- symlinking emoncms folder to /var/www/html/emoncms"
-    sudo -u www-data ln -s $emoncms_www /var/www/html/emoncms
+    sudo ln -s $emoncms_www /var/www/html/emoncms
     
     # Redirect (review)
     echo "- creating redirect to $emoncms_www"
     echo "<?php header('Location: ../emoncms'); ?>" > $emoncms_dir/index.php
     sudo mv $emoncms_dir/index.php /var/www/html/index.php
-    sudo chown www-data /var/www/html/index.php
     sudo rm /var/www/html/index.html
 fi
 
