@@ -36,6 +36,10 @@ For Ubuntu, post base OS install, run this command so the user does not need a p
 sudo echo $USER' ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/$USER && sudo chmod 0440 /etc/sudoers.d/$USER
 ```
 
+### Digital Ocean Droplet
+
+For installation on a Digital Ocean Droplet, follow [this instruction](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/digital-ocean-install.md).
+
 ## Install the EmonCMS Installation Scripts
 
 Pull the script from GitHub (note if you wish to pull the script from `master` change the path).
