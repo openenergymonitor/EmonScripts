@@ -79,6 +79,9 @@ sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.loc
 # --------------------------------------------------------------------------------
 # Misc
 # --------------------------------------------------------------------------------
+
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/readme.md /home/pi/
+
 # Review: provide configuration file for default password and hostname
 
 # Set hostname
