@@ -15,10 +15,6 @@ Build script development forum discussion:
 
 [Forum: EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
 
-## Further development
-
-- SSL [Community Discussion](https://community.openenergymonitor.org/t/emonsd-next-steps-filesystem-logrotate/10693/188)
-
 ## Base OS Preparation
 
 ### RaspberryPi
