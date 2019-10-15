@@ -11,8 +11,7 @@ As at 7 Oct 19 - Tested on:
 - [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-07-10
 - Ubuntu 1804 LTS
 
-Build script development forum discussion:
-[Forum: EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
+[**Forum:** EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
 
 ## Base OS Preparation
 
