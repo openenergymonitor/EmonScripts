@@ -12,7 +12,6 @@ As at 7 Oct 19 - Tested on:
 - Ubuntu 1804 LTS
 
 Build script development forum discussion:
-
 [Forum: EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
 
 ## Base OS Preparation
