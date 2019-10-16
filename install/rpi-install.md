@@ -45,7 +45,7 @@
 
     ```shell
     wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/defaults/etc/fstab
-    sudo cp fstab /etc/fstab
+    sudo mv fstab /etc/fstab
     sudo reboot
     ```
 
