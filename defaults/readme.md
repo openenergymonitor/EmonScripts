@@ -2,7 +2,7 @@
 # Welcome to your emonPi/emonBase
 # --------------------------------------------------------------
 
-This image was build using the EmonScripts installation scripts:
+This image was built using the EmonScripts installation scripts:
 https://github.com/openenergymonitor/EmonScripts
 
 You can find the emonSD software stack installed in the following primary locations:
