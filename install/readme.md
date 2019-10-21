@@ -17,7 +17,7 @@ As at 7 Oct 19 - Tested on:
 
 ### RaspberryPi
 
-To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](https://github.com/openenergymonitor/EmonScripts/blob/master/install/rpi-install.md).
+To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](rpi-install.md).
 
 ### Ubuntu
 
