@@ -16,7 +16,12 @@
 #!/bin/bash
 if [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
+    if [ "$1" != "" ]; then
+        echo "Positional parameter 1 contains something replace branch"
+        sed 's/stable/master/g' config.ini
+    fi
 fi
+
 source load_config.sh
     
 echo "-------------------------------------------------------------"
