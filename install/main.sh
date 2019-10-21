@@ -17,8 +17,8 @@
 if [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
     if [ "$1" != "" ]; then
-        echo "Positional parameter 1 contains something replace branch"
-        sed 's/stable/master/g' config.ini
+        echo "Set $1 branch"
+        sed -i "s/stable/$1/g" config.ini
     fi
 fi
 
