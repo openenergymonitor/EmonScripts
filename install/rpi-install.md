@@ -1,6 +1,6 @@
 # EmonCMS Install SD Card Preparation for RaspberryPi
 
-1. Download the [Raspbian Buster Lite image](https://www.raspberrypi.org/downloads/raspbian/) and write it to an SD card with at least 8GB of space. [Balena](https://www.balena.io/) provide a nice tool called [Etcher](https://www.balena.io/etcher) which makes this process really easy.
+1. Download the [Raspbian Buster Lite image](https://www.raspberrypi.org/downloads/raspbian/) and write it to an SD card with at least 16GB of space. [Balena](https://www.balena.io/) provide a nice tool called [Etcher](https://www.balena.io/etcher) which makes this process really easy.
 
 1. After writing the image to the SD card, open the SD card `boot` folder on your computer.
 
