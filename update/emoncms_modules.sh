@@ -28,9 +28,11 @@ for M in $emoncms_www/Modules/*; do
         echo "- no local changes"
         echo "- running: git pull origin $branch"
         echo
-        git -C $M pull 
+        git -C $M fetch --all --prune
         git -C $M checkout $branch
+        git -C $M pull 
     else
+        echo "WARNING local changes in $M - Module not updated"
         echo "- git status:"
         echo
         git -C $M status
