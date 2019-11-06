@@ -60,6 +60,7 @@ if [ "$type" == "all" ]; then
             cd $openenergymonitor_dir/$repo
             git branch
             git status
+            git fetch --all --prune
             git pull
         fi
     done

@@ -6,14 +6,32 @@ This build script can be used to build a fully fledged emoncms installation on d
 
 The script is a series of scripts that install each required component. To see what is installed and how open each script.
 
-As at 7 Oct 19 - Tested on:
+As at 17 Oct 19 - Tested on:
 
 - [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-07-10
 - Ubuntu 1804 LTS
 
 [**Forum:** EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
 
-## Base OS Preparation
+## Pre-built Image
+
+Download (1.1 GB)
+
+- [UK Server](http://files.openenergymonitor.org/emonSD-17Oct19.img.zip)
+- [Canada Server](https://distanthost.com/oem/emonSD-17Oct19.img.zip) thanks to @bidouilleur 
+```
+(.img) MD5: a7d12ac6b589ae0d470c4a6f1ce38414
+(.zip) MD5: 52ecf81c2ad4afbd9da42a6e703b5c59
+```
+- Minimum 16Gb SD Card
+- Built using EmonScripts emoncms installation script, see
+- Based on Raspbian Buster 2019-09-26-raspbian-buster-lite.zip 
+- Compatible with Raspberry Pi 3, 3B+ & 4
+- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- Log partition `/var/log` mounted as tmpfs using log2ram, now presistant after reboot
+- [SSH access disabled by default](https://community.openenergymonitor.org/t/emonpi-ssh-disabled-by-default/8847), long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.
+
+## Building Your Own - Base OS Preparation
 
 ### RaspberryPi
 
