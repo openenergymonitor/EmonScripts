@@ -56,11 +56,11 @@ if [ -d $emoncms_dir/modules/backup ]; then
         sed -i "s~USER~$user~" config.cfg
         sed -i "s~BACKUP_SCRIPT_LOCATION~$emoncms_dir/modules/backup~" config.cfg
         sed -i "s~EMONCMS_LOCATION~$emoncms_www~" config.cfg
-        sed -i "s~BACKUP_LOCATION~$openenergymonitor_dir/data~" config.cfg
+        sed -i "s~BACKUP_LOCATION~$emoncms_datadir/backup~" config.cfg
         sed -i "s~DATABASE_PATH~$emoncms_datadir~" config.cfg
         sed -i "s~EMONHUB_CONFIG_PATH~/etc/emonhub~" config.cfg
         sed -i "s~EMONHUB_SPECIMEN_CONFIG~$openenergymonitor_dir/emonhub/conf~" config.cfg
-        sed -i "s~BACKUP_SOURCE_PATH~$openenergymonitor_dir/data/uploads~" config.cfg
+        sed -i "s~BACKUP_SOURCE_PATH~$emoncms_datadir/backup/uploads~" config.cfg
     fi
     cd
 fi
