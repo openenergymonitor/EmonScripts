@@ -1,8 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
-# Use same config.ini as the install
-source $DIR/../install/config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "Main Update Script"
