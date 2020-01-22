@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
-source config.ini
+source load_config.sh
 
 if [ -z "$2" ]; then
     type="all"

@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "Update Emoncms Modules"
@@ -81,21 +81,11 @@ for M in $emoncms_dir/modules/*; do
   fi
 done
 
-# backup module
-if [ -d $emoncms_dir/modules/backup ]; then
-    cd $emoncms_dir/modules/backup
-    if [ ! -f config.cfg ]; then
-        cp default.config.cfg config.cfg
-        sed -i "s~USER~$user~" config.cfg
-        sed -i "s~BACKUP_SCRIPT_LOCATION~$emoncms_dir/modules/backup~" config.cfg
-        sed -i "s~EMONCMS_LOCATION~$emoncms_www~" config.cfg
-        sed -i "s~BACKUP_LOCATION~$openenergymonitor_dir/data~" config.cfg
-        sed -i "s~DATABASE_PATH~$emoncms_datadir~" config.cfg
-        sed -i "s~EMONHUB_CONFIG_PATH~/etc/emonhub~" config.cfg
-        sed -i "s~EMONHUB_SPECIMEN_CONFIG~$openenergymonitor_dir/emonhub/conf~" config.cfg
-        sed -i "s~BACKUP_SOURCE_PATH~$openenergymonitor_dir/data/uploads~" config.cfg
-    fi
-    cd
+# run module install (& update) script if present
+module=backup
+if [ -f $emoncms_dir/modules/$module/install.sh ]; then
+    $emoncms_dir/modules/$module/install.sh $openenergymonitor_dir
+    echo
 fi
 
 echo "Update Emoncms database"
