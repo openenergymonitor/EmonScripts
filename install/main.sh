@@ -57,7 +57,7 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     sudo apt --fix-broken install
 fi
 
-# Required for backup, emonpiLCD, wifi, rfm69pi firmware (review)
+# Required for emonpiLCD, wifi, rfm69pi firmware (review)
 if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
 
 echo "-------------------------------------------------------------"
