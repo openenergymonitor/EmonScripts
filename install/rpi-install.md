@@ -6,7 +6,7 @@
 
 1. Create a file called ssh on the boot partition - to enable SSH access to the system.
 
-1. Copy the default `cmdline.txt` to `cmdline2.txt` in the boot partition
+1. Copy the default `cmdline.txt` to `cmdline2.txt` in the boot partition.
 1. Edit `cmdline.txt` and remove this text:
 
     ```shell
@@ -14,6 +14,18 @@
     ```
 
     This will stop the image from expanding to fill the full SD card size on first boot.
+
+1. If you want to add a `wpa_supplicant.conf` to the boot folder so it connects to your Wi-Fi, especially if using a PiZero, do so now.
+
+    ```
+    country=UK # Your 2-digit country code
+    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    network={
+        ssid=""
+        psk=""
+        key_mgmt=WPA-PSK
+    }
+    ```
 
 1. Eject the SD card from your PC.
 

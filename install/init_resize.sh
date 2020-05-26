@@ -61,20 +61,20 @@ get_variables () {
 
   ROOT_DEV_SIZE=$(cat "/sys/block/${ROOT_DEV_NAME}/size")
 
-  #EmonSD Fix end of Rootfs
-  # if [ $ROOT_DEV_SIZE -gt 16000000 ]; then
-  #   #16GB card or above, assign last 10GB for data 
-  #   TARGET_END=$(($ROOT_DEV_SIZE - 20972544 - 1 ))
-  # elif [ $ROOT_DEV_SIZE -gt 8000000 ]; then
-  #   #8GB card, assign last 4GB for data 
-  #   TARGET_END=$(($ROOT_DEV_SIZE - 7341056 - 1 ))
-  # else
-  #   # Assign 2GB to data
-  #   TARGET_END=4098047
-  # fi
+  # Dev size divisible by 2048
+  ROOT_DEV_SIZE2048=$((($ROOT_DEV_SIZE / 2048) * 2048 ))
 
-  # Use old sizing 
-  TARGET_END=$((8960000 - 1))
+  #EmonSD Fix end of Rootfs
+  if [ $ROOT_DEV_SIZE -gt 14000000 ]; then
+    #16GB card or above, assign last 10GB for data
+    TARGET_END=$(($ROOT_DEV_SIZE2048 - 20971520 - 1 ))
+  elif [ $ROOT_DEV_SIZE -gt 6000000 ]; then
+    #8GB card, assign last 4GB for data
+    TARGET_END=$(($ROOT_DEV_SIZE2048 - 7340032 - 1 ))
+  else
+    # Assign 2GB to rootfs
+    TARGET_END=4098047
+  fi
 
   #EmonSD set start of ext2 partition
   EXT2_START=$((TARGET_END + 1))
