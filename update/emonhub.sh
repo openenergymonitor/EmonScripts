@@ -10,9 +10,18 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
 
     echo "git pull $openenergymonitor_dir/emonhub"
     cd $openenergymonitor_dir/emonhub
-    git branch
-    git status
-    git pull
+    
+    branch=$(git rev-parse --abbrev-ref HEAD)
+    if [ $branch == "emon-pi" ]; then
+        git fetch origin
+        git checkout stable
+        sudo apt-get update
+        ./install.sh
+    else
+        git branch
+        git status
+        git pull
+    fi 
     
     # can be used to change service source location in future
     # sudo ln -sf $openenergymonitor_dir/emonhub/service/emonhub.service /lib/systemd/system
