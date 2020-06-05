@@ -9,6 +9,7 @@ echo "-------------------------------------------------------------"
 
 type=$1
 firmware=$2
+serial_port=$3
 
 datestr=$(date)
 
@@ -80,6 +81,10 @@ if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
     
     if [ "$firmware" == "rfm12pi" ]; then
         $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
+    fi
+    
+    if [ "$firmware" == "emontxv3cm" ]; then
+        $openenergymonitor_dir/EmonScripts/update/emontxv3cm.sh $serial_port
     fi
 fi
 

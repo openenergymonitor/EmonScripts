@@ -11,6 +11,11 @@ else
     firmware=$2
 fi
 
+serial_port="ttyAMA0"
+if [ ! -z $3 ]; then
+  serial_port=$3
+fi
+
 # Clear log update file
 cat /dev/null > /var/log/emoncms/emonupdate.log
 
@@ -54,4 +59,4 @@ git status
 git pull
 
 # Run update in main update script
-$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware
+$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware $serial_port
