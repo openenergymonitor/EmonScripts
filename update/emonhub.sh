@@ -16,7 +16,7 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
         git fetch origin
         git checkout stable
         sudo apt-get update
-        ./install.sh
+        ./install.sh $emonSD_pi_env
     else
         git branch
         git status
