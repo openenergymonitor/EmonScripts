@@ -11,16 +11,19 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
     echo "git pull $openenergymonitor_dir/emonhub"
     cd $openenergymonitor_dir/emonhub
     
+    # Get current branch
     branch=$(git rev-parse --abbrev-ref HEAD)
+    # update the repository and switch to stable
+    git fetch --all --prune -v
+    git checkout origin/stable
+    git pull origin stable
+    
+    # If this installation was on the old emon-pi branch
+    # reinstall to switch to Python3
+
     if [ $branch == "emon-pi" ]; then
-        git fetch origin
-        git checkout stable
         sudo apt-get update
         ./install.sh $emonSD_pi_env
-    else
-        git branch
-        git status
-        git pull
     fi 
     
     # can be used to change service source location in future
