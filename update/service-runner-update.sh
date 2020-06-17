@@ -19,6 +19,14 @@ fi
 # Clear log update file
 cat /dev/null > /var/log/emoncms/emonupdate.log
 
+# Find largest log file and remove
+varlog_available=$(df | awk '$NF == "/var/log" { print $4 }')
+if [ "$varlog_available" -lt "1024" ]; then
+    largest_log_file=$(sudo find /var/log -type f -printf "%s\t%p\n" | sort -n | tail -1 | cut -f 2)
+    sudo truncate -s 0 $largest_log_file
+    echo "$largest_log_file truncated to make room for update log" 
+fi
+
 echo "Starting update via service-runner-update.sh (v3.0) >"
 
 # -----------------------------------------------------------------
