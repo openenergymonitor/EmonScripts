@@ -36,8 +36,8 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
     # can be used to change service source location in future
     # sudo ln -sf $openenergymonitor_dir/emonhub/service/emonhub.service /lib/systemd/system
     
-    sudo systemctl restart $service.service
-    state=$(systemctl show $service | grep ActiveState)
+    sudo systemctl restart emonhub.service
+    state=$(systemctl show emonhub | grep ActiveState)
     echo "- Service $state"
     # ---------------------------------------------------------
     
