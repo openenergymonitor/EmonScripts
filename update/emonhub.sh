@@ -13,14 +13,24 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
     
     branch=$(git rev-parse --abbrev-ref HEAD)
     if [ $branch == "emon-pi" ]; then
-        git fetch origin
+        echo "Migrating from emon-pi branch to stable branch"
+        echo
+        echo "git fetch --all --prune -v"
+        git fetch --all --prune -v
+        echo "git checkout stable"
         git checkout stable
-        sudo apt-get update
+        echo "git pull origin stable"
+        git pull origin stable
+        echo
+        echo "running emonhub install script emonSD_pi_env:$emonSD_pi_env"
         ./install.sh $emonSD_pi_env
     else
-        git branch
+        echo "git fetch --all --prune -v"
+        git fetch --all --prune -v
+        echo "git status"
         git status
-        git pull
+        echo "git pull origin $branch"
+        git pull origin $branch
     fi 
     
     # can be used to change service source location in future
