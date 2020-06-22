@@ -31,6 +31,7 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
         git status
         echo "git pull origin $branch"
         git pull origin $branch
+        sudo pip3 install paho-mqtt
     fi 
     
     # can be used to change service source location in future
