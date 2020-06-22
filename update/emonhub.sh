@@ -31,6 +31,10 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
         git status
         echo "git pull origin $branch"
         git pull origin $branch
+        # Temporary addition of paho-mqtt & requests here
+        # remove once issue has cleared:
+        # https://community.openenergymonitor.org/t/emonpi-new-sd-image-emonhub-failing/14578
+        sudo pip3 install paho-mqtt requests
     fi 
     
     # can be used to change service source location in future
