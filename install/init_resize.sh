@@ -1,8 +1,4 @@
 #!/bin/sh
-# Standard resize_init file modified by BPO as part of the EmonSD project
-# Version 0.1-beta
-# 16 Aug 2019
-# Modifications limit resize of rootfs to around 4GB and create an ext2 partition in remaining space
 
 reboot_pi () {
   umount /boot
@@ -26,7 +22,7 @@ check_commands () {
       sleep 5
       return 1
   fi
-  for COMMAND in grep cut sed parted fdisk findmnt partprobe; do
+  for COMMAND in grep cut sed parted fdisk findmnt; do
     if ! command -v $COMMAND > /dev/null; then
       FAIL_REASON="$COMMAND not found"
       return 1
@@ -60,24 +56,7 @@ get_variables () {
   check_noobs
 
   ROOT_DEV_SIZE=$(cat "/sys/block/${ROOT_DEV_NAME}/size")
-
-  # Dev size divisible by 2048
-  ROOT_DEV_SIZE2048=$((($ROOT_DEV_SIZE / 2048) * 2048 ))
-
-  #EmonSD Fix end of Rootfs
-  if [ $ROOT_DEV_SIZE -gt 14000000 ]; then
-    #16GB card or above, assign last 10GB for data
-    TARGET_END=$(($ROOT_DEV_SIZE2048 - 20971520 - 1 ))
-  elif [ $ROOT_DEV_SIZE -gt 6000000 ]; then
-    #8GB card, assign last 4GB for data
-    TARGET_END=$(($ROOT_DEV_SIZE2048 - 7340032 - 1 ))
-  else
-    # Assign 2GB to rootfs
-    TARGET_END=4098047
-  fi
-
-  #EmonSD set start of ext2 partition
-  EXT2_START=$((TARGET_END + 1))
+  TARGET_END=$((ROOT_DEV_SIZE - 1))
 
   PARTITION_TABLE=$(parted -m "$ROOT_DEV" unit s print | tr -d 's')
 
@@ -96,10 +75,24 @@ get_variables () {
 }
 
 fix_partuuid() {
-  DISKID="$(fdisk -l "$ROOT_DEV" | sed -n 's/Disk identifier: 0x\([^ ]*\)/\1/p')"
+  mount -o remount,rw "$ROOT_PART_DEV"
+  mount -o remount,rw "$BOOT_PART_DEV"
+  DISKID="$(tr -dc 'a-f0-9' < /dev/hwrng | dd bs=1 count=8 2>/dev/null)"
+  fdisk "$ROOT_DEV" > /dev/null <<EOF
+x
+i
+0x$DISKID
+r
+w
+EOF
+  if [ "$?" -eq 0 ]; then
+    sed -i "s/${OLD_DISKID}/${DISKID}/g" /etc/fstab
+    sed -i "s/${OLD_DISKID}/${DISKID}/" /boot/cmdline.txt
+    sync
+  fi
 
-  sed -i "s/${OLD_DISKID}/${DISKID}/g" /etc/fstab
-  sed -i "s/${OLD_DISKID}/${DISKID}/" /boot/cmdline.txt
+  mount -o remount,ro "$ROOT_PART_DEV"
+  mount -o remount,ro "$BOOT_PART_DEV"
 }
 
 check_variables () {
@@ -134,8 +127,8 @@ check_variables () {
 }
 
 check_kernel () {
-  local MAJOR=$(uname -r | cut -f1 -d.)
-  local MINOR=$(uname -r | cut -f2 -d.)
+  MAJOR="$(uname -r | cut -f1 -d.)"
+  MINOR="$(uname -r | cut -f2 -d.)"
   if [ "$MAJOR" -eq "4" ] && [ "$MINOR" -lt "9" ]; then
     return 0
   fi
@@ -178,17 +171,7 @@ main () {
     return 1
   fi
 
-  #EmonSD EXT2 Partition
-  if ! parted -m "$ROOT_DEV" u s mkpart primary ext2 "$EXT2_START" 100%; then
-    FAIL_REASON="EXT2 partition creation failed"
-    return 1
-  fi
-
-  partprobe "$ROOT_DEV"
   fix_partuuid
-
-  #EmonSD file to indicate new partitions have been created
-  touch /boot/emonsdinit
 
   return 0
 }
@@ -199,7 +182,7 @@ mount -t tmpfs tmp /run
 mkdir -p /run/systemd
 
 mount /boot
-mount / -o remount,rw
+mount / -o remount,ro
 
 sed -i 's| init=/usr/lib/raspi-config/init_resize\.sh||' /boot/cmdline.txt
 sed -i 's| sdhci\.debug_quirks2=4||' /boot/cmdline.txt
@@ -207,6 +190,7 @@ sed -i 's| sdhci\.debug_quirks2=4||' /boot/cmdline.txt
 if ! grep -q splash /boot/cmdline.txt; then
   sed -i "s/ quiet//g" /boot/cmdline.txt
 fi
+mount /boot -o remount,ro
 sync
 
 echo 1 > /proc/sys/kernel/sysrq
