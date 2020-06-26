@@ -1,4 +1,9 @@
 #!/bin/sh
+# Standard resize_init file modified by BPO as part of the EmonSD project
+# 26/06/2020
+# Modifications limit resize of rootfs to around 4GB and create an ext2 partition in remaining space
+
+#!/bin/sh
 
 reboot_pi () {
   umount /boot
@@ -56,7 +61,24 @@ get_variables () {
   check_noobs
 
   ROOT_DEV_SIZE=$(cat "/sys/block/${ROOT_DEV_NAME}/size")
-  TARGET_END=$((ROOT_DEV_SIZE - 1))
+  
+  # Dev size divisible by 2048
+  ROOT_DEV_SIZE2048=$((($ROOT_DEV_SIZE / 2048) * 2048 ))
+
+  #EmonSD Fix end of Rootfs
+  if [ $ROOT_DEV_SIZE -gt 14000000 ]; then
+    #16GB card or above, assign last 10GB for data
+    TARGET_END=$(($ROOT_DEV_SIZE2048 - 20971520 - 1 ))
+  elif [ $ROOT_DEV_SIZE -gt 6000000 ]; then
+    #8GB card, assign last 4GB for data
+    TARGET_END=$(($ROOT_DEV_SIZE2048 - 7340032 - 1 ))
+  else
+    # Assign 2GB to rootfs
+    TARGET_END=4098047
+  fi
+
+  #EmonSD set start of ext2 partition
+  EXT2_START=$((TARGET_END + 1))
 
   PARTITION_TABLE=$(parted -m "$ROOT_DEV" unit s print | tr -d 's')
 
@@ -170,8 +192,17 @@ main () {
     FAIL_REASON="Root partition resize failed"
     return 1
   fi
+  
+  #EmonSD EXT2 Partition
+  if ! parted -m "$ROOT_DEV" u s mkpart primary ext2 "$EXT2_START" 100%; then
+    FAIL_REASON="EXT2 partition creation failed"
+    return 1
+  fi
 
   fix_partuuid
+  
+  #EmonSD file to indicate new partitions have been created
+  touch /boot/emonsdinit
 
   return 0
 }
