@@ -41,7 +41,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
-        sudo service emonPiLCD stop
+        sudo systemctl stop emonPiLCD
         
         cd $openenergymonitor_dir/emonpi
         git pull
@@ -115,7 +115,7 @@ if [ "$hardware" == "EmonPi" ]; then
     # Wait for update to finish
     echo "Starting emonPi LCD service.."
     sleep 5
-    sudo service emonPiLCD restart
+    sudo systemctl restart emonPiLCD
     echo
 fi
 
