@@ -17,3 +17,9 @@ avrdude -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 115200 -U flash:w:$openenerg
 
 sudo service emonhub start
 
+echo "-------------------------------------------------------------"
+echo "EmonPi LCD Update"
+echo "-------------------------------------------------------------"
+if [ -f $openenergymonitor_dir/emonpi/lcd/install.sh ]; then
+    $openenergymonitor_dir/emonpi/lcd/./install.sh
+fi
