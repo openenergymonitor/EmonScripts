@@ -20,6 +20,8 @@ sudo service emonhub start
 echo "-------------------------------------------------------------"
 echo "EmonPi LCD Update"
 echo "-------------------------------------------------------------"
+cd $openenergymonitor_dir/emonpi
+git pull
 if [ -f $openenergymonitor_dir/emonpi/lcd/install.sh ]; then
     $openenergymonitor_dir/emonpi/lcd/./install.sh
 fi
