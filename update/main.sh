@@ -42,6 +42,9 @@ if [ "$emonSD_pi_env" = "1" ]; then
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
         sudo service emonPiLCD stop
+        
+        cd $openenergymonitor_dir/$repo
+        git pull
 
         # Display update message on LCD
         echo "Display update message on LCD"
