@@ -34,7 +34,6 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
         # Temporary addition of paho-mqtt & requests here
         # remove once issue has cleared:
         # https://community.openenergymonitor.org/t/emonpi-new-sd-image-emonhub-failing/14578
-        sudo apt update
         sudo apt-get install -y python3-serial python3-configobj python3-pip
         sudo pip3 install paho-mqtt requests
     fi 
