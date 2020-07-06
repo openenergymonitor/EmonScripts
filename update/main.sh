@@ -25,6 +25,11 @@ if [ "$EUID" = "0" ] ; then
     exit 0
 fi
 
+if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
+    echo "Running apt-get update"
+    sudo apt-get update
+fi
+
 if [ "$emonSD_pi_env" = "1" ]; then
     # Check if we have an emonpi LCD connected, 
     # if we do assume EmonPi hardware else assume RFM69Pi
@@ -47,6 +52,10 @@ if [ "$emonSD_pi_env" = "1" ]; then
         echo "Display update message on LCD"
         sudo $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
+    
+    # Ensure logrotate configuration has correct permissions
+    sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
+
 fi
 
 # -----------------------------------------------------------------
