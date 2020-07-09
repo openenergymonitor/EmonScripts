@@ -8,42 +8,33 @@ cd $openenergymonitor_dir
 
 if [ -d $openenergymonitor_dir/emonhub ]; then
 
-    echo "git pull $openenergymonitor_dir/emonhub"
     cd $openenergymonitor_dir/emonhub
-    
     branch=$(git rev-parse --abbrev-ref HEAD)
+
+    echo "git fetch --all --prune -v"
+    git fetch --all --prune -v
+    echo "git status"
+    git status
+        
     if [ $branch == "emon-pi" ]; then
-        echo "Migrating from emon-pi branch to stable branch"
+        # Switch to stable
+        branch="stable"
+        echo "Migrating from emon-pi branch to $branch branch"
+        echo "git checkout $branch"
+        git checkout $branch
         echo
-        echo "git fetch --all --prune -v"
-        git fetch --all --prune -v
-        echo "git checkout stable"
-        git checkout stable
-        echo "git pull origin stable"
-        git pull origin stable
-        echo
-        echo "running emonhub install script emonSD_pi_env:$emonSD_pi_env"
-        ./install.sh $emonSD_pi_env
-    else
-        echo "git fetch --all --prune -v"
-        git fetch --all --prune -v
-        echo "git status"
-        git status
-        echo "git pull origin $branch"
-        git pull origin $branch
-        # Temporary addition of paho-mqtt & requests here
-        # remove once issue has cleared:
-        # https://community.openenergymonitor.org/t/emonpi-new-sd-image-emonhub-failing/14578
-        sudo pip3 install paho-mqtt requests
-    fi 
+    fi
     
-    # can be used to change service source location in future
-    # sudo ln -sf $openenergymonitor_dir/emonhub/service/emonhub.service /lib/systemd/system
+    echo "git pull origin $branch"
+    git pull origin $branch
+    echo
     
-    sudo systemctl restart emonhub.service
-    state=$(systemctl show emonhub | grep ActiveState)
-    echo "- Service $state"
-    # ---------------------------------------------------------
+    # Run install script again to update
+    # script handles restart of emonhub service
+    echo "Running emonhub install & update script emonSD_pi_env:$emonSD_pi_env"
+    echo "--------------------------------------------------------------------"
+    ./install.sh $emonSD_pi_env
+    echo "--------------------------------------------------------------------"
     
     echo "Running emonhub automatic node addition script"
     $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir
