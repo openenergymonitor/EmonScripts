@@ -1,8 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
-# Use same config.ini as the install
-source $DIR/../install/config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "Update EmonPi stack"
@@ -10,6 +9,7 @@ echo "-------------------------------------------------------------"
 
 type=$1
 firmware=$2
+serial_port=$3
 
 datestr=$(date)
 
@@ -64,6 +64,7 @@ if [ "$type" == "all" ]; then
             cd $openenergymonitor_dir/$repo
             git branch
             git status
+            git fetch --all --prune
             git pull
 			echo
         fi
@@ -88,6 +89,10 @@ if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
     if [ "$firmware" == "rfm12pi" ]; then
         $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
 		echo
+    fi
+    
+    if [ "$firmware" == "emontxv3cm" ]; then
+        $openenergymonitor_dir/EmonScripts/update/emontxv3cm.sh $serial_port
     fi
 fi
 

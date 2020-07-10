@@ -87,42 +87,60 @@ fi
 echo "-------------------------------------------------------------"
 echo "Install Emoncms Services"
 echo "-------------------------------------------------------------"
-# Install service-runner drop-in if system user is different
-if [ "$user" != "pi" ]; then
-    echo "installing service-runner drop-in User=$user"
-    if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
-        sudo mkdir /lib/systemd/system/service-runner.service.d
-    fi
-    echo $'[Service]\nUser='$user > service-runner.conf
-    sudo mv service-runner.conf /lib/systemd/system/service-runner.service.d/service-runner.conf
 
-    echo "installing emoncms_mqtt drop-in User=$user"
-    if [ ! -d /lib/systemd/system/emoncms_mqtt.service.d ]; then
-        sudo mkdir /lib/systemd/system/emoncms_mqtt.service.d
-    fi
-    echo $'[Service]\nEnvironment="USER='$user'"' > emoncms_mqtt.conf
-    sudo mv emoncms_mqtt.conf /lib/systemd/system/emoncms_mqtt.service.d/emoncms_mqtt.conf
-
-    echo "installing feedwriter drop-in User=$user"
-    if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
-        sudo mkdir /lib/systemd/system/feedwriter.service.d
-    fi
-    echo $'[Service]\nEnvironment="USER='$user'"' > feedwriter.conf
-    sudo mv feedwriter.conf /lib/systemd/system/feedwriter.service.d/feedwriter.conf
-fi
+if [ "$install_redis" = true ]; then
 # Install actual services, enable and start
-for service in "emoncms_mqtt" "feedwriter" "service-runner"; do
-    servicepath=$emoncms_www/scripts/services/$service/$service.service
-    $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
-done
+    for service in "feedwriter" "service-runner"; do
+        servicepath=$emoncms_www/scripts/services/$service/$service.service
+        echo "installing $service to $servicepath"
+        $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
+    done
+
+    # Install service-runner drop-in if system user is different
+    if [ "$user" != "pi" ]; then
+        echo "installing service-runner drop-in User=$user"
+        if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
+            sudo mkdir /lib/systemd/system/service-runner.service.d
+        fi
+        echo $'[Service]\nUser='$user > service-runner.conf
+        sudo mv service-runner.conf /lib/systemd/system/service-runner.service.d/service-runner.conf
+
+        echo "installing feedwriter drop-in User=$user"
+        if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
+            sudo mkdir /lib/systemd/system/feedwriter.service.d
+        fi
+        echo $'[Service]\nEnvironment="USER='$user'"' > feedwriter.conf
+        sudo mv feedwriter.conf /lib/systemd/system/feedwriter.service.d/feedwriter.conf
+    fi
+    sudo systemctl daemon-reload
+    sudo systemctl restart {feedwriter.service,service-runner.service}
+
+    if [ "$install_mosquitto_client" = true ]; then
+        servicepath=$emoncms_www/scripts/services/emoncms_mqtt/emoncms_mqtt.service
+        echo "installing $service to $servicepath"
+        $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath emoncms_mqtt
+
+        if [ "$user" != "pi" ]; then
+            echo "installing emoncms_mqtt drop-in User=$user"
+            if [ ! -d /lib/systemd/system/emoncms_mqtt.service.d ]; then
+                sudo mkdir /lib/systemd/system/emoncms_mqtt.service.d
+            fi
+            echo $'[Service]\nEnvironment="USER='$user'"' > emoncms_mqtt.conf
+            sudo mv emoncms_mqtt.conf /lib/systemd/system/emoncms_mqtt.service.d/emoncms_mqtt.conf
+        fi
+        sudo systemctl daemon-reload
+        sudo systemctl restart emoncms_mqtt.service
+    fi
+fi
+
 echo
 
-if [ "$emonSD_pi_env" = "1" ]; then  
-  # Sudoers entry (review)
-  sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
-  sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
-  sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
-  echo "emonPi emoncms admin reboot button sudoers updated"
+if [ "$emonSD_pi_env" = "1" ]; then
+    # Sudoers entry (review)
+    sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
+    sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
+    sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
+    echo "emonPi emoncms admin reboot button sudoers updated"
 fi
 
 echo

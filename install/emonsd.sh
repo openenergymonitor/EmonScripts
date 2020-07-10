@@ -76,9 +76,15 @@ fi
 # emonSD rc.local includes wifiAP start and first boot update
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 
+# emonSDexpand
+sudo ln -sf $emoncms_dir/modules/usefulscripts/sdpart/sdpart_imagefile /usr/bin/emonSDexpand
+
 # --------------------------------------------------------------------------------
 # Misc
 # --------------------------------------------------------------------------------
+
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/readme.md /home/pi/
+
 # Review: provide configuration file for default password and hostname
 
 # Set hostname

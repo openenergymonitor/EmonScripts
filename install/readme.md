@@ -2,27 +2,36 @@
 
 ## Introduction
 
-This build script is currently a development in progress ([Forum: EmonSD build script progress update and alpha release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-alpha-release/11222)). It is already more comprehensive than the alternative debian install guides.
-
 This build script can be used to build a fully fledged emoncms installation on debian based operating systems, including: installation of LAMP server and related packages, redis, mqtt, emoncms core, emoncms modules, and if applicable, emonhub & raspberrypi support for serial port, and WiFi access point.
 
 The script is a series of scripts that install each required component. To see what is installed and how open each script.
 
-As at 7 Oct 19 - Tested on:
+As at 17 Oct 19 - Tested on:
 
 - [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-07-10
 - Ubuntu 1804 LTS
 
-## Todo
+[**Forum:** EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
 
-- SSL [Community Discussion](https://community.openenergymonitor.org/t/emonsd-next-steps-filesystem-logrotate/10693/188)
-- Review .env configuration
-- Review logrotate configuration
-- Review disk wear results from 1st release, investigate ext filesystem commit interval vs app level buffering
+## Pre-built Image
 
-[Forum: EmonSD build script progress update and alpha release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-alpha-release/11222)
+Download (1.1 GB)
 
-## Base OS Preparation
+- [UK Server](http://files.openenergymonitor.org/emonSD-17Oct19.img.zip)
+- [Canada Server](https://distanthost.com/oem/emonSD-17Oct19.img.zip) thanks to @bidouilleur 
+```
+(.img) MD5: a7d12ac6b589ae0d470c4a6f1ce38414
+(.zip) MD5: 52ecf81c2ad4afbd9da42a6e703b5c59
+```
+- Minimum 16Gb SD Card
+- Built using EmonScripts emoncms installation script, see
+- Based on Raspbian Buster 2019-09-26-raspbian-buster-lite.zip 
+- Compatible with Raspberry Pi 3, 3B+ & 4
+- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- Log partition `/var/log` mounted as tmpfs using log2ram, now presistant after reboot
+- [SSH access disabled by default](https://community.openenergymonitor.org/t/emonpi-ssh-disabled-by-default/8847), long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.
+
+## Building Your Own - Base OS Preparation
 
 ### RaspberryPi
 
@@ -35,6 +44,10 @@ For Ubuntu, post base OS install, run this command so the user does not need a p
 ```shell
 sudo echo $USER' ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/$USER && sudo chmod 0440 /etc/sudoers.d/$USER
 ```
+
+### Digital Ocean Droplet
+
+For installation on a Digital Ocean Droplet, follow [this instruction](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/digital-ocean-install.md).
 
 ## Install the EmonCMS Installation Scripts
 
@@ -80,11 +93,11 @@ To restart the installation:
 ./main.sh
 ```
 
-See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/config.ini)
+See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.config.ini)
 
 ## Run Scripts Individually
 
-It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/master/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
+It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
 
 ## Standard Setup Filepaths
 

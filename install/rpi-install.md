@@ -1,12 +1,12 @@
 # EmonCMS Install SD Card Preparation for RaspberryPi
 
-1. Download the [Raspbian Buster Lite image](https://www.raspberrypi.org/downloads/raspbian/) and write it to an SD card with at least 8GB of space. [Balena](https://www.balena.io/) provide a nice tool called [Etcher](https://www.balena.io/etcher) which makes this process really easy.
+1. Download the [Raspbian Buster Lite image](https://www.raspberrypi.org/downloads/raspbian/) and write it to an SD card with at least 16GB of space. [Balena](https://www.balena.io/) provide a nice tool called [Etcher](https://www.balena.io/etcher) which makes this process really easy.
 
 1. After writing the image to the SD card, open the SD card `boot` folder on your computer.
 
 1. Create a file called ssh on the boot partition - to enable SSH access to the system.
 
-1. Copy the default `cmdline.txt` to `cmdline2.txt` in the boot partition
+1. Copy the default `cmdline.txt` to `cmdline2.txt` in the boot partition.
 1. Edit `cmdline.txt` and remove this text:
 
     ```shell
@@ -14,6 +14,18 @@
     ```
 
     This will stop the image from expanding to fill the full SD card size on first boot.
+
+1. If you want to add a `wpa_supplicant.conf` to the boot folder so it connects to your Wi-Fi, especially if using a PiZero, do so now.
+
+    ```
+    country=UK # Your 2-digit country code
+    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    network={
+        ssid=""
+        psk=""
+        key_mgmt=WPA-PSK
+    }
+    ```
 
 1. Eject the SD card from your PC.
 
@@ -45,7 +57,7 @@
 
     ```shell
     wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/defaults/etc/fstab
-    sudo cp fstab /etc/fstab
+    sudo mv fstab /etc/fstab
     sudo reboot
     ```
 

@@ -85,7 +85,7 @@ place | EMONCMS_WWW/Modules/config
 globals | $route, $session, $redis, $homedir
 non globals | $emonhub_config_file, $emonhub_logfile, $restart_log<br> Also in model : $logfile, $config_file, $restart_log_name
 background workers | restart.sh	
-log	| /var/opt/restart.log > to change	
+log	|  /var/log/emoncms/emonhub-restart.log	
 specific conf file | no
 
 dashboard|Dashboard Module|
