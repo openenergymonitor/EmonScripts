@@ -65,6 +65,7 @@ cd $openenergymonitor_dir/EmonScripts
 git branch
 git status
 git pull
+echo
 
 # Run update in main update script
 $openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware $serial_port

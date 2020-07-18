@@ -1,11 +1,11 @@
-/var/log/emoncms/*.log {
-        rotate 7
-        daily
-        compress
-        copytruncate
-        size 100k
-        nocreate
-        missingok
-        notifempty
-        delaycompress
+/var/log/emon*/*.log {
+    rotate 7
+    daily
+    compress
+    copytruncate
+    size 100k
+    nocreate
+    missingok
+    notifempty
+    delaycompress
 }

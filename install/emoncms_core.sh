@@ -5,12 +5,16 @@ echo "-------------------------------------------------------------"
 echo "Install Emoncms Core"
 echo "-------------------------------------------------------------"
 
-# Give user ownership over /var/www/ folder
-sudo chown $user /var/www
+# Give user ownership over www folder
+root_www=$(dirname "$emoncms_www")
+if [ ! -d $root_www ]; then
+    sudo mkdir -p $root_www
+fi
+sudo chown $user $root_www
 
 # Install emoncms core repository with git
 if [ ! -d $emoncms_www ]; then
-    cd /var/www && git clone -b $emoncms_core_branch ${git_repo[emoncms_core]}
+    cd $root_www && git clone -b $emoncms_core_branch ${git_repo[emoncms_core]}
     cd
 else
     echo "- emoncms already installed"
@@ -31,15 +35,20 @@ fi
 if [ ! -f $emoncms_www/settings.ini ]; then
     echo "- installing default emoncms settings.ini"
     cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
-    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.ini
-    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.ini
-    sed -i "s~EMONCMS_DATADIR~$emoncms_datadir~" $emoncms_www/settings.ini
+    sed -i "s~emoncms_dir = .*$~emoncms_dir = $emoncms_dir~" $emoncms_www/settings.ini
+    sed -i "s~openenergymonitor_dir = .*$~openenergymonitor_dir = $openenergymonitor_dir~" $emoncms_www/settings.ini
+    sed -i "s~emoncms_datadir = .*$~emoncms_datadir = $emoncms_datadir~" $emoncms_www/settings.ini
+
+    sed -i "6s~database = .*$~database = \"$mysql_database\"~" $emoncms_www/settings.ini
+    sed -i "7s~username = .*$~username = \"$mysql_user\"~" $emoncms_www/settings.ini
+    sed -i "8s~password = .*$~password = \"$mysql_password\"~" $emoncms_www/settings.ini
 else
     echo "- emoncms settings.ini already exists"
 fi
 
 if [ ! -d $emoncms_datadir ]; then
     sudo mkdir $emoncms_datadir
+    sudo chown $user $emoncms_datadir
 fi
 
 # Create data directories for emoncms feed engines:
@@ -60,6 +69,10 @@ then
 fi
 
 # Create a symlink to reference emoncms within the web root folder (review):
+if [ "$emoncms_www" != "/var/www/emoncms" ]; then
+    echo "- symlinking emoncms folder to /var/www/emoncms"
+    sudo ln -s $emoncms_www /var/www/emoncms
+fi
 if [ ! -d /var/www/html/emoncms ]; then
     echo "- symlinking emoncms folder to /var/www/html/emoncms"
     sudo ln -s $emoncms_www /var/www/html/emoncms

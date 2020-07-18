@@ -2,7 +2,7 @@
 source load_config.sh
 
 echo "-------------------------------------------------------------"
-echo "RFM69Pi Firmware Update"
+echo "Update RFM69Pi Firmware"
 echo "-------------------------------------------------------------"
 
 echo "Getting latest RFM69Pi release info from github"

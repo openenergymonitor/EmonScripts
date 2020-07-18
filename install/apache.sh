@@ -2,7 +2,7 @@
 source load_config.sh
 
 echo "-------------------------------------------------------------"
-echo "Apache configuration"
+echo "Install Apache2"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y apache2
 
@@ -21,4 +21,3 @@ sudo a2dissite 000-default.conf
 sudo a2ensite emoncms
 
 sudo systemctl restart apache2
-

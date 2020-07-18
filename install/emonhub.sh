@@ -2,7 +2,7 @@
 source load_config.sh
 
 echo "-------------------------------------------------------------"
-echo "emonHub install"
+echo "Install EmonHub"
 echo "-------------------------------------------------------------"
 cd $openenergymonitor_dir
 

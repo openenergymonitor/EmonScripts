@@ -13,14 +13,9 @@ sudo chown $user $openenergymonitor_dir
 sudo mkdir $emoncms_dir
 sudo chown $user $emoncms_dir
 
-cd $openenergymonitor_dir
-
-git clone https://github.com/openenergymonitor/EmonScripts.git
-cd $openenergymonitor_dir/EmonScripts
-git checkout stable
-
+git clone -b stable https://github.com/openenergymonitor/EmonScripts.git $openenergymonitor_dir/EmonScripts
 cd $openenergymonitor_dir/EmonScripts/install
-./main.sh
-cd
+bash ./main.sh
 
-rm init.sh
+cd
+rm -f init.sh

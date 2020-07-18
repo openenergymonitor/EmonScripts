@@ -6,15 +6,17 @@ echo "Install Emoncms Core Modules"
 echo "-------------------------------------------------------------"
 # Review default branch: e.g stable
 cd $emoncms_www/Modules
-for module in ${!emoncms_modules[@]}; do
-    branch=${emoncms_modules[$module]}
-    if [ ! -d $module ]; then
-        echo "- Installing module: $module"
-        git clone -b $branch ${git_repo[$module]}
-    else
-        echo "- Module $module already exists"
-    fi
-done
+if [ -v emoncms_modules[@] ]; then
+    for module in ${!emoncms_modules[@]}; do
+        branch=${emoncms_modules[$module]}
+        if [ ! -d $module ]; then
+            echo "- Installing module: $module"
+            git clone -b $branch ${git_repo[$module]} $module
+        else
+            echo "- Module $module already exists"
+        fi
+    done
+fi
 
 if [ ! -d $emoncms_dir ]
 then
@@ -27,26 +29,28 @@ if [ ! -d $emoncms_dir/modules ]; then
     mkdir $emoncms_dir/modules
 fi
 
-cd $emoncms_dir/modules
-for module in ${!symlinked_emoncms_modules[@]}; do
-    branch=${symlinked_emoncms_modules[$module]}
-    if [ ! -d $module ]; then
-        echo "- Installing module: $module"
-        git clone -b $branch ${git_repo[$module]}
-        # If module contains emoncms UI folder, symlink to $emoncms_www/Modules
-        if [ -d $emoncms_dir/modules/$module/$module-module ]; then
-            echo "-- UI directory symlink"
-            ln -s $emoncms_dir/modules/$module/$module-module $emoncms_www/Modules/$module
+if [ -v emoncms_modules[@] ]; then
+    cd $emoncms_dir/modules
+
+    for module in ${!symlinked_emoncms_modules[@]}; do
+        branch=${symlinked_emoncms_modules[$module]}
+        if [ ! -d $module ]; then
+            echo "- Installing module: $module"
+            git clone -b $branch ${git_repo[$module]}
+            # If module contains emoncms UI folder, symlink to $emoncms_www/Modules
+            if [ -d $emoncms_dir/modules/$module/$module-module ]; then
+                echo "-- UI directory symlink"
+                ln -s $emoncms_dir/modules/$module/$module-module $emoncms_www/Modules/$module
+            fi
+            # run module install script if present
+            if [ -f $emoncms_dir/modules/$module/install.sh ]; then
+                $emoncms_dir/modules/$module/install.sh $openenergymonitor_dir
+                echo
+            fi
+        else
+            echo "- Module $module already exists"
         fi
-        # run module install script if present
-        if [ -f $emoncms_dir/modules/$module/install.sh ]; then
-            $emoncms_dir/modules/$module/install.sh $openenergymonitor_dir
-            echo
-        fi
-    else
-        echo "- Module $module already exists"
-    fi
-done
+    done
 
 echo "Update Emoncms database"
 php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php

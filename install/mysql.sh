@@ -2,7 +2,7 @@
 source load_config.sh
 
 echo "-------------------------------------------------------------"
-echo "Setup the Mariadb server (MYSQL)"
+echo "Install Mariadb Server and Client (MySQL)"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y mariadb-server mariadb-client
 

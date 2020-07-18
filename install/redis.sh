@@ -2,7 +2,7 @@
 source load_config.sh
 
 echo "-------------------------------------------------------------"
-echo "Redis configuration"
+echo "Install Redis"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y redis-server
 

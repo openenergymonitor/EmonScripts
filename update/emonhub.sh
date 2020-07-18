@@ -2,7 +2,7 @@
 source load_config.sh
 
 echo "-------------------------------------------------------------"
-echo "emonHub update"
+echo "Update EmonHub"
 echo "-------------------------------------------------------------"
 cd $openenergymonitor_dir
 
@@ -40,6 +40,5 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
     $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir
 
 else
-    echo "EmonHub not found"
+    echo "Not found at $openenergymonitor_dir/emonhub"
 fi
-
