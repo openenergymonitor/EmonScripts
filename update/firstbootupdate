@@ -21,7 +21,7 @@ if [ ! -s /var/log/emoncms/emonpiupdate.log ]; then
 	fi
 
 	if [ "$connected" = true ]; then
-    /opt/openenergymonitor/EmonScripts/update/service-runner-update.sh 2>&1 >> /var/log/emoncms/emonpiupdate.log 2>&1
+    /opt/openenergymonitor/EmonScripts/update/service-runner-update.sh all emonpi 2>&1 >> /var/log/emoncms/emonpiupdate.log 2>&1
     # set permissions on newly created logfile so emonpiupdate script an write to it
     sudo chmod 666 /var/log/emoncms/emonpiupdate.log
 	fi
