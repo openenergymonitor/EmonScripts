@@ -53,10 +53,6 @@ echo "Set default emonpi default git credentials"
 git config --global user.email "pi@emonpi.com"
 git config --global user.name "emonpi"
 
-
-echo "emonpi emoncms restore default settings"
-cp /var/www/emoncms/default.emonpi.settings.php /var/www/emoncms/settings.php
-
 echo "restore emonhub settings"
 cp /opt/openenergymonitor/emonhub/conf/emonpi.default.emonhub.conf /etc/emonhub/emonhub.conf
 
