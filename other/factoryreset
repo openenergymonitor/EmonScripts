@@ -55,6 +55,8 @@ git config --global user.name "emonpi"
 
 echo "restore emonhub settings"
 cp /opt/openenergymonitor/emonhub/conf/emonpi.default.emonhub.conf /etc/emonhub/emonhub.conf
+sudo chmod 666 /etc/emonhub/emonhub.conf
+sed -i "s/loglevel = DEBUG/loglevel = WARNING/" /etc/emonhub/emonhub.conf
 
 echo "Clear bash history"
 history -c
