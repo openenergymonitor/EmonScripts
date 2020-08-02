@@ -25,11 +25,6 @@ if [ "$EUID" = "0" ] ; then
     exit 0
 fi
 
-if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
-    echo "Running apt-get update"
-    sudo apt-get update
-fi
-
 if [ "$emonSD_pi_env" = "1" ]; then
     # Check if we have an emonpi LCD connected, 
     # if we do assume EmonPi hardware else assume RFM69Pi
@@ -46,7 +41,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
-        sudo service emonPiLCD stop
+        sudo systemctl stop emonPiLCD
 
         # Display update message on LCD
         echo "Display update message on LCD"
@@ -56,6 +51,11 @@ if [ "$emonSD_pi_env" = "1" ]; then
     # Ensure logrotate configuration has correct permissions
     sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
 
+fi
+
+if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
+    echo "Running apt-get update"
+    sudo apt-get update
 fi
 
 # -----------------------------------------------------------------
@@ -116,13 +116,8 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ "$hardware" == "EmonPi" ]; then
-    echo
-    # Wait for update to finish
-    echo "Starting emonPi LCD service.."
-    sleep 5
-    sudo service emonPiLCD restart
-    echo
+if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
+    $openenergymonitor_dir/EmonScripts/update/emonsd.sh
 fi
 
 # -----------------------------------------------------------------
