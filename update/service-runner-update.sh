@@ -41,13 +41,30 @@ else
     echo "- emonSD version: $image_version"
     valid=0
     
-    save_to_update=$(curl -s https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/safe-update)
+    retry=0
+    while [ $retry -lt 5 ]; do
+        safe_to_update=$(curl -s https://raw.githubusercontent.com/openenergymonitor/EmonScripts/master/safe-update)
+        if [ "$safe_to_update" == "" ]; then
+            echo "  retry fetching safe-update list"
+            retry=$((retry+1))        
+            sleep 3
+        else
+            break
+        fi
+    done
+    if [ "$safe_to_update" == "" ]; then
+        echo "ERROR: Could not load safe-update list, please check network connection"
+        exit 0
+    fi
+
+    echo "- supported images: "$safe_to_update
+
     while read -r image_name; do
         if [ "$image_version" == "$image_name" ]; then
-            echo "emonSD base image check passed...continue update"
+            echo "- emonSD base image check passed...continue update"
             valid=1
         fi
-    done <<< "$save_to_update"
+    done <<< "$safe_to_update"
 
     if [ $valid == 0 ]; then
         echo "ERROR: emonSD base image old or undefined...update will not continue"
