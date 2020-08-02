@@ -1,11 +1,11 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "EmonPi Firmware Update"
 echo "-------------------------------------------------------------"
 
-sudo service emonhub stop
+sudo systemctl stop emonhub
 
 echo "Start ATmega328 serial upload using avrdude with latest.hex"
 
@@ -15,5 +15,4 @@ echo "avrdude -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 115200 -U flash:w:$ope
 
 avrdude -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 115200 -U flash:w:$openenergymonitor_dir/emonpi/firmware/compiled/latest.hex
 
-sudo service emonhub start
-
+sudo systemctl start emonhub

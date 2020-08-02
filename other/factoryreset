@@ -1,4 +1,22 @@
 #!/bin/bash
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root: sudo su"
+   exit 1
+fi
+
+echo "emonPi Factory reset script"
+
+image_version=$(ls /boot | grep emonSD)
+
+if [[ "${image_version:0:6}" == "emonSD" ]]
+then
+    echo "Image version: $image_version"
+else
+    echo "Non OpenEnergyMonitor offical emonSD image, no gurantees this script will work :-/"
+    read -p "Press any key to continue...or CTRL+C to exit " -n1 -s
+fi
+
 emoncms_datadir=/var/opt/emoncms
 
 sudo systemctl stop emonhub
@@ -35,22 +53,27 @@ echo "Set default emonpi default git credentials"
 git config --global user.email "pi@emonpi.com"
 git config --global user.name "emonpi"
 
-# echo "Clear bash history"
-# history -c
-# >~/.bash_history
-# rm /home/pi/.bash_history
+echo "restore emonhub settings"
+cp /opt/openenergymonitor/emonhub/conf/emonpi.default.emonhub.conf /etc/emonhub/emonhub.conf
+sudo chmod 666 /etc/emonhub/emonhub.conf
+sed -i "s/loglevel = DEBUG/loglevel = WARNING/" /etc/emonhub/emonhub.conf
 
-# echo "Clear and re-generate SSH keys"
-# sudo rm /home/pi/.ssh/*
-# sudo rm /etc/ssh/ssh_host_*
-# sudo dpkg-reconfigure openssh-server
+echo "Clear bash history"
+history -c
+>~/.bash_history
+rm /home/pi/.bash_history
 
-# echo "Clean up packages"
-# sudo apt-get clean
+echo "Clear and re-generate SSH keys"
+sudo rm /home/pi/.ssh/*
+sudo rm /etc/ssh/ssh_host_*
+sudo dpkg-reconfigure openssh-server
 
-# if [ "$VERSION" = "stretch" ]; then
-#    echo "Disabling SSH"
-#    sudo update-rc.d ssh disable
-#    sudo invoke-rc.d ssh stop
-#    sudo rm /boot/ssh
-# fi
+echo "Clean up packages"
+sudo apt-get clean
+
+if [ "$VERSION" = "stretch" ]; then
+   echo "Disabling SSH"
+   sudo update-rc.d ssh disable
+   sudo invoke-rc.d ssh stop
+   sudo rm /boot/ssh
+fi

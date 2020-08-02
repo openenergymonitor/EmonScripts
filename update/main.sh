@@ -1,8 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
-# Use same config.ini as the install
-source $DIR/../install/config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "Main Update Script"
@@ -10,6 +9,7 @@ echo "-------------------------------------------------------------"
 
 type=$1
 firmware=$2
+serial_port=$3
 
 datestr=$(date)
 
@@ -41,12 +41,21 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
-        sudo service emonPiLCD stop
+        sudo systemctl stop emonPiLCD
 
         # Display update message on LCD
         echo "Display update message on LCD"
         sudo $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
+    
+    # Ensure logrotate configuration has correct permissions
+    sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
+
+fi
+
+if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
+    echo "Running apt-get update"
+    sudo apt-get update
 fi
 
 # -----------------------------------------------------------------
@@ -60,6 +69,7 @@ if [ "$type" == "all" ]; then
             cd $openenergymonitor_dir/$repo
             git branch
             git status
+            git fetch --all --prune
             git pull
         fi
     done
@@ -80,6 +90,10 @@ if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
     
     if [ "$firmware" == "rfm12pi" ]; then
         $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
+    fi
+    
+    if [ "$firmware" == "emontxv3cm" ]; then
+        $openenergymonitor_dir/EmonScripts/update/emontxv3cm.sh $serial_port
     fi
 fi
 
@@ -102,13 +116,8 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ "$hardware" == "EmonPi" ]; then
-    echo
-    # Wait for update to finish
-    echo "Starting emonPi LCD service.."
-    sleep 5
-    sudo service emonPiLCD restart
-    echo
+if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
+    $openenergymonitor_dir/EmonScripts/update/emonsd.sh
 fi
 
 # -----------------------------------------------------------------

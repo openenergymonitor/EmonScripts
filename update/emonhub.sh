@@ -1,5 +1,5 @@
 #!/bin/bash
-source config.ini
+source load_config.sh
 
 echo "-------------------------------------------------------------"
 echo "emonHub update"
@@ -8,19 +8,33 @@ cd $openenergymonitor_dir
 
 if [ -d $openenergymonitor_dir/emonhub ]; then
 
-    echo "git pull $openenergymonitor_dir/emonhub"
     cd $openenergymonitor_dir/emonhub
-    git branch
+    branch=$(git rev-parse --abbrev-ref HEAD)
+
+    echo "git fetch --all --prune -v"
+    git fetch --all --prune -v
+    echo "git status"
     git status
-    git pull
+        
+    if [ $branch == "emon-pi" ]; then
+        # Switch to stable
+        branch="stable"
+        echo "Migrating from emon-pi branch to $branch branch"
+        echo "git checkout $branch"
+        git checkout $branch
+        echo
+    fi
     
-    # can be used to change service source location in future
-    # sudo ln -sf $openenergymonitor_dir/emonhub/service/emonhub.service /lib/systemd/system
+    echo "git pull origin $branch"
+    git pull origin $branch
+    echo
     
-    sudo systemctl restart $service.service
-    state=$(systemctl show $service | grep ActiveState)
-    echo "- Service $state"
-    # ---------------------------------------------------------
+    # Run install script again to update
+    # script handles restart of emonhub service
+    echo "Running emonhub install & update script emonSD_pi_env:$emonSD_pi_env"
+    echo "--------------------------------------------------------------------"
+    ./install.sh $emonSD_pi_env
+    echo "--------------------------------------------------------------------"
     
     echo "Running emonhub automatic node addition script"
     $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir

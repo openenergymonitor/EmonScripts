@@ -50,7 +50,8 @@ sudo apt-get install -y ufw
 # Underclock and memory tweak
 # change arm_freq to 1200 and gpu_mem to 16
 # more ram for general purpose, less for GPU
-sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
+# Removed see: https://github.com/openenergymonitor/EmonScripts/issues/83
+# sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
 
 # 6 Sep 2019 decision to leave elevator setting as default
 # option to review in future: elevator=noop
@@ -75,6 +76,9 @@ fi
 
 # emonSD rc.local includes wifiAP start and first boot update
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
+
+# emonSDexpand
+sudo ln -sf $emoncms_dir/modules/usefulscripts/sdpart/sdpart_imagefile /usr/bin/emonSDexpand
 
 # --------------------------------------------------------------------------------
 # Misc
