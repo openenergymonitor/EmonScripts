@@ -74,8 +74,6 @@ else
     fi
 fi
 
-exit 0
-
 # -----------------------------------------------------------------
 
 # Pull in latest EmonScripts repo before then running updated update scripts
