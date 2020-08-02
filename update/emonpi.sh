@@ -16,3 +16,6 @@ echo "avrdude -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 115200 -U flash:w:$ope
 avrdude -c arduino -p ATMEGA328P -P /dev/ttyAMA0 -b 115200 -U flash:w:$openenergymonitor_dir/emonpi/firmware/compiled/latest.hex
 
 sudo systemctl start emonhub
+
+echo "waiting for emonpi to stop controlling LCD"
+sleep 3

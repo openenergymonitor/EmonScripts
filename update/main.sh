@@ -78,6 +78,29 @@ cd $openenergymonitor_dir/EmonScripts/update
 
 # -----------------------------------------------------------------
 
+if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
+    echo "Start emonhub update script:"
+    $openenergymonitor_dir/EmonScripts/update/emonhub.sh
+    echo
+fi
+
+# -----------------------------------------------------------------
+
+if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
+    echo "Start emoncms update:"
+    $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
+    $openenergymonitor_dir/EmonScripts/update/emoncms_modules.sh
+    echo
+fi
+
+# -----------------------------------------------------------------
+
+if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
+    $openenergymonitor_dir/EmonScripts/update/emonsd.sh
+fi
+
+# -----------------------------------------------------------------
+
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
@@ -99,25 +122,13 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
-    echo "Start emonhub update script:"
-    $openenergymonitor_dir/EmonScripts/update/emonhub.sh
+if [ "$hardware" == "EmonPi" ]; then
     echo
-fi
-
-# -----------------------------------------------------------------
-
-if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
-    echo "Start emoncms update:"
-    $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
-    $openenergymonitor_dir/EmonScripts/update/emoncms_modules.sh
+    # Wait for update to finish
+    echo "Starting emonPi LCD service.."
+    sleep 5
+    sudo service emonPiLCD restart
     echo
-fi
-
-# -----------------------------------------------------------------
-
-if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
-    $openenergymonitor_dir/EmonScripts/update/emonsd.sh
 fi
 
 # -----------------------------------------------------------------
