@@ -52,8 +52,6 @@ if [ "$emonSD_pi_env" = "1" ]; then
         $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
     
-    exit 0
-    
     # Ensure logrotate configuration has correct permissions
     sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
 
