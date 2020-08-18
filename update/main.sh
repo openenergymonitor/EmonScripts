@@ -30,7 +30,11 @@ if [ "$emonSD_pi_env" = "1" ]; then
     # if we do assume EmonPi hardware else assume RFM69Pi
     lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
     lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
-
+    
+    # Check if python3-smbus is available for LCD
+    lcdp3=$(dpkg-query -W -f='${Status}' python3-smbus)
+    if [ "$lcdp3" == 'install ok installed' ]; then python_cmd="python3"; else python_cmd="python"; fi
+    
     if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
         hardware="EmonPi"
     else
@@ -45,8 +49,10 @@ if [ "$emonSD_pi_env" = "1" ]; then
 
         # Display update message on LCD
         echo "Display update message on LCD"
-        sudo $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
+        $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
+    
+    exit 0
     
     # Ensure logrotate configuration has correct permissions
     sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
@@ -96,7 +102,7 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
-    $openenergymonitor_dir/EmonScripts/update/emonsd.sh
+    $openenergymonitor_dir/EmonScripts/update/emonsd.sh $python_cmd
 fi
 
 # -----------------------------------------------------------------

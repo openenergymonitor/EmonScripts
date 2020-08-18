@@ -1,5 +1,6 @@
 #!/bin/bash
 source load_config.sh
+python_cmd=$1
 
 echo "-------------------------------------------------------------"
 echo "EmonPi LCD Update"
@@ -11,4 +12,4 @@ fi
 echo "Stopping emonPiLCD service"
 sudo systemctl stop emonPiLCD
 echo "Display update message on LCD"
-sudo $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
+$python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
