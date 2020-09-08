@@ -35,7 +35,7 @@ Download (1.1 GB)
 
 ### RaspberryPi
 
-To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](https://github.com/openenergymonitor/EmonScripts/blob/master/install/rpi-install.md).
+To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](rpi-install.md).
 
 ### Ubuntu
 
@@ -47,20 +47,28 @@ sudo echo $USER' ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/$USER && sud
 
 ### Digital Ocean Droplet
 
-For installation on a Digital Ocean Droplet, follow [this instruction](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/digital-ocean-install.md).
+For installation on a Digital Ocean Droplet, follow [this instruction](digital-ocean-install.md).
 
 ## Install the EmonCMS Installation Scripts
 
-Pull the script from GitHub (note if you wish to pull the script from `master` change the path).
+Pull the init script from GitHub (note if you wish to pull the script from `master` change the path).
 
 ```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/init.sh
 chmod +x init.sh && ./init.sh
 ```
 
+To use the `master` branch for **all** repositories use the command;
+
+```shell
+chmod +x init.sh && ./init.sh master
+```
+
 The `init` script automatically calls the `main` script. At this point you will be offered the option to configure the installation process.
 
 If you are on a RaspberryPi or EmonPi you can usually just proceed.
+
+If you wish to change any repository to master or change any other configuration, then edit the `config.ini` file.
 
 The Install process does takes sometime.
 
@@ -93,11 +101,11 @@ To restart the installation:
 ./main.sh
 ```
 
-See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.config.ini)
+See explanation and settings in installation configuration file here: [config.ini](emonsd.config.ini)
 
 ## Run Scripts Individually
 
-It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
+It is possible to run the [scripts individually](install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
 
 ## Standard Setup Filepaths
 

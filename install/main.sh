@@ -16,7 +16,12 @@
 #!/bin/bash
 if [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
+    if [ "$1" != "" ]; then
+        echo "Set $1 branch"
+        sed -i "s/stable/$1/g" config.ini
+    fi
 fi
+
 source load_config.sh
     
 echo "-------------------------------------------------------------"

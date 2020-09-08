@@ -17,10 +17,14 @@ cd $openenergymonitor_dir
 
 git clone https://github.com/openenergymonitor/EmonScripts.git
 cd $openenergymonitor_dir/EmonScripts
-git checkout stable
+if [ "$1" != "" ]; then
+    git checkout $1
+else
+    git checkout stable
+fi
 
 cd $openenergymonitor_dir/EmonScripts/install
-./main.sh
+./main.sh $1
 cd
 
 rm init.sh
