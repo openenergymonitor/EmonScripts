@@ -48,13 +48,13 @@ It consists of 2 main steps, launched by two different shell scripts located in 
 
 - version check and comparison to labels stored in the safe-update file of the EmonScripts repository
 - pull the latest version of the EmonScripts repository
-- if version check is successfull, goto step 2
+- if version check is successful, goto step 2
 
 ## step 2 : update/main.sh
 
 ### emonPiLCD & al example
 
 - stop the emonPiLCD service
-- launch the lcd/emonPiLCD_update.py from the emonpi repo (to display the "UPDATING..." message on the LCD)
+- launch lcd/emonPiLCD_update.py from the emonpi repo (to display the "UPDATING..." message on the LCD)
 - pull the emonpi repo
 - run the update/emonpi.sh script of the EmonScripts repo, which runs the lcd/install.sh from the emonpi repo
