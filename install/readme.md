@@ -4,7 +4,7 @@
 
 This build script can be used to build a fully fledged emonCMS installation on debian based operating systems, including: installation of LAMP server and related packages, redis, MQTT, emonCMS core, emonCMS modules, and if applicable, emonhub & RaspberryPi support for serial port, and WiFi access point.
 
-The script is a series of scripts that install each required component. To see what is installed and how open each script. <-- second sentence doesn't make sense the way it's writen.
+The script is a series of scripts that install each required component. To see what is installed and how open each script.
 
 As at 17 Oct 19 - Tested on:
 
