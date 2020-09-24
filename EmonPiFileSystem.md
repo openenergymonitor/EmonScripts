@@ -3,7 +3,7 @@
 | | | |
 -- | -- | --
 EMONCMS_WWW | /var/www/emoncms | location of the core package and of the main modules (admin, dashboards, config)
-EMONCMS_DATADIR | /var/opt/emoncms | timeseries directories
+EMONCMS_DATADIR | /var/opt/emoncms | timeseries database directories
 EMONCMS_DIR | /opt/emoncms | location of symlinked modules (postprocess, sync) and of uploaded tar.gz archives when importing a backup 
 OPENENERGYMONITOR_DIR | /opt/openenergymonitor | location of EmonScripts, emonhub and of created backup archives
 EMONCMS_LOG_LOCATION | /var/log/emoncms | log location for emoncms logs <br> emoncms.log is main emoncms log, managed with the EmonLogger PHP class
@@ -14,7 +14,7 @@ EMONCMS_LOG_LOCATION | /var/log/emoncms | log location for emoncms logs <br> emo
 -- | -- | --
 web server | Apache2 |  
 relational databases | mysql or maria |  
-key value database  | redis-server | data buffering for timeseries and backgroud processing for service-runner
+key:value database  | redis-server | data buffering for timeseries and backgroud processing for service-runner
 message broker | mosquitto |   
 data engine language |php with extensions | pear (for pecl needs)<br>mysql<br>gd dev, common<br>mbstring<br>redis<br>mosquitto (https://github.com/mgdm/Mosquitto-PHP)<br>curl
 
@@ -29,7 +29,7 @@ emonhub.service -> /opt/openenergymonitor/emonhub/service/emonhub.service
 feedwriter.service -> /var/www/emoncms/scripts/services/feedwriter/feedwriter.service
 service-runner.service -> /var/www/emoncms/scripts/services/service-runner/service-runner.service
 ```
-Maria and Redis services are in lib/systemd/system but they are compiled...
+MariaDB and Redis services are in lib/systemd/system, but they are compiled...
 ```
 mysqld.service -> /lib/systemd/system/mariadb.service
 mysql.service -> /lib/systemd/system/mariadb.service
@@ -45,7 +45,7 @@ non globals | $connected, $subscribed, $last_retry, $last_heartbeat, $count
 log	| uses emoncms main log file <br>`journalctl -f -u emoncms_mqtt`
 specific conf file | no
 
-feedwriter (PHP)|writes input datas from redis-buffer to disk in order to feed the timeseries
+feedwriter (PHP)|writes input data from redis-buffer to disk in order to feed the timeseries database
 --|--
 scriptpath	| EMONCMS_WWW/scripts/feedwriter.php
 Servicepath | EMONCMS_WWW/scripts/services/feedwriter/feedwriter.service
@@ -60,7 +60,7 @@ Servicepath | EMONCMS_WWW/scripts/services/service-runner/service-runner.service
 log	| uses systemd log file <br>`journalctl -f -u service-runner`
 specific conf file | no
 
-emonhub (Python)| listen on serial port or ethernet and publish to mosquitto broker on topic emon
+emonhub (Python)| listen on serial port or ethernet and publish to mosquitto broker topic emon
 --|--
 scriptpath	| OPENENERGYMONITOR_DIR/emonhub/src/emonhub.py
 Servicepath | OPENENERGYMONITOR_DIR/service/emonhub.service
@@ -76,7 +76,7 @@ specific conf file | no
 
 ### EmonCMS modules
 
-admin| module integrated in the core package - does not have its own git repo
+admin| module integrated into the core package - does not have its own git repo
 --|--			
 place | EMONCMS_WWW/Modules/admin
 globals	|  $mysqli,$session,$route,$updatelogin,$allow_emonpi_admin, $redis, $openenergymonitor_dir, $admin_show_update, $path <br> $log, $log_location, $log_enabled, $log_level
