@@ -2,9 +2,9 @@
 
 ## Introduction
 
-This build script can be used to build a fully fledged emoncms installation on debian based operating systems, including: installation of LAMP server and related packages, redis, mqtt, emoncms core, emoncms modules, and if applicable, emonhub & raspberrypi support for serial port, and WiFi access point.
+This build script can be used to build a fully fledged emonCMS installation on debian based operating systems, including: installation of LAMP server and related packages, redis, MQTT, emonCMS core, emonCMS modules, and if applicable, emonhub & RaspberryPi support for serial port, and WiFi access point.
 
-The script is a series of scripts that install each required component. To see what is installed and how open each script.
+The script is a series of scripts that install each required component. To see what is installed and how open each script. <-- second sentence doesn't make sense the way it's writen.
 
 As at 17 Oct 19 - Tested on:
 
@@ -24,10 +24,10 @@ Download (1.1 GB)
 (.zip) MD5: 52ecf81c2ad4afbd9da42a6e703b5c59
 ```
 - Minimum 16Gb SD Card
-- Built using EmonScripts emoncms installation script, see
+- Built using EmonScripts emonCMS installation script, see
 - Based on Raspbian Buster 2019-09-26-raspbian-buster-lite.zip 
 - Compatible with Raspberry Pi 3, 3B+ & 4
-- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- EmonCMS data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
 - Log partition `/var/log` mounted as tmpfs using log2ram, now presistant after reboot
 - [SSH access disabled by default](https://community.openenergymonitor.org/t/emonpi-ssh-disabled-by-default/8847), long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.
 
@@ -35,7 +35,7 @@ Download (1.1 GB)
 
 ### RaspberryPi
 
-To install onto a RaspberryPi, a number of tasks are required. Please follow [this instruction first](https://github.com/openenergymonitor/EmonScripts/blob/master/install/rpi-install.md).
+To install on a RaspberryPi, a number of tasks are required. Please follow [these instructions first](https://github.com/openenergymonitor/EmonScripts/blob/master/install/rpi-install.md).
 
 ### Ubuntu
 
@@ -47,7 +47,7 @@ sudo echo $USER' ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/$USER && sud
 
 ### Digital Ocean Droplet
 
-For installation on a Digital Ocean Droplet, follow [this instruction](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/digital-ocean-install.md).
+For installation on a Digital Ocean Droplet, follow [these instructions](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/digital-ocean-install.md).
 
 ## Install the EmonCMS Installation Scripts
 
@@ -62,23 +62,23 @@ The `init` script automatically calls the `main` script. At this point you will 
 
 If you are on a RaspberryPi or EmonPi you can usually just proceed.
 
-The Install process does takes sometime.
+Be patient, the install process takes some time.
 
 ## Post Install - Settings
 
-If you have used EmonCMS before you may need to edit the settings to suit your local setup. This is now an `ini` file called `settings.ini` in `/var/www/emoncms/`.
+If you have used EmonCMS before, you may need to edit the settings to suit your local setup. This is now an `ini` file called `settings.ini` in `/var/www/emoncms/`.
 
 ## Post Install - First Use
 
-To access EmonCMS go to the IP of your machine in your browser.  This [Guide](https://guide.openenergymonitor.org/setup/connect/) will help you set your system up.
+To access EmonCMS go to the IP of your machine, in your browser.  This [Guide](https://guide.openenergymonitor.org/setup/connect/) will help you set your system up.
 
 At the initial user screen, you need to select **Register** and create a user - this will be the admin user.
 
-If you are migrating from an old system, Export your data from the old system and Import the data to the new system (after registering a user). This will then require you to login as the original user.
+If you are migrating from an old system, export your data from the old system and import the data to the new system (after registering a user). This will require you to login as the original user.
 
 ## Configure install
 
-The default configuration is for the RaspberryPi platform and Raspbian Buster image specifically. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment.
+The default configuration is specifically for the RaspberryPi platform and Raspbian Buster image. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment.
 
 To edit the configuration (standard file paths):
 
@@ -93,7 +93,7 @@ To restart the installation:
 ./main.sh
 ```
 
-See explanation and settings in installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.config.ini)
+See explanation and settings in the installation configuration file here: [config.ini](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.config.ini)
 
 ## Run Scripts Individually
 
