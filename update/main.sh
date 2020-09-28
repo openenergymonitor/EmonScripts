@@ -25,6 +25,9 @@ if [ "$EUID" = "0" ] ; then
     exit 0
 fi
 
+sudo apt-get install -y python3-pip
+pip3 install redis
+
 if [ "$emonSD_pi_env" = "1" ]; then
     # Check if we have an emonpi LCD connected, 
     # if we do assume EmonPi hardware else assume RFM69Pi
