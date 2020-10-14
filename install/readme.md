@@ -11,7 +11,9 @@ The script is a series of scripts that install each required component. To see w
 As at 17 Oct 19 - Tested on:
 
 - [Raspbian Buster Lite](https://www.raspberrypi.org/downloads/raspbian/), Release date: 2019-07-10
-- Ubuntu 1804 LTS
+- Ubuntu 20.04 LTS
+
+It is **strongly recommended** that you dedicate a single device (NUC/VM/Pi) to emoncms. Using it alongside other software can prove problematic.
 
 [**Forum:** EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
 
