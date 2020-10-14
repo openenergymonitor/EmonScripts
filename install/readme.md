@@ -6,7 +6,7 @@ This build script can be used to build a fully fledged emonCMS installation on d
 
 The script is a series of scripts that install each required component. To see what is installed and how open each script.
 
-**New image released July20 [](https://community.openenergymonitor.org/t/emonsd-24jul20-release/15170)**
+**New image released July20<br>[https://community.openenergymonitor.org/t/emonsd-24jul20-release/15170](https://community.openenergymonitor.org/t/emonsd-24jul20-release/15170)**
 
 As of July 2020 - Tested on:
 
