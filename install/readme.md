@@ -68,21 +68,9 @@ If you are on a RaspberryPi or EmonPi you can usually just proceed.
 
 Be patient, the install process takes some time.
 
-## Post Install - Settings
-
-If you have used EmonCMS before, you may need to edit the settings to suit your local setup. This is now an `ini` file called `settings.ini` in `/var/www/emoncms/`.
-
-## Post Install - First Use
-
-To access EmonCMS go to the IP of your machine, in your browser.  This [Guide](https://guide.openenergymonitor.org/setup/connect/) will help you set your system up.
-
-At the initial user screen, you need to select **Register** and create a user - this will be the admin user.
-
-If you are migrating from an old system, export your data from the old system and import the data to the new system (after registering a user). This will require you to login as the original user.
-
 ## Configure install
 
-The default configuration is specifically for the RaspberryPi platform and Raspbian Buster image. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment.
+The default configuration is specifically for the RaspberryPi platform and Raspbian Buster image. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment, e.g. set `emonSD_pi_env=0`
 
 To edit the configuration (standard file paths):
 
@@ -102,6 +90,18 @@ See explanation and settings in the installation configuration file here: [confi
 ## Run Scripts Individually
 
 It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
+
+## Post Install - Settings
+
+If you have used EmonCMS before, you may need to edit the settings to suit your local setup. This is now an `ini` file called `settings.ini` in `/var/www/emoncms/`.
+
+## Post Install - First Use
+
+To access EmonCMS go to the IP of your machine, in your browser.  This [Guide](https://guide.openenergymonitor.org/setup/connect/) will help you set your system up.
+
+At the initial user screen, you need to select **Register** and create a user - this will be the admin user.
+
+If you are migrating from an old system, export your data from the old system and import the data to the new system (after registering a user). This will require you to login as the original user.
 
 ## Standard Setup Filepaths
 
