@@ -105,12 +105,10 @@ If you are migrating from an old system, export your data from the old system an
 
 ## Standard Setup Filepaths
 
-Install location for code from OpenEnergyMonitor GitHub repository such as EmonScripts `/opt/openenergymonitor`
-
-Install location for modules symlinked to www `/opt/emoncms`
-
-Main code location `/var/www/emoncms`
-
-Log file location `/var/log/emoncms`
-
-Data directory `/var/opt/emoncms`
+| Role       | Location     |
+| :------------- | :----------- |
+| Install location for code from OpenEnergyMonitor GitHub repository such as EmonScripts  | `/opt/openenergymonitor` |
+| Install location for modules symlinked to www  | `/opt/emoncms` |
+| Main code location  | `/var/www/emoncms` |
+| Log file location   | `/var/log/emoncms` |
+| Data directory      | `/var/opt/emoncms` |
