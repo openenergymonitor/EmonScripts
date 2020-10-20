@@ -61,7 +61,10 @@ fi
 if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
 
 echo "-------------------------------------------------------------"
-sudo apt-get install -y git build-essential python-pip python3-pip python-dev python3-dev gettext
+sudo apt-get install -y git build-essential python3-pip python-dev python3-dev gettext
+# From Ubuntu 20.04 pip for python 2 is no longer in their repositories
+# This install is split out as if kept within a single apt-get install none of the packages are installed. This provides a crude fudge to at least get the rest installed, whilst dependent modules are switch to pyhton3
+sudo apt-get install -y python-pip
 echo "-------------------------------------------------------------"
 
 if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi
