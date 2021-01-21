@@ -18,12 +18,13 @@
 1. If you want to add a `wpa_supplicant.conf` to the boot folder so it connects to your Wi-Fi, especially if using a PiZero, do so now.
 
     ```
-    country=UK # Your 2-digit country code
     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    update_config=1
+    country=<Insert 2 letter ISO 3166-1 country code here>
+
     network={
-        ssid=""
-        psk=""
-        key_mgmt=WPA-PSK
+     ssid="<Name of your wireless LAN>"
+     psk="<Password for your wireless LAN>"
     }
     ```
 
