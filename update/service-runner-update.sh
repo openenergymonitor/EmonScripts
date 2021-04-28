@@ -28,6 +28,8 @@ if [ "$varlog_available" -lt "1024" ]; then
 fi
 
 echo "Starting update via service-runner-update.sh (v3.0) >"
+# Log the free space on each filesystem.
+df -h
 
 # -----------------------------------------------------------------
 
