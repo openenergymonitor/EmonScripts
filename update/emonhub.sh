@@ -36,8 +36,8 @@ if [ -d $openenergymonitor_dir/emonhub ]; then
     ./install.sh $emonSD_pi_env
     echo "--------------------------------------------------------------------"
     
-    echo "Running emonhub automatic node addition script"
-    $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir
+    # echo "Running emonhub automatic node addition script"
+    # $openenergymonitor_dir/emonhub/conf/nodes/emonpi_auto_add_nodes.sh $openenergymonitor_dir
 
 else
     echo "EmonHub not found"
