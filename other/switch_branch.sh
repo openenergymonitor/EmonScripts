@@ -1,14 +1,8 @@
 #!/bin/bash
-source ../update/load_config.sh
+openenergymonitor_dir="/opt/openenergymonitor"
 
 M=$1
 switch_branch=$2
-
-# Check emoncms directory
-if [ ! -d $emoncms_www ]; then
-    echo "emoncms directory at $emoncms_www not found"
-    exit 0
-fi
 
 if [ -d "$M/.git" ]; then
     branch=$(git -C $M branch | grep \* | cut -d ' ' -f2)
