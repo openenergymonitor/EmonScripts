@@ -11,35 +11,10 @@ if [ ! -d $emoncms_www ]; then
     exit 0
 fi
 
-# -----------------------------------------------------------------
-# Pulling in latest Emoncms changes
-# -----------------------------------------------------------------
-echo
-echo "Checking status of $emoncms_www git repository"
-cd $emoncms_www
-branch=$(git branch | grep \* | cut -d ' ' -f2)
-echo "- git branch: $branch"
-changes=$(git diff-index --quiet HEAD --)
-if $changes; then
-    echo "- no local changes"
-    echo "- running: git pull origin $branch"
-    echo
-    git fetch --all --prune
-    git pull origin $branch
-else
-    echo "WARNING local changes Emoncms Core not updated"
-    echo "- git status:"
-    echo
-    git status
-    echo
-fi
+# Use update_component script to update emoncms core
+./update_component.sh /var/www/emoncms
 
-#########################################################################################
-
-echo "Update Emoncms database"
-php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php
-echo
-
+# This should be moved to an install/update script in the emoncms directory
 echo "-------------------------------------------------------------"
 echo "Update Emoncms Services"
 echo "-------------------------------------------------------------"
@@ -65,8 +40,6 @@ for service in "feedwriter" "emoncms_mqtt" "emonhub"; do
   fi
 done
 
-#########################################################################################
-
 if [ "$emonSD_pi_env" = "1" ]; then  
   # Sudoers entry (review)
   sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
@@ -76,3 +49,32 @@ if [ "$emonSD_pi_env" = "1" ]; then
 fi
 
 echo
+
+echo "-------------------------------------------------------------"
+echo "Update Emoncms Modules"
+echo "-------------------------------------------------------------"
+
+# Check emoncms directory
+if [ ! -d $emoncms_www ]; then
+    echo "emoncms directory at $emoncms_www not found"
+    exit 0
+fi
+
+# Update modules installed directly in the Modules folder
+for M in $emoncms_www/Modules/*; do
+    ./update_component.sh $M
+done
+
+# Update modules installed in the $emoncms_dir/modules folder
+for M in $emoncms_dir/modules/*; do
+    ./update_component.sh $M
+done
+
+# This should be moved to wifi module install.sh
+if [ -d $emoncms_www/Modules/wifi ]; then
+    # wifi module sudoers entry
+    sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers && \
+    sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
+    sudo chmod 0440 /etc/sudoers.d/wifi-sudoers
+    echo "wifi sudoers entry updated"
+fi

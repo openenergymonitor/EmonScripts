@@ -95,8 +95,7 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
     echo "Start emoncms update:"
-    $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
-    $openenergymonitor_dir/EmonScripts/update/emoncms_modules.sh
+    $openenergymonitor_dir/EmonScripts/update/emoncms.sh
     echo
 fi
 
