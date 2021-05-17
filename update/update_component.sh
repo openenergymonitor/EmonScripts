@@ -1,5 +1,7 @@
 #!/bin/bash
-openenergymonitor_dir="/opt/openenergymonitor"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $DIR
+source load_config.sh
 
 M=$1
 switch_branch=$2
