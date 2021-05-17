@@ -28,3 +28,5 @@ done
 for M in $openenergymonitor_dir/*; do
     ./update_component.sh $M $switch_branch
 done
+
+echo "- all components updated"

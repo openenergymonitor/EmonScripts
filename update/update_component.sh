@@ -47,6 +47,7 @@ if [ -d "$M/.git" ]; then
         $M/install.sh $openenergymonitor_dir
     fi
     
+    echo "- component updated"
 
     # else
     # echo "ERROR: not a git repository"
