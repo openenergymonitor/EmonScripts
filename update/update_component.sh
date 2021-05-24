@@ -27,28 +27,27 @@ if [ -d "$M/.git" ]; then
         echo "- git checkout: $result"
         result=$(git -C $M pull)
         echo "- git pull: $result"
+        
+        # update mysql database    
+        result=$(php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php)
+        if [ ! $result = "[]" ]; then 
+            echo "- database update: $result"
+        else 
+            echo "- database update: no changes"
+        fi
+        
+        # run module install (& update) script if present
+        if [ -f $M/install.sh ]; then
+            echo "- running module install/update script"
+            $M/install.sh $openenergymonitor_dir
+        fi
+        
+        echo "- component updated" 
     else
         echo "WARNING local changes in $M - Module not updated"
         result=$(git -C $M status)
         echo "- git status: $result"
     fi
-
-    # update mysql database    
-    result=$(php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php)
-    if [ ! $result = "[]" ]; then 
-        echo "- database update: $result"
-    else 
-        echo "- database update: no changes"
-    fi
-    
-    # run module install (& update) script if present
-    if [ -f $M/install.sh ]; then
-        echo "- running module install/update script"
-        $M/install.sh $openenergymonitor_dir
-    fi
-    
-    echo "- component updated"
-
     # else
     # echo "ERROR: not a git repository"
 fi
