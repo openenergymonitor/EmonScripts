@@ -1,4 +1,4 @@
-maxsize 500k
+maxsize 250k
 
 /var/log/logrotate/*.log {
         rotate 7
