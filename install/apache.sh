@@ -4,7 +4,7 @@ source load_config.sh
 echo "-------------------------------------------------------------"
 echo "Install Apache2"
 echo "-------------------------------------------------------------"
-sudo apt-get install -y apache2
+sudo apt-get install -y apache2 gettext
 
 sudo sed -i "s/^CustomLog/#CustomLog/" /etc/apache2/conf-available/other-vhosts-access-log.conf
 

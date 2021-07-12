@@ -61,7 +61,7 @@ fi
 if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
 
 echo "-------------------------------------------------------------"
-sudo apt-get install -y git build-essential python-pip python-dev gettext
+sudo apt-get install -y git build-essential python3-pip python3-dev
 echo "-------------------------------------------------------------"
 
 if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi

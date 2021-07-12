@@ -25,41 +25,44 @@ if [ "$EUID" = "0" ] ; then
     exit 0
 fi
 
-if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
-    echo "Running apt-get update"
-    sudo apt-get update
-fi
+sudo apt-get install -y python3-pip
+pip3 install redis
 
 if [ "$emonSD_pi_env" = "1" ]; then
-    if [ -f /dev/i2c-1 ] || [ -f /dev/i2c/1 ]; then
-        # Check if we have an emonpi LCD connected, 
-        # if we do assume EmonPi hardware else assume rfm2pi
-        lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
-        lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
-        
-        if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
-            hardware="EmonPi"
-        else
-            hardware="rfm2pi"
-        fi
+    # Check if we have an emonpi LCD connected, 
+    # if we do assume EmonPi hardware else assume RFM69Pi
+    lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
+    lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
+    
+    # Check if python3-smbus is available for LCD
+    lcdp3=$(dpkg-query -W -f='${Status}' python3-smbus)
+    if [ "$lcdp3" == 'install ok installed' ]; then python_cmd="python3"; else python_cmd="python"; fi
+    
+    if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
+        hardware="EmonPi"
     else
-        hardware="custom"
+        hardware="Custom"
     fi
     echo "Hardware detected: $hardware"
     
     if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
-        sudo service emonPiLCD stop
+        sudo systemctl stop emonPiLCD
 
         # Display update message on LCD
         echo "Display update message on LCD"
-        sudo $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
+        $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
     
     # Ensure logrotate configuration has correct permissions
     sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
 
+fi
+
+if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
+    echo "Running apt-get update"
+    sudo apt-get update
 fi
 
 # -----------------------------------------------------------------
@@ -83,6 +86,36 @@ cd $openenergymonitor_dir/EmonScripts/update
 
 # -----------------------------------------------------------------
 
+if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
+    echo "Start emonhub update script:"
+    $openenergymonitor_dir/EmonScripts/update/emonhub.sh
+    echo
+fi
+
+# -----------------------------------------------------------------
+
+if [ "$type" == "all" ] || [ "$type" == "emonmuc" ]; then
+    echo "Start emonmuc update script:"
+    $openenergymonitor_dir/EmonScripts/update/emonmuc.sh
+    echo
+fi
+
+# -----------------------------------------------------------------
+
+if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
+    echo "Start emoncms update:"
+    $openenergymonitor_dir/EmonScripts/update/emoncms.sh
+    echo
+fi
+
+# -----------------------------------------------------------------
+
+if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
+    $openenergymonitor_dir/EmonScripts/update/emonsd.sh $python_cmd
+fi
+
+# -----------------------------------------------------------------
+
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
@@ -103,28 +136,6 @@ if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
     if [ "$firmware" == "emontxv3cm" ]; then
         $openenergymonitor_dir/EmonScripts/update/emontxv3cm.sh $serial_port
     fi
-fi
-
-# -----------------------------------------------------------------
-
-if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
-    $openenergymonitor_dir/EmonScripts/update/emonhub.sh
-    echo
-fi
-
-# -----------------------------------------------------------------
-
-if [ "$type" == "all" ] || [ "$type" == "emonmuc" ]; then
-    $openenergymonitor_dir/EmonScripts/update/emonmuc.sh
-    echo
-fi
-
-# -----------------------------------------------------------------
-
-if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then
-    $openenergymonitor_dir/EmonScripts/update/emoncms_core.sh
-    $openenergymonitor_dir/EmonScripts/update/emoncms_modules.sh
-    echo
 fi
 
 # -----------------------------------------------------------------

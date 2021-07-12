@@ -1,4 +1,4 @@
-/var/log/emon*/*.log {
+/var/log/emoncms/*.log {
     rotate 7
     daily
     compress

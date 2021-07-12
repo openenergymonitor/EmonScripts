@@ -17,7 +17,7 @@ if [ "$install_php" = true ]; then
     sudo phpenmod redis
 fi
 
-sudo pip install redis
+sudo pip3 install redis
 
 # Disable redis persistance
 sudo sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
