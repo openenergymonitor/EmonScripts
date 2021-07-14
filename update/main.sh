@@ -108,7 +108,9 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
-    $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware
+    if [ "$firmware" != "none" ]; then
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware
+    fi
 fi
 
 # -----------------------------------------------------------------
