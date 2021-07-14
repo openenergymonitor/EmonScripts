@@ -1,0 +1,72 @@
+{
+ "emonPi":[
+   {
+     "version":"2.9.3", 
+     "date":"5 Jan 2021",
+     "baud":115200,
+     "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/2.9.3/firmware.hex",
+     "description":"Discrete Sampling"
+   }
+ ],
+ "emonTx":[
+   {
+     "version":"2.0.0", 
+     "date":"18 Aug 2020", 
+     "baud":115200,
+     "download_url":"https://github.com/openenergymonitor/EmonTxV3CM/releases/download/2.0.0/firmware.hex", 
+     "description":"Continuous Sampling"
+   },
+   {
+     "version":"3.4.0", 
+     "date":"5 Jan 2021", 
+     "baud":115200,
+     "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/3.4.0/firmware.hex", 
+     "description":"Discrete Sampling"
+   }
+ ],
+ "emonTx-3phase":[
+   {
+     "version":"1.6", 
+     "date":"25 Feb 2019", 
+     "baud":115200,
+     "download_url":"https://github.com/openenergymonitor/emontx-3phase/releases/download/v1.6/firmware.hex", 
+     "description":"Continuous Sampling"
+   }
+ ],
+ "RFM69Pi":[
+   {
+     "version":"1.4.0", 
+     "date":"13 Jan 2017", 
+     "baud":38400,
+     "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/1.4.0/firmware.hex", 
+     "description":""
+   }
+ ],
+ "RFM12Pi":[
+   {
+     "version":"RFM12_Demo_ATmega328", 
+     "date":"2 May 2015", 
+     "baud":38400,
+     "download_url":"https://raw.githubusercontent.com/openenergymonitor/RFM2Pi/master/firmware/RFM69CW_RF_Demo_ATmega328/RFM12_Demo_ATmega328.cpp.hex", 
+     "description":""
+   }
+ ],
+ "emonTH2":[
+   {
+     "version":"3.2.4", 
+     "date":"25 May 2018", 
+     "baud":115200,
+     "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.4/firmware.hex", 
+     "description":""
+   }
+ ],
+ "emonTH1":[
+   {
+     "version":"2.6.0", 
+     "date":"24 Oct 2016", 
+     "baud":115200,
+     "download_url":"https://github.com/openenergymonitor/emonTH/releases/download/2.6.0/emonTH_latest.hex", 
+     "description":""
+   }
+ ]
+}
