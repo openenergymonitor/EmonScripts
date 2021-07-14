@@ -108,22 +108,7 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
-
-    if [ "$firmware" == "emonpi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh ttyAMA0 emonPi
-    fi
-
-    if [ "$firmware" == "rfm69pi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh ttyAMA0 RFM69Pi
-    fi
-    
-    if [ "$firmware" == "rfm12pi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh ttyAMA0 RFM12Pi
-    fi
-    
-    if [ "$firmware" == "emontxv3cm" ]; then
-        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port emonTx
-    fi
+    $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware
 fi
 
 # -----------------------------------------------------------------
