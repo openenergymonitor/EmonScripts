@@ -110,19 +110,19 @@ fi
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
 
     if [ "$firmware" == "emonpi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/emonpi.sh
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh ttyAMA0 emonPi
     fi
 
     if [ "$firmware" == "rfm69pi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/rfm69pi.sh
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh ttyAMA0 RFM69Pi
     fi
     
     if [ "$firmware" == "rfm12pi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh ttyAMA0 RFM12Pi
     fi
     
     if [ "$firmware" == "emontxv3cm" ]; then
-        $openenergymonitor_dir/EmonScripts/update/emontxv3cm.sh $serial_port
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port emonTx
     fi
 fi
 
@@ -143,7 +143,7 @@ datestr=$(date)
 
 echo
 echo "-------------------------------------------------------------"
-echo "emonPi update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
+echo "System update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
 echo "-------------------------------------------------------------"
 
 # -----------------------------------------------------------------
