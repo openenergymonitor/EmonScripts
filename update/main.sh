@@ -8,9 +8,8 @@ echo "Main Update Script"
 echo "-------------------------------------------------------------"
 
 type=$1
-serial_port=$2
-firmware_key=$3
-
+firmware_key=$2
+serial_port=$3
 
 datestr=$(date)
 

@@ -8,14 +8,14 @@ if [ ! -z $1 ]; then
   type=$1
 fi
 
-serial_port="ttyAMA0"
+firmware_key="emonPi_discrete_jeelib"
 if [ ! -z $2 ]; then
-  serial_port=$2
+  firmware_key=$2
 fi
 
-firmware_key="emonPi_discrete_jeelib"
+serial_port="ttyAMA0"
 if [ ! -z $3 ]; then
-  firmware_key=$3
+  serial_port=$3
 fi
 
 # Clear log update file
@@ -88,4 +88,4 @@ git status
 git pull
 
 # Run update in main update script
-$openenergymonitor_dir/EmonScripts/update/main.sh $type $serial_port $firmware_key
+$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware_key $serial_port
