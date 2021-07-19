@@ -6,6 +6,11 @@ source load_config.sh
 serial_port=$1
 firmware_key=$2
 
+if [ $serial_port == "none" ]; then
+  echo "no serial port selected or available"
+  exit
+fi
+
 if [ $firmware_key == "emonpi" ]; then
   firmware_key="emonPi_discrete_jeelib"
 fi
