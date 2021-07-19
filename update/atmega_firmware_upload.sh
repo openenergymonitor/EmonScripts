@@ -6,8 +6,12 @@ source load_config.sh
 serial_port=$1
 firmware_key=$2
 
+if [ $firmware_key == "emonpi" ]; then
+  firmware_key="emonPi_discrete_jeelib"
+fi
+
 echo "-------------------------------------------------------------"
-echo "$2 Firmware Upload"
+echo "$firmware_key Firmware Upload"
 echo "-------------------------------------------------------------"
 
 if [ ! -d $openenergymonitor_dir/data/firmware ]; then
