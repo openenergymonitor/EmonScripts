@@ -4,8 +4,7 @@ cd $DIR
 source load_config.sh
 
 serial_port=$1
-hardware=$2
-firmware_version=$3
+firmware_key=$2
 
 echo "-------------------------------------------------------------"
 echo "$2 Firmware Upload"
@@ -15,14 +14,13 @@ if [ ! -d $openenergymonitor_dir/data/firmware ]; then
   mkdir $openenergymonitor_dir/data/firmware
 fi
 
-result=$(./get_firmware_download_url.py $hardware $firmware_version)
+result=$(./get_firmware_download_url.py $firmware_key)
 result=($result)
 
 download_url=${result[0]}
 baud_rate=${result[1]}
-firmware_version=${result[2]}
 
-hexfile=$openenergymonitor_dir/data/firmware/$hardware-$firmware_version.hex
+hexfile=$openenergymonitor_dir/data/firmware/$firmware_key.hex
 
 echo "Downloading firmware from: "
 echo $download_url
@@ -46,7 +44,7 @@ if [ -f $hexfile ]; then
   fi
   
   echo
-  echo "Uploading $hardware $firmware_version on serial port $serial_port"
+  echo "Uploading $firmware_key on serial port $serial_port"
   echo
   avrdude -v -c arduino -p ATMEGA328P -P /dev/$serial_port -b $baud_rate -U flash:w:$hexfile
 

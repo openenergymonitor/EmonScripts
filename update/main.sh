@@ -8,8 +8,9 @@ echo "Main Update Script"
 echo "-------------------------------------------------------------"
 
 type=$1
-firmware=$2
-serial_port=$3
+serial_port=$2
+firmware_key=$3
+
 
 datestr=$(date)
 
@@ -17,7 +18,8 @@ echo "Date:" $datestr
 echo "EUID: $EUID"
 echo "openenergymonitor_dir: $openenergymonitor_dir"
 echo "type: $type"
-echo "firmware: $firmware"
+echo "serial_port: $serial_port"
+echo "firmware: $firmware_key"
 
 if [ "$EUID" = "0" ] ; then
     # update is being ran mistakenly as root, switch to user
@@ -108,8 +110,8 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
-    if [ "$firmware" != "none" ]; then
-        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware
+    if [ "$firmware_key" != "none" ]; then
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware_key
     fi
 fi
 
