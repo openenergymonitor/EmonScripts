@@ -10,6 +10,7 @@
 
 if [ ! -s /var/log/emoncms/update.log ]; then
 	echo "First Boot Update.."
+	sleep 5
 	printf "Checking internet connectivity..,\n"
 	WGET="/usr/bin/wget"
 	$WGET -q --tries=20 --timeout=5 http://www.google.com -O /tmp/google.idx &> /dev/null
