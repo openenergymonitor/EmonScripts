@@ -55,11 +55,30 @@ if [ "$result" != "firmware not found" ]; then
     
     echo
     echo "Uploading $firmware_key on serial port $serial_port"
-    echo
-    avrdude -v -c arduino -p ATMEGA328P -P /dev/$serial_port -b $baud_rate -U flash:w:$hexfile
+        
+    for attempt in {1..3}
+    do
+      echo "Attempt $attempt..."
+      echo
+      avrdude -v -c arduino -p ATMEGA328P -P /dev/$serial_port -b $baud_rate -U flash:w:$hexfile
 
-    echo
-    echo "Upload complete"
+      # Find output logfile
+      output_log_file=$( lsof -p $$ -a -d 1 -F n | awk '/^n/ {print substr($1, 2)}' )
+      # double check that it exists
+      if [ -f $output_log_file ]; then
+        # check for completion status
+        not_in_sync=$(cat $output_log_file | grep "not in sync" | wc -l)
+        flash_verified=$(cat $output_log_file | grep "flash verified" | wc -l)
+        
+        # if [ "$not_in_sync" == "0" ]; then
+        if [ $flash_verified == "1" ]; then
+            echo "SUCCESS: flash verifed"
+            break;
+        else 
+            echo "ERROR: Not in sync" 
+        fi
+      fi
+    done
     
     if [ $emonhub_stopped_by_script == 1 ]; then
       echo
