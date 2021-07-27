@@ -8,8 +8,9 @@
 
 # Check if update log file is empty if so then proceed to update
 
-if [ ! -s /var/log/emoncms/emonpiupdate.log ]; then
+if [ ! -s /var/log/emoncms/update.log ]; then
 	echo "First Boot Update.."
+	sleep 5
 	printf "Checking internet connectivity..,\n"
 	WGET="/usr/bin/wget"
 	$WGET -q --tries=20 --timeout=5 http://www.google.com -O /tmp/google.idx &> /dev/null
@@ -21,9 +22,9 @@ if [ ! -s /var/log/emoncms/emonpiupdate.log ]; then
 	fi
 
 	if [ "$connected" = true ]; then
-    /opt/openenergymonitor/EmonScripts/update/service-runner-update.sh all emonpi 2>&1 >> /var/log/emoncms/emonpiupdate.log 2>&1
-    # set permissions on newly created logfile so emonpiupdate script an write to it
-    sudo chmod 666 /var/log/emoncms/emonpiupdate.log
+    /opt/openenergymonitor/EmonScripts/update/service-runner-update.sh all emonpi 2>&1 >> /var/log/emoncms/update.log 2>&1
+    # set permissions on newly created logfile
+    sudo chmod 666 /var/log/emoncms/update.log
 	fi
 else
 	echo "Not first boot"

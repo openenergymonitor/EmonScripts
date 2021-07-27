@@ -3,12 +3,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 source load_config.sh
 
-if [ -z "$2" ]; then
-    type="all"
-    firmware=$1
-else
-    type=$1
-    firmware=$2
+type="all"
+if [ ! -z $1 ]; then
+  type=$1
+fi
+
+firmware_key="emonPi_discrete_jeelib"
+if [ ! -z $2 ]; then
+  firmware_key=$2
 fi
 
 serial_port="ttyAMA0"
@@ -87,4 +89,4 @@ git pull
 echo
 
 # Run update in main update script
-$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware $serial_port
+$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware_key $serial_port

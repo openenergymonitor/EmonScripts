@@ -1,0 +1,115 @@
+{
+  "emonPiFrontEndCM":{
+    "hardware":"emonPi",
+    "radio_format":"rfm69n",
+    "version":"1.0.0", 
+    "date":"10 Jul 2021",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emonPiFrontEndCM/releases/download/1.0.0/firmware.hex",
+    "description":"emonPi continuous sampling firmware"
+  },
+  
+  "emonPi_discrete_jeelib":{
+    "hardware":"emonPi",
+    "radio_format":"jeelib",
+    "version":"2.9.3", 
+    "date":"5 Jan 2021",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/2.9.3/firmware.hex",
+    "description":"emonPi discrete sampling firmware"
+  },
+  
+  "emonTxV34CM_rfm69n":{
+    "hardware":"emonTx",
+    "radio_format":"rfm69n",
+    "version":"1.0.0", 
+    "date":"10 Jul 2021",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/EmonTxV34CM_rfm69n/releases/download/1.0.0/firmware.hex",
+    "description":"emonTx v3.4 continuous sampling firmware"
+  },
+  "emonTxV34CM_jeelib":{
+    "hardware":"emonTx",
+    "radio_format":"jeelib",
+    "version":"2.0.0", 
+    "date":"18 Aug 2020", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/EmonTxV3CM/releases/download/2.0.0/firmware.hex", 
+    "description":"emonTx v3.4 continuous sampling firmware"
+  },
+  "emonTxV34_jeelib":{
+    "hardware":"emonTx",
+    "radio_format":"jeelib",
+    "version":"3.4.0", 
+    "date":"5 Jan 2021", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/3.4.0/firmware.hex", 
+    "description":"emonTx v3.4 discrete sampling firmware"
+  },
+  "emonTxV34_3phase_jeelib":{
+    "hardware":"emonTx",
+    "radio_format":"jeelib",
+    "version":"1.6", 
+    "date":"25 Feb 2019", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx-3phase/releases/download/v1.6/firmware.hex", 
+    "description":"emonTx 3 phase continuous sampling firmware"
+  },
+  
+  "emonBase_rfm69n":{
+    "hardware":"rfm69pi",
+    "radio_format":"rfm69n",
+    "version":"2.0.0", 
+    "date":"10 Jul 2021", 
+    "baud":38400,
+    "download_url":"https://github.com/openenergymonitor/emonBase_rfm69n/releases/download/2.0.0/firmware.hex", 
+    "description":"emonBase RFM69Pi firmware"
+  },
+  "emonBase_jeelib":{
+    "hardware":"rfm69pi",
+    "radio_format":"jeelib",
+    "version":"1.4.0", 
+    "date":"13 Jan 2017", 
+    "baud":38400,
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/1.4.0/firmware.hex", 
+    "description":"emonBase RFM69Pi firmware"
+  },
+  "rfm12pi_jeelib":{
+    "hardware":"rfm12pi",
+    "radio_format":"jeelib",
+    "version":"RFM12_Demo_ATmega328",
+    "date":"2 May 2015", 
+    "baud":38400,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/RFM2Pi/master/firmware/RFM69CW_RF_Demo_ATmega328/RFM12_Demo_ATmega328.cpp.hex", 
+    "description":"emonBase RFM12Pi firmware"
+  },
+  
+  "emonTH2_rfm69n":{
+    "hardware":"emonTH2",
+    "radio_format":"rfm69n",
+    "version":"4.0.0", 
+    "date":"10 Jul 2021", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_rfm69n/releases/download/4.0.0/firmware.hex", 
+    "description":"emonTH V2 firmware"
+  },
+  "emonTH2_jeelib":{
+    "hardware":"emonTH2",
+    "radio_format":"jeelib",
+    "version":"3.2.4", 
+    "date":"25 May 2018", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.4/firmware.hex", 
+    "description":"emonTH V2 firmware"
+  },
+  
+  "emonTH1_jeelib":{
+    "hardware":"emonTH1",
+    "radio_format":"jeelib",
+    "version":"2.6.0", 
+    "date":"24 Oct 2016", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emonTH/releases/download/2.6.0/emonTH_latest.hex", 
+    "description":"emonTH V1 firmware"
+  }
+}

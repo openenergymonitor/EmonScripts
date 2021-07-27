@@ -8,7 +8,7 @@ echo "Update EmonPi stack"
 echo "-------------------------------------------------------------"
 
 type=$1
-firmware=$2
+firmware_key=$2
 serial_port=$3
 
 datestr=$(date)
@@ -17,7 +17,8 @@ echo "Date:" $datestr
 echo "EUID: $EUID"
 echo "root: $openenergymonitor_dir"
 echo "type: $type"
-echo "firmware: $firmware"
+echo "serial_port: $serial_port"
+echo "firmware: $firmware_key"
 
 if [ "$EUID" = "0" ] ; then
     # update is being ran mistakenly as root, switch to user
@@ -117,24 +118,8 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
-
-    if [ "$firmware" == "emonpi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/emonpi.sh
-		echo
-    fi
-
-    if [ "$firmware" == "rfm69pi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/rfm69pi.sh
-		echo
-    fi
-
-    if [ "$firmware" == "rfm12pi" ]; then
-        $openenergymonitor_dir/EmonScripts/update/rfm12pi.sh
-		echo
-    fi
-    
-    if [ "$firmware" == "emontxv3cm" ]; then
-        $openenergymonitor_dir/EmonScripts/update/emontxv3cm.sh $serial_port
+    if [ "$firmware_key" != "none" ]; then
+        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware_key
     fi
 fi
 
@@ -153,7 +138,7 @@ fi
 
 datestr=$(date)
 echo "-------------------------------------------------------------"
-echo "EmonPi update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
+echo "System update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
 echo "-------------------------------------------------------------"
 
 # -----------------------------------------------------------------

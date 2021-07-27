@@ -18,7 +18,7 @@ if [ -d "$M/.git" ]; then
         switch_branch=$branch
     fi
     
-    changes=$(git -C $M diff-index HEAD --)
+    changes=$(git -C $M diff-index -G. HEAD --)
     if [ "$changes" = "" ]; then
         echo "- local changes: no"
         result=$(git -C $M fetch --all --prune)
