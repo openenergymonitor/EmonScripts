@@ -42,7 +42,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
         hardware="EmonPi"
     else
-        hardware="Custom"
+        hardware="rfm2pi"
     fi
     echo "Hardware detected: $hardware"
     
