@@ -93,6 +93,15 @@
     "download_url":"https://github.com/openenergymonitor/EmonTH_V2_rfm69n/releases/download/4.0.0/firmware.hex", 
     "description":"emonTH V2 firmware"
   },
+  "emonTH2_rfm69n_multi":{
+    "hardware":"emonTH2",
+    "radio_format":"rfm69n",
+    "version":"4.0.0", 
+    "date":"10 Jul 2021", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_rfm69n/releases/download/4.0.0/multiple_ds18b20_external.hex", 
+    "description":"emonTH V2 firmware (2x external DS18B20)"
+  },
   "emonTH2_jeelib":{
     "hardware":"emonTH2",
     "radio_format":"jeelib",
