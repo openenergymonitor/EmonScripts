@@ -18,8 +18,8 @@ done
 
 if [ -d $emoncms_www/Modules/wifi ]; then
     # wifi module sudoers entry
-    sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers && \
-    sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/wifi-sudoers /etc/sudoers.d/
+    sudo visudo -cf $emonscripts_dir/sudoers.d/wifi-sudoers && \
+    sudo cp $emonscripts_dir/sudoers.d/wifi-sudoers /etc/sudoers.d/
     sudo chmod 0440 /etc/sudoers.d/wifi-sudoers
     echo "wifi sudoers entry installed"
     # wpa_supplicant permissions
@@ -27,4 +27,4 @@ if [ -d $emoncms_www/Modules/wifi ]; then
 fi
 
 echo "Update Emoncms database"
-php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php
+php $emonscripts_dir/common/emoncmsdbupdate.php

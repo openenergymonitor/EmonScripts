@@ -5,7 +5,7 @@ source ../install/config.ini
 
 mode=$1
 
-for dir in "$emoncms_www" "$emoncms_www/Modules/*" "$emoncms_dir/modules/*" "$openenergymonitor_dir/*"; do
+for dir in "$emoncms_www" "$emoncms_www/Modules/*" "$emoncms_dir/modules/*" "$emonscripts_dir" "$openenergymonitor_dir/*"; do
     for M in $dir; do
         if [ -d "$M/.git" ]; then
             url=$(git -C $M remote get-url origin)

@@ -1,0 +1,11 @@
+/var/log/openmuc/openmuc.log {
+    maxsize 3M
+
+    norenamecopy
+    copytruncate
+    su root root
+    compress
+
+    olddir /var/log.old/openmuc
+    createolddir 775 root openmuc
+}

@@ -81,12 +81,12 @@ fi
 # -----------------------------------------------------------------
 
 # Pull in latest EmonScripts repo before then running updated update scripts
-echo "git pull $openenergymonitor_dir/EmonScripts"
-cd $openenergymonitor_dir/EmonScripts
+echo "git pull $emonscripts_dir"
+cd $emonscripts_dir
 git branch
 git status
 git pull
 echo
 
 # Run update in main update script
-$openenergymonitor_dir/EmonScripts/update/main.sh $type $firmware_key $serial_port
+$emonscripts_dir/update/main.sh $type $firmware_key $serial_port

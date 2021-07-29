@@ -22,19 +22,21 @@ if [ ! -d /var/log/logrotate ]; then
   sudo chown -R root:adm /var/log/logrotate
 fi
 # custom logrotate config
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
+sudo ln -sf $emonscripts_dir/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
+sudo ln -sf $emonscripts_dir/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
+sudo ln -sf $emonscripts_dir/defaults/etc/logrotate.d/emonmuc /etc/logrotate.d/emonmuc
+sudo ln -sf $emonscripts_dir/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
 
 sudo chown root /etc/logrotate.d/00_defaults
 sudo chown root /etc/logrotate.d/emonhub
+sudo chown root /etc/logrotate.d/emonmuc
 sudo chown root /etc/logrotate.d/emoncms
 
 # log2ram cron hourly entry
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/cron.hourly/log2ram /etc/cron.hourly/log2ram
+sudo ln -sf $emonscripts_dir/defaults/etc/cron.hourly/log2ram /etc/cron.hourly/log2ram
 sudo chmod +x /etc/cron.hourly/log2ram
 # copy in commented out placeholder logrotate file
-sudo cp $openenergymonitor_dir/EmonScripts/defaults/etc/cron.daily/logrotate /etc/cron.daily/logrotate
+sudo cp $emonscripts_dir/defaults/etc/cron.daily/logrotate /etc/cron.daily/logrotate
 
 # --------------------------------------------------------------------------------
 # UFW firewall
@@ -75,7 +77,7 @@ else
 fi
 
 # emonSD rc.local includes wifiAP start and first boot update
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
+sudo ln -sf $emonscripts_dir/defaults/etc/rc.local /etc/rc.local
 
 # emonSDexpand
 sudo ln -sf $emoncms_dir/modules/usefulscripts/sdpart/sdpart_imagefile /usr/bin/emonSDexpand
@@ -84,7 +86,7 @@ sudo ln -sf $emoncms_dir/modules/usefulscripts/sdpart/sdpart_imagefile /usr/bin/
 # Misc
 # --------------------------------------------------------------------------------
 
-sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/readme.md /home/pi/
+sudo ln -sf $emonscripts_dir/defaults/readme.md /home/pi/
 
 # Review: provide configuration file for default password and hostname
 

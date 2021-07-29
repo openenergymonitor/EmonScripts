@@ -53,4 +53,4 @@ if [ -v emoncms_modules[@] ]; then
     done
 
 echo "Update Emoncms database"
-php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php
+php $emonscripts_dir/common/emoncmsdbupdate.php

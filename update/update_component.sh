@@ -29,7 +29,7 @@ if [ -d "$M/.git" ]; then
         echo "- git pull: $result"
         
         # update mysql database    
-        result=$(php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php)
+        result=$(php $emonscripts_dir/common/emoncmsdbupdate.php)
         if [ ! $result = "[]" ]; then 
             echo "- database update: $result"
         else 

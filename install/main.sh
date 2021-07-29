@@ -19,6 +19,8 @@ if [ ! -f config.ini ]; then
 fi
 source load_config.sh
 
+emonscripts_dir="$(dirname $(dirname "$0"))"
+
 echo "-------------------------------------------------------------"
 echo "EmonSD Install"
 echo "-------------------------------------------------------------"
@@ -33,7 +35,7 @@ if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
     echo "You selected 'yes' to review config"
     echo "Please review config.ini and restart the build script to continue"
     echo ""
-    echo "    cd $openenergymonitor_dir/EmonScripts/install/"
+    echo "    cd $emonscripts_dir/install/"
     echo "    nano config.ini"
     echo "    ./main.sh"
     echo ""
@@ -57,29 +59,32 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     sudo apt --fix-broken install
 fi
 
-# Required for emonpiLCD, wifi, rfm69pi firmware (review)
-if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
-
 echo "-------------------------------------------------------------"
 sudo apt-get install -y git build-essential python3-pip python3-dev
 echo "-------------------------------------------------------------"
 
-if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi
-if [ "$install_mysql" = true ]; then $openenergymonitor_dir/EmonScripts/install/mysql.sh; fi
-if [ "$install_php" = true ]; then $openenergymonitor_dir/EmonScripts/install/php.sh; fi
-if [ "$install_redis" = true ]; then $openenergymonitor_dir/EmonScripts/install/redis.sh; fi
-if [ "$install_mosquitto" = true ]; then $openenergymonitor_dir/EmonScripts/install/mosquitto.sh; fi
-if [ "$install_emoncms_core" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_core.sh; fi
-if [ "$install_emoncms_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_modules.sh; fi
-if [ "$install_emonmuc" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonmuc.sh; fi
+sudo mkdir -p $openenergymonitor_dir
+sudo chown $user $openenergymonitor_dir
+
+if [ "$install_apache" = true ]; then $emonscripts_dir/install/apache.sh; fi
+if [ "$install_mysql" = true ]; then $emonscripts_dir/install/mysql.sh; fi
+if [ "$install_php" = true ]; then $emonscripts_dir/install/php.sh; fi
+if [ "$install_redis" = true ]; then $emonscripts_dir/install/redis.sh; fi
+if [ "$install_mosquitto" = true ]; then $emonscripts_dir/install/mosquitto.sh; fi
+if [ "$install_emoncms_core" = true ]; then $emonscripts_dir/install/emoncms_core.sh; fi
+if [ "$install_emoncms_modules" = true ]; then $emonscripts_dir/install/emoncms_modules.sh; fi
+if [ "$install_emonmuc" = true ]; then $emonscripts_dir/install/emonmuc.sh; fi
+if [ "$install_emonhub" = true ]; then $rootroot_dirsh; fi
 
 if [ "$emonSD_pi_env" = "1" ]; then
-    if [ "$install_emoncms_emonpi_modules" = true ]; then $openenergymonitor_dir/EmonScripts/install/emoncms_emonpi_modules.sh; fi
-    if [ "$install_emonhub" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonhub.sh; fi
-    if [ "$install_firmware" = true ]; then $openenergymonitor_dir/EmonScripts/install/firmware.sh; fi
-    if [ "$install_emonpilcd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonpilcd.sh; fi
-    if [ "$install_wifiap" = true ]; then $openenergymonitor_dir/EmonScripts/install/wifiap.sh; fi
-    if [ "$install_emonsd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonsd.sh; fi
+    # Required for emonpiLCD, wifi, rfm69pi firmware (review)
+    if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
+
+    if [ "$install_emoncms_emonpi_modules" = true ]; then $emonscripts_dir/install/emoncms_emonpi_modules.sh; fi
+    if [ "$install_firmware" = true ]; then $emonscripts_dir/install/firmware.sh; fi
+    if [ "$install_emonpilcd" = true ]; then $emonscripts_dir/install/emonpilcd.sh; fi
+    if [ "$install_wifiap" = true ]; then $emonscripts_dir/install/wifiap.sh; fi
+    if [ "$install_emonsd" = true ]; then $emonscripts_dir/install/emonsd.sh; fi
 
     # Enable service-runner update
     # update checks for image type and only runs with a valid image name file in the boot partition
@@ -88,7 +93,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     # Reboot to complete
     sudo reboot
 else
-    $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
+    $emonscripts_dir/install/non_emonsd.sh;
     # sudo touch /boot/emonSD-30Oct18
     exit 0
     # Reboot to complete

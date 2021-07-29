@@ -26,6 +26,9 @@ if [ "$EUID" = "0" ] ; then
     exit 0
 fi
 
+sudo mkdir -p $openenergymonitor_dir
+sudo chown $user $openenergymonitor_dir
+
 sudo apt-get install -y python3-pip
 pip3 install redis
 
@@ -57,7 +60,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     fi
     
     # Ensure logrotate configuration has correct permissions
-    sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
+    sudo chown root:pi $emonscripts_dir/defaults/etc/logrotate.d/*
 
 fi
 
@@ -72,9 +75,9 @@ if [ "$type" == "all" ]; then
     sudo rm -rf hardware/emonpi/emonpi2c/
 
     for repo in "emonpi" "RFM2Pi" "usefulscripts" "huawei-hilink-status" "oem_openHab" "oem_node-red"; do
-        if [ -d $openenergymonitor_dir/$repo ]; then
-            echo "git pull $openenergymonitor_dir/$repo"
-            cd $openenergymonitor_dir/$repo
+        if [ -d $emonscripts_dir/$repo ]; then
+            echo "git pull $emonscripts_dir/$repo"
+            cd $emonscripts_dir/$repo
             git branch
             git status
             git fetch --all --prune
@@ -83,13 +86,13 @@ if [ "$type" == "all" ]; then
         fi
     done
 fi
-cd $openenergymonitor_dir/EmonScripts/update
+cd $emonscripts_dir/update
 
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
     echo "Start emonhub update script:"
-    $openenergymonitor_dir/EmonScripts/update/emonhub.sh
+    $emonscripts_dir/update/emonhub.sh
     echo
 fi
 
@@ -97,7 +100,7 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emonmuc" ]; then
     echo "Start emonmuc update script:"
-    $openenergymonitor_dir/EmonScripts/update/emonmuc.sh
+    $emonscripts_dir/update/emonmuc.sh
     echo
 fi
 
@@ -105,21 +108,21 @@ fi
 
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then    
     echo "Start emoncms update:"
-    $openenergymonitor_dir/EmonScripts/update/emoncms.sh
+    $emonscripts_dir/update/emoncms.sh
     echo
 fi
 
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
-    $openenergymonitor_dir/EmonScripts/update/emonsd.sh $python_cmd
+    $emonscripts_dir/update/emonsd.sh $python_cmd
 fi
 
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
     if [ "$firmware_key" != "none" ]; then
-        $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware_key
+        $emonscripts_dir/update/atmega_firmware_upload.sh $serial_port $firmware_key
     fi
 fi
 

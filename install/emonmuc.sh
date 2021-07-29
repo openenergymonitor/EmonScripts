@@ -5,13 +5,14 @@ echo "-------------------------------------------------------------"
 echo "Install EmonMUC"
 echo "-------------------------------------------------------------"
 
-# Install emonmuc repository with git
+emonmuc_dir="/opt/emonmuc"
+
+if [ ! -d $emonmuc_dir ]; then emonmuc_dir=$openenergymonitor_dir/emonmuc; fi
 if [ ! -d $emonmuc_dir ]; then
-    echo "Downloading emonmuc framework"
     sudo git clone -b $emonmuc_branch ${git_repo[emonmuc]} $emonmuc_dir
-    sudo chown -R $user $emonmuc_dir
-    
-    sudo bash $emonmuc_dir/setup.sh --emoncms $emoncms_www
+    sudo chown $user -R $emonmuc_dir
 else
-    echo "Emonmuc framework already installed"
+    echo "EmonMUC framework already installed"
+    git -C $emonmuc_dir pull
 fi
+sudo bash $emonmuc_dir/setup.sh --emoncms $emoncms_www

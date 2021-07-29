@@ -34,13 +34,14 @@ fi
 # Copy and install emonpi.settings.ini
 if [ ! -f $emoncms_www/settings.ini ]; then
     echo "- installing default emoncms settings.ini"
-    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
-    sed -i "s~emoncms_dir = .*$~emoncms_dir = $emoncms_dir~" $emoncms_www/settings.ini
+    cp $emonscripts_dir/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
+
     sed -i "s~openenergymonitor_dir = .*$~openenergymonitor_dir = $openenergymonitor_dir~" $emoncms_www/settings.ini
+    sed -i "s~emoncms_dir = .*$~emoncms_dir = $emoncms_dir~" $emoncms_www/settings.ini
     sed -i "s~emoncms_datadir = .*$~emoncms_datadir = $emoncms_datadir~" $emoncms_www/settings.ini
 
     sed -i "6s~database = .*$~database = \"$mysql_database\"~" $emoncms_www/settings.ini
-    sed -i "7s~username = .*$~username = \"$mysql_user\"~" $emoncms_www/settings.ini
+    sed -i "7s~username = .*$~username = \"$mysql_user\"~"     $emoncms_www/settings.ini
     sed -i "8s~password = .*$~password = \"$mysql_password\"~" $emoncms_www/settings.ini
 else
     echo "- emoncms settings.ini already exists"
@@ -93,7 +94,7 @@ if [ "$install_redis" = true ]; then
     for service in "feedwriter" "service-runner"; do
         servicepath=$emoncms_www/scripts/services/$service/$service.service
         echo "installing $service to $servicepath"
-        $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath $service
+        $emonscripts_dir/common/install_emoncms_service.sh $servicepath $service
     done
 
     # Install service-runner drop-in if system user is different
@@ -118,7 +119,7 @@ if [ "$install_redis" = true ]; then
     if [ "$install_mosquitto_client" = true ]; then
         servicepath=$emoncms_www/scripts/services/emoncms_mqtt/emoncms_mqtt.service
         echo "installing $service to $servicepath"
-        $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath emoncms_mqtt
+        $emonscripts_dir/common/install_emoncms_service.sh $servicepath emoncms_mqtt
 
         if [ "$user" != "pi" ]; then
             echo "installing emoncms_mqtt drop-in User=$user"
@@ -137,8 +138,8 @@ echo
 
 if [ "$emonSD_pi_env" = "1" ]; then
     # Sudoers entry (review)
-    sudo visudo -cf $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton && \
-    sudo cp $openenergymonitor_dir/EmonScripts/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
+    sudo visudo -cf $emonscripts_dir/sudoers.d/emoncms-rebootbutton && \
+    sudo cp $emonscripts_dir/sudoers.d/emoncms-rebootbutton /etc/sudoers.d/
     sudo chmod 0440 /etc/sudoers.d/emoncms-rebootbutton
     echo "emonPi emoncms admin reboot button sudoers updated"
 fi
