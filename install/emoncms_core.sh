@@ -43,6 +43,7 @@ if [ ! -f $emoncms_www/settings.ini ]; then
     sed -i "6s~database = .*$~database = \"$mysql_database\"~" $emoncms_www/settings.ini
     sed -i "7s~username = .*$~username = \"$mysql_user\"~"     $emoncms_www/settings.ini
     sed -i "8s~password = .*$~password = \"$mysql_password\"~" $emoncms_www/settings.ini
+    sed -i "s~mysqltimeseries\[password\] = .*$~mysqltimeseries\[password\] = '$mysql_password'~" $emoncms_www/settings.ini
 else
     echo "- emoncms settings.ini already exists"
 fi
