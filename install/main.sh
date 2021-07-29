@@ -73,8 +73,8 @@ if [ "$install_redis" = true ]; then $emonscripts_dir/install/redis.sh; fi
 if [ "$install_mosquitto" = true ]; then $emonscripts_dir/install/mosquitto.sh; fi
 if [ "$install_emoncms_core" = true ]; then $emonscripts_dir/install/emoncms_core.sh; fi
 if [ "$install_emoncms_modules" = true ]; then $emonscripts_dir/install/emoncms_modules.sh; fi
+if [ "$install_emonhub" = true ]; then $emonscripts_dir/install/emonhub.sh; fi
 if [ "$install_emonmuc" = true ]; then $emonscripts_dir/install/emonmuc.sh; fi
-if [ "$install_emonhub" = true ]; then $rootroot_dirsh; fi
 
 if [ "$emonSD_pi_env" = "1" ]; then
     # Required for emonpiLCD, wifi, rfm69pi firmware (review)
