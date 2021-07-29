@@ -9,7 +9,7 @@ cd $openenergymonitor_dir
 if [ ! -d $openenergymonitor_dir/emonhub ]; then
     git clone -b $emonhub_branch ${git_repo[emonhub]}
 else 
-    echo "EmonHUB repository already installed"
+    echo "- emonhub repository already installed"
     git -C $openenergymonitor_dir/emonhub pull
 fi
 
