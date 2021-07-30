@@ -19,8 +19,6 @@ if [ ! -f config.ini ]; then
 fi
 source load_config.sh
 
-emonscripts_dir="$(dirname $(dirname "$0"))"
-
 echo "-------------------------------------------------------------"
 echo "EmonSD Install"
 echo "-------------------------------------------------------------"
@@ -61,7 +59,6 @@ fi
 
 echo "-------------------------------------------------------------"
 sudo apt-get install -y git build-essential python3-pip python3-dev
-echo "-------------------------------------------------------------"
 
 sudo mkdir -p $openenergymonitor_dir
 sudo chown $user $openenergymonitor_dir

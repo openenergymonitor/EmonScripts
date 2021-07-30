@@ -18,18 +18,12 @@ if [ -v emoncms_modules[@] ]; then
     done
 fi
 
-if [ ! -d $emoncms_dir ]
-then
-    sudo mkdir $emoncms_dir
-    sudo chown $USER $emoncms_dir
-fi
-
 # Install emoncms modules that do not reside in /var/www/emoncms/Modules
-if [ ! -d $emoncms_dir/modules ]; then
-    mkdir $emoncms_dir/modules
-fi
-
 if [ -v emoncms_modules[@] ]; then
+	if [ ! -d $emoncms_dir/modules ]; then
+	    sudo mkdir -p $emoncms_dir/modules
+	    sudo chown $user -R $emoncms_dir
+	fi
     cd $emoncms_dir/modules
 
     for module in ${!symlinked_emoncms_modules[@]}; do
@@ -51,6 +45,6 @@ if [ -v emoncms_modules[@] ]; then
             echo "- Module $module already exists"
         fi
     done
-
+fi
 echo "Update Emoncms database"
 php $emonscripts_dir/common/emoncmsdbupdate.php

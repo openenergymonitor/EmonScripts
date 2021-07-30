@@ -10,12 +10,11 @@ root_www=$(dirname "$emoncms_www")
 if [ ! -d $root_www ]; then
     sudo mkdir -p $root_www
 fi
-sudo chown $user $root_www
 
 # Install emoncms core repository with git
 if [ ! -d $emoncms_www ]; then
-    cd $root_www && git clone -b $emoncms_core_branch ${git_repo[emoncms_core]}
-    cd
+    sudo git clone -b $emoncms_core_branch ${git_repo[emoncms_core]} $emoncms_www
+    sudo chown $user -R $emoncms_www
 else
     echo "- emoncms already installed"
 fi
