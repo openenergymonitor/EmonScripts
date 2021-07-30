@@ -19,7 +19,7 @@ fi
 sudo bash $emonmuc_dir/setup.sh --emoncms $emoncms_www
 
 cp -fp  $emonscripts_dir/defaults/emonmuc/emoncms.conf $openmuc_dir/conf/emoncms.conf
-sed -i "18s/.*user.*$/user = $mqtt_user/"              $openmuc_dir/conf/emoncms.conf
-sed -i "19s/.*password.*$/password = $mqtt_password/"  $openmuc_dir/conf/emoncms.conf
-sed -i "30s/.*username.*$/username = $mysql_user/"     $openmuc_dir/conf/emoncms.conf
-sed -i "31s/.*password.*$/password = $mysql_password/" $openmuc_dir/conf/emoncms.conf
+sed -i "s/MYSQL_USERNAME/$mysql_user/"                 $openmuc_dir/conf/emoncms.conf
+sed -i "s/MYSQL_PASSWORD/$mysql_password/"             $openmuc_dir/conf/emoncms.conf
+sed -i "s/MQTT_USER/$mqtt_user/"                       $openmuc_dir/conf/emoncms.conf
+sed -i "s/MQTT_PASSWORD/$mqtt_password/"               $openmuc_dir/conf/emoncms.conf
