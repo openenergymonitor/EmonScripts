@@ -19,7 +19,7 @@ if [ -v emoncms_modules[@] ]; then
 fi
 
 # Install emoncms modules that do not reside in /var/www/emoncms/Modules
-if [ -v emoncms_modules[@] ]; then
+if [ -v symlinked_emoncms_modules[@] ]; then
 	if [ ! -d $emoncms_dir/modules ]; then
 	    sudo mkdir -p $emoncms_dir/modules
 	    sudo chown $user -R $emoncms_dir
