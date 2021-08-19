@@ -4,7 +4,7 @@
 
 1. After writing the image to the SD card, open the SD card `boot` folder on your computer.
 
-1. Create a file called ssh on the boot partition - to enable SSH access to the system.
+1. **Create a file called ssh** on the boot partition - to enable SSH access to the system.
 
 1. Copy the default `cmdline.txt` to `cmdline2.txt` in the boot partition.
 1. Edit `cmdline.txt` and remove this text:
