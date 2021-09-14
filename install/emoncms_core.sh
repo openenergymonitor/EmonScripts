@@ -81,8 +81,8 @@ if [ ! -d /var/www/html/emoncms ]; then
     sudo rm /var/www/html/index.html
 fi
 
-# Reload apache service, now that all configured directories exist
-sudo systemctl reload apache2.service
+# Restart apache service, now that all configured directories exist
+sudo systemctl restart apache2.service
 
 echo "-------------------------------------------------------------"
 echo "Install Emoncms Services"
