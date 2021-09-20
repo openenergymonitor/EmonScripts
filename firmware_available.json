@@ -118,7 +118,7 @@
     "date":"20 Sep 2021", 
     "baud":115200,
     "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.5/firmware_2ext.hex", 
-    "description":"emonTH V2 firmware (2x External DS18B20 temperature sensors"
+    "description":"emonTH V2 firmware with 2x external DS18B20 temperature sensors"
   },  
   "emonTH1_jeelib":{
     "hardware":"emonTH1",
