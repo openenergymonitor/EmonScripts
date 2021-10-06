@@ -1,0 +1,14 @@
+Source: <package>
+Section: contrib/electronics
+Priority: optional
+Standards-Version: <version>
+Build-Depends: debhelper (>= 9)
+Maintainer: <maintainer>
+Homepage: <homepage>
+Vcs-Browser: <repository>
+Vcs-Git: <repository>.git
+
+Package: <package>
+Architecture: all
+Depends: ${misc:Depends}, <depends>
+Description: <description>

@@ -1,0 +1,10 @@
+# Eclipse project files
+*.buildpath
+*.classpath
+*.project
+*.settings/
+*.md.html
+
+# Build files
+build/
+/build/
