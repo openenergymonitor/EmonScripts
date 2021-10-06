@@ -105,13 +105,21 @@
   "emonTH2_jeelib":{
     "hardware":"emonTH2",
     "radio_format":"jeelib",
-    "version":"3.2.4", 
-    "date":"25 May 2018", 
+    "version":"3.2.5", 
+    "date":"20 Sep 2021", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.4/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.5/firmware.hex", 
     "description":"emonTH V2 firmware"
   },
-  
+  "emonTH2_2Ext_jeelib":{
+    "hardware":"emonTH2",
+    "radio_format":"jeelib",
+    "version":"3.2.5", 
+    "date":"20 Sep 2021", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.5/firmware_2ext.hex", 
+    "description":"emonTH V2 firmware with 2x external DS18B20 temperature sensors"
+  },  
   "emonTH1_jeelib":{
     "hardware":"emonTH1",
     "radio_format":"jeelib",
