@@ -67,6 +67,10 @@
     "name":"Emonhub",
     "url":"https://github.com/openenergymonitor/emonhub.git"
   },
+  "emonmuc":{
+    "name":"EmonMUC",
+    "url":"https://github.com/isc-konstanz/emonmuc.git"
+  },
   "emonpi":{
     "name":"EmonPi",
     "url":"https://github.com/openenergymonitor/emonpi.git"
