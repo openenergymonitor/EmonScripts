@@ -10,3 +10,4 @@ www-data ALL=(ALL) NOPASSWD:/bin/cat /etc/wpa_supplicant/wpa_supplicant.conf
 www-data ALL=(ALL) NOPASSWD:/bin/cp /tmp/wifidata /etc/wpa_supplicant/wpa_supplicant.conf
 www-data ALL=(ALL) NOPASSWD:/usr/bin/tee /etc/wpa_supplicant/wpa_supplicant.conf
 www-data ALL=(ALL) NOPASSWD:/opt/openenergymonitor/emonpi/wifiAP/networklog.sh
+www-data ALL=(ALL) NOPASSWD:/opt/openenergymonitor/emonpi/wifiAP/stopAP.sh
