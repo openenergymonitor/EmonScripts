@@ -10,8 +10,8 @@ Vcs-Git: <repository>.git
 
 Package: <package>
 Architecture: all
-Depends: ${misc:Depends}, emoncms-core, redis-server, php-redis
-Description: Emoncms redis package
+Depends: ${misc:Depends}, emoncms-core, mariadb-server, mariadb-client, php-mysql
+Description: Emoncms MariaDB package
  Part of the OpenEnergyMonitor.org project, emoncms is an 
  open-source web-app for processing, logging and visualising 
  energy, temperature and other environmental data.

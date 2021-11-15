@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+pecl channel-update pecl.php.net
+
+#DEBHELPER#
+
+exit 0

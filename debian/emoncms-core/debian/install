@@ -1,0 +1,19 @@
+#!/usr/bin/dh-exec
+settings.ini /var/www/emoncms/
+Modules /var/www/emoncms/
+Lib /var/www/emoncms/
+scripts /var/www/emoncms/
+Theme /var/www/emoncms/
+version.json /var/www/emoncms/
+settings.env.ini /var/www/emoncms/
+route.php /var/www/emoncms/
+process_settings.php /var/www/emoncms/
+php-info.php /var/www/emoncms/
+param.php /var/www/emoncms/
+locale.php /var/www/emoncms/
+index.php /var/www/emoncms/
+core.php /var/www/emoncms/
+.htaccess /var/www/emoncms/
+default-settings.php /var/www/emoncms/
+default-settings.ini /var/www/emoncms/
+emoncmsdbupdate.php /var/www/emoncms/scripts/

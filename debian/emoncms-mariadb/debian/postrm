@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+mysql_database="emoncms"
+mysql_user="emoncms"
+mysql_password="emoncms"
+mysql_timeseries="emondata"
+
+case "$1" in
+    purge)
+        mysql -uroot -e "DROP DATABASE IF EXISTS $mysql_database;"
+		mysql -uroot -e "DROP DATABASE IF EXISTS $mysql_timeseries;"
+		mysql -uroot -e "DROP USER IF EXISTS '$mysql_user'@'localhost';"
+        ;;
+    *)
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

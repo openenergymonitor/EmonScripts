@@ -1,0 +1,3 @@
+#!/usr/bin/dh-exec
+conf-available/emoncms.conf /etc/apache2/conf-available/
+sites-available/emoncms.conf /etc/apache2/sites-available/

@@ -1,6 +1,30 @@
 #!/bin/sh
 set -e
 
+##################################
+emoncms_datadir="/var/opt/emoncms"
+emoncms_log_location="/var/log/emoncms"
+emoncms_dir="/var/www/emoncms"
+##################################
+
+case "$1" in
+    purge)
+		if [ -d $emoncms_datadir ]; then
+			rm -r $emoncms_datadir
+		fi
+		
+		if [ -d $emoncms_log_location ]; then
+			rm -r $emoncms_log_location
+		fi
+		
+		if [ -e /var/www/html/emoncms ]; then
+		    rm /var/www/html/emoncms
+	    fi
+        ;;
+    *)
+        ;;
+esac
+
 #DEBHELPER#
 
 exit 0

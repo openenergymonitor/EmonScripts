@@ -1,6 +1,48 @@
 #!/bin/sh
 set -e
 
+#########################################################################
+emoncms_dir="/var/www/emoncms"
+emoncms_log_location="/var/log/emoncms"
+openenergymonitor_dir="/opt/oem"
+emoncms_datadir="/var/opt/emoncms"
+user=pi
+#########################################################################
+
+# Disable redis persistance
+sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
+sed -i "s/^save 300 1/#save 300 1/" /etc/redis/redis.conf
+sed -i "s/^save 60 1/#save 60 1/" /etc/redis/redis.conf
+systemctl restart redis-server
+
+#Install services, depending on redis
+
+if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
+    mkdir /lib/systemd/system/service-runner.service.d
+fi
+echo $'[Service]\nUser='$user > /lib/systemd/system/service-runner.service.d/service-runner.conf
+
+if [ ! -f /lib/systemd/system/service-runner.service ]; then
+    ln -s $emoncms_dir/scripts/services/service-runner/service-runner.service /lib/systemd/system
+    systemctl enable service-runner.service #postrm
+    systemctl start service-runner.service
+fi
+
+if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
+    mkdir /lib/systemd/system/feedwriter.service.d
+fi
+echo $'[Service]\nEnvironment="USER='$user'"' > /lib/systemd/system/feedwriter.service.d/feedwriter.conf
+
+if [ ! -f /lib/systemd/system/feedwriter.service ]; then
+    ln -s $emoncms_dir/scripts/services/feedwriter/feedwriter.service /lib/systemd/system
+    systemctl enable feedwriter.service
+    systemctl start feedwriter.service
+fi
+
+systemctl daemon-reload
+systemctl restart feedwriter.service
+systemctl restart service-runner.service
+
 #DEBHELPER#
 
 exit 0

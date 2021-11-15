@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+# Disable apache mod rewrite
+a2dismod rewrite
+
+# Default apache2 configuration
+a2disconf emoncms.conf
+
+# Configure virtual host
+a2dissite emoncms.conf
+if [ ! "$(ls -A /etc/apache2/sites-enabled)" ]; then
+    a2ensite 000-default.conf
+fi
+
+systemctl restart apache2
+
+#DEBHELPER#
+
+exit 0

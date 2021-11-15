@@ -1,5 +1,59 @@
 #!/bin/sh
 set -e
+#########################################
+emoncms_dir="/var/www/emoncms"
+emoncms_datadir="/var/opt/emoncms"
+emoncms_log_location="/var/log/emoncms"
+user=pi
+mysql_user=emoncms
+mysql_password=emoncms
+mysql_database=emoncms
+mysql_timeseries=emondata
+#########################################
+
+# Create emoncms logfolder
+if [ ! -d $emoncms_log_location ]; then
+    mkdir $emoncms_log_location
+    chown $user $emoncms_log_location
+    touch "$emoncms_log_location/emoncms.log"
+    chmod 666 "$emoncms_log_location/emoncms.log"
+fi
+
+#Create date main directory
+if [ ! -d $emoncms_datadir ]; then
+	mkdir -p $emoncms_datadir 
+fi
+
+# Create data directories for emoncms feed engines:
+for engine in "mysql" "phpfina" "phptimeseries"; do
+    if [ ! -d $emoncms_datadir/$engine ]; then
+        mkdir $emoncms_datadir/$engine
+        chown www-data:root $emoncms_datadir/$engine
+    fi
+done
+
+#Symbolic Link 
+if [ ! -d /var/www/html/emoncms ]; then
+    ln -s $emoncms_dir /var/www/html/emoncms
+	if [ -f /var/www/html/index.html ]; then
+        rm /var/www/html/index.html
+    fi
+fi
+
+sed -i "/OPENENERGYMONITOR_DIR/d" 	         $emoncms_dir/settings.ini
+sed -i "/EMONCMS_DIR/d"                      $emoncms_dir/settings.ini
+sed -i '1{/^$/d}'                            $emoncms_dir/settings.ini
+
+sed -i "s~EMONCMS_DATADIR~$emoncms_datadir~" $emoncms_dir/settings.ini
+
+if ! grep -q "enable_update_ui"              $emoncms_dir/settings.ini; then
+    sed -i '/enable_admin_ui.*/a\
+enable_update_ui = false'                    $emoncms_dir/settings.ini
+fi
+
+#Give Pi the Diretory of emoncms
+
+chown -R $user $emoncms_dir
 
 #DEBHELPER#
 

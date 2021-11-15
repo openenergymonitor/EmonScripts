@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    purge)
+		if [ -d /lib/systemd/system/emoncms_mqtt.service.d ]; then
+			rm -r /lib/systemd/system/emoncms_mqtt.service.d
+		fi
+        ;;
+    *)
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

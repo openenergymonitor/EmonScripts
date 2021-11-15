@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+
+emoncms_dir="/var/www/emoncms"
+mysql_database="emoncms"
+mysql_user="emoncms"
+mysql_password="emoncms"
+mysql_timeseries="emondata"
+
+# Secure mysql
+mysql -uroot -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'; FLUSH PRIVILEGES;"
+
+# Create the emoncms database using utf8 character decoding:
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_database DEFAULT CHARACTER SET utf8;"
+
+# Create the emoncms timeseries using utf8 character decoding:
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_timeseries DEFAULT CHARACTER SET utf8;"
+
+# Add emoncms database, set user permissions
+mysql -uroot -e "CREATE USER IF NOT EXISTS '$mysql_user'@'localhost' IDENTIFIED BY '$mysql_password';"
+mysql -uroot -e "GRANT ALL ON $mysql_database.* TO '$mysql_user'@'localhost';FLUSH PRIVILEGES;"
+mysql -uroot -e "GRANT ALL ON $mysql_timeseries.* TO '$mysql_user'@'localhost';FLUSH PRIVILEGES;"
+
+sed -i "s~MYSQL_DATABASE~$mysql_database~" $emoncms_dir/settings.ini
+sed -i "s~MYSQL_USERNAME~$mysql_user~"     $emoncms_dir/settings.ini
+sed -i "s~MYSQL_PASSWORD~$mysql_password~" $emoncms_dir/settings.ini
+
+#DEBHELPER#
+
+exit 0

@@ -34,7 +34,7 @@ source $root_dir/install/load_config.sh
 
 rm -rf $build_dir/*
 
-package_date="$(date '+%a, %d %b %Y %H:%M:%S %:z')"
+package_date="$(export LC_ALL=POSIX; date '+%a, %d %b %Y %H:%M:%S %z')"
 
 for package in $(find $root_dir -name 'debian*.sh'); do
     package_dir=`dirname "${package}"`
@@ -45,11 +45,13 @@ for package in $(find $root_dir -name 'debian*.sh'); do
     chmod 755 $package_build/debian/post* 2>/dev/null
     chmod 755 $package_build/debian/rules
 
-    sed -i "s/<package>/$package_name/g"          $package_build/debian/control
-    sed -i "s/<version>/$package_vers/g"          $package_build/debian/control
-    sed -i "s/<maintainer>/$package_maintainer/g" $package_build/debian/control
-    sed -i "s|<repository>|$package_repository|g" $package_build/debian/control
-    sed -i "s|<homepage>|$package_homepage|g"     $package_build/debian/control
+    for control in $(find $package_build/debian -name '*control'); do
+        sed -i "s/<package>/$package_name/g"          $control
+        sed -i "s/<version>/$package_vers/g"          $control
+        sed -i "s/<maintainer>/$package_maintainer/g" $control
+        sed -i "s|<repository>|$package_repository|g" $control
+        sed -i "s|<homepage>|$package_homepage|g"     $control
+    done
 
     sed -i "s/<date>/$package_date/g"             $package_build/debian/changelog
     sed -i "s/<package>/$package_name/g"          $package_build/debian/changelog

@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    purge)
+	    if [ -f /etc/apache2/sites-available/emoncms.conf ]; then
+		    rm /etc/apache2/sites-available/emoncms.conf
+		fi
+		if [ -f /etc/apache2/conf-available/emoncms.conf ]; then
+		    rm /etc/apache2/conf-available/emoncms.conf
+		fi
+        ;;
+    *)
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
