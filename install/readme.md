@@ -68,6 +68,11 @@ If you are on a RaspberryPi or EmonPi you can usually just proceed.
 
 Be patient, the install process takes some time.
 
+### Ubuntu
+
+For Ubuntu, once the script starts and asks if you "would like to review the build script before starting?" Answer y(es)
+The installation must be configured before proceeding...
+
 ## Configure install
 
 The default configuration is specifically for the RaspberryPi platform and Raspbian Buster image. To run the installation on a different distribution, you may need to change the configuration to reflect the target environment, e.g. set `emonSD_pi_env=0`
@@ -78,7 +83,27 @@ To edit the configuration (standard file paths):
 cd /opt/openenergymonitor/EmonScripts/install/
 nano config.ini
 ```
+### Ubuntu
 
+Change the following:
+```
+user=[YOUR_UBUNTU_USERNAME]
+emonSD_pi_env=0
+
+install_emonhub=false
+
+install_emoncms_emonpi_modules=false
+install_firmware=false
+install_emonpilcd=false
+install_emonsd=false
+install_wifiap=false
+```
+Comment out the following:
+```
+#emoncms_modules[config]=stable
+#emoncms_modules[wifi]=stable
+#emoncms_modules[setup]=stable
+```
 To restart the installation:
 
 ```shell
