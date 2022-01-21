@@ -1,0 +1,123 @@
+#!/bin/sh
+set -e
+
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+SETTINGS_FILE=/var/www/emoncms/settings.ini
+#PASSWORD_FILE=/home/pi/.setup/passwd.conf
+
+#| sed "s/^'//;s/'$//" Falls man mal Werte hat welche kein '' haben
+
+if [ -e $SETTINGS_FILE ]; then
+    mysql_server_key="server"
+    mysql_server_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_server_key.*=" |\
+                        sed "s/${mysql_server_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$mysql_server_value" != "127.0.0.1" ]; then
+	    db_set emoncms/mysql_server "$mysql_database_value"
+	fi
+
+    mysql_port_key="port"
+    mysql_port_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_port_key.*=" |\
+	                  sed "s/${mysql_port_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$mysql_port_value" != "3306" ]; then
+	    db_set emoncms/mysql_port "$mysql_port_value"
+	fi
+
+    mysql_database_key="database"
+    mysql_database_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_database_key.*=" |\
+	                      sed "s/${mysql_database_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$mysql_database_value" != "MYSQL_DATABASE" ]; then
+	    db_set emoncms/mysql_database "$mysql_database_value"
+	fi
+
+    mysql_user_key="username"
+    mysql_user_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_user_key.*=" |\
+	                  sed "s/${mysql_user_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$mysql_user_value" != "MYSQL_USERNAME" ]; then
+	    db_set emoncms/mysql_user "$mysql_user_value"
+	fi
+
+    mysql_password_key="password"
+    mysql_password_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_password_key.*=" |\
+	                      sed "s/${mysql_password_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$mysql_password_value" != "MYSQL_PASSWORD" ]; then
+	    db_set emoncms/mysql_password "$mysql_password_value"
+	fi
+		
+	smtp_addr_key="from_email"
+	smtp_addr_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_addr_key.*=" |\
+	                 sed "s/${smtp_addr_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$smtp_addr_value" != "SMTP_ADDR" ]; then
+	    db_set emoncms/smtp_email_addr "$smtp_addr_value"
+	fi
+		
+	smtp_name_key="from_name"
+	smtp_name_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_name_key.*=" |\
+	                 sed "s/${smtp_name_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$smtp_name_value" != "SMTP_NAME" ]; then
+	    db_set emoncms/smtp_email_name "$smtp_name_value"
+	fi
+	
+	smtp_host_key="host"
+	smtp_host_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_host_key.*=" |\
+	                 sed "s/${smtp_host_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$smtp_host_value" != "SMTP_HOST" ]; then
+	    db_set emoncms/smtp_host "$smtp_host_value"
+ 	fi
+	
+	smtp_user_key="username"
+	smtp_user_value=`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 "$smtp_user_key.*=" |\
+	                 sed "s/${smtp_user_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$smtp_user_value" != "SMTP_USER" ]; then
+	    db_set emoncms/smtp_user "$smtp_user_value"
+	fi
+	
+	smtp_password_key="password"
+	smtp_password_value=`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 "$smtp_password_key.*=" |\
+	                     sed "s/${smtp_password_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+	if [ "$smtp_password_value" != "SMTP_PASSWORD" ]; then
+	    db_set emoncms/smtp_password "$smtp_password_value"
+	fi
+fi
+
+#Questions for MySql
+db_input low emoncms/mysql_server || true
+db_input low emoncms/mysql_port || true
+db_input high emoncms/mysql_database || true
+db_input high emoncms/mysql_user || true
+db_input medium emoncms/mysql_timeseries || true
+db_input high emoncms/mysql_password || true
+
+#Questions for SMTP
+db_input high emoncms/smtp_host || true
+db_input high emoncms/smtp_user || true
+db_input high emoncms/smtp_password || true
+db_input high emoncms/smtp_email_addr || true
+db_input high emoncms/smtp_email_name || true
+
+db_go || true
+
+#db_get emoncms/mysql_user
+#if [ -z "$mysql_user_value" ] || [ "$mysql_user_value" != "$RET" ]; then
+#    mysql_user_value=$RET
+#	mysql_password_value=""
+#fi
+#if [ -f $SETTINGS_FILE ] && grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 -q "$mysql_user_value"; then
+#    mysql_password_value=`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 "$mysql_user_value:" |\
+#                          sed "s/$mysql_user_value://g" | sed -r "s/\s+//g"`
+#    db_set emoncms/mysql_password "$mysql_password_value"
+#fi
+
+#if [ -z "$mysql_password_value" ] || [ "$mysql_password_value" = "MYSQL_PASSWORD" ]; then
+#    if dpkg -l | grep -e pwgen >/dev/null 2>&1; then
+#        mysql_password_value=`pwgen -s1 32`
+#        db_set emoncms/mysql_password "$mysql_password_value"
+#        db_input medium emoncms/mysql_password || true
+#    else
+#        db_input high emoncms/mysql_password || true
+#    fi
+#else
+#    db_input medium emoncms/mysql_password || true
+#fi
+#db_go || true

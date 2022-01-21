@@ -1,29 +1,109 @@
 #!/bin/sh
 set -e
 
-emoncms_dir="/var/www/emoncms"
-mysql_database="emoncms"
-mysql_user="emoncms"
-mysql_password="emoncms"
-mysql_timeseries="emondata"
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+SETTINGS_FILE=<ROOT_DIR>/settings.ini
+
+# Fetching configuration from debconf
+
+mysql_header_line=$((`grep -m1 -n "\[sql\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
+smtp_header_line=$((`grep -m1 -n "\[smtp\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
+
+db_get emoncms/mysql_server
+mysql_server_value=$RET
+mysql_server_key="server"
+mysql_server_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_server_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+
+db_get emoncms/mysql_port
+mysql_port_value=$RET
+mysql_port_key="port"
+mysql_port_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_port_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+
+db_get emoncms/mysql_database
+mysql_database_value=$RET
+mysql_database_key="database"
+mysql_database_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_database_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+
+db_get emoncms/mysql_timeseries
+mysql_timeseries_value=$RET
+mysql_timeseries_key="timeseries"
+mysql_timeseries_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_timeseries_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+
+db_get emoncms/mysql_user
+mysql_user_value=$RET
+mysql_user_key="username"
+mysql_user_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_user_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+
+db_get emoncms/mysql_password
+mysql_password_value=$RET
+mysql_password_key="password"
+mysql_password_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_password_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+
+db_get emoncms/smtp_host
+smtp_host_value=$RET
+smtp_host_key="host"
+smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+
+db_get emoncms/smtp_user
+smtp_user_value=$RET
+smtp_user_key="username"
+smtp_user_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_user_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+
+db_get emoncms/smtp_password
+smtp_password_value=$RET
+smtp_password_key="password"
+smtp_password_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_password_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+
+db_get emoncms/smtp_email_addr
+smtp_addr_value=$RET
+smtp_addr_key="from_email"
+smtp_addr_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_addr_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+
+db_get emoncms/smtp_email_name
+smtp_name_value=$RET
+smtp_name_key="from_name"
+smtp_name_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_name_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+
+# Update Settings.ini :
+
+sed -i "$mysql_database_line s/.*$mysql_database_key.*=.*/$mysql_database_key = '$mysql_database_value'/"             $SETTINGS_FILE
+sed -i "$mysql_server_line s/.*$mysql_server_key.*=.*/$mysql_server_key = '$mysql_server_value'/"                     $SETTINGS_FILE
+sed -i "$mysql_user_line s/.*$mysql_user_key.*=.*/$mysql_user_key = '$mysql_user_value'/"                             $SETTINGS_FILE
+sed -i "$mysql_password_line s/.*$mysql_password_key.*=.*/$mysql_password_key = '$mysql_password_value'/"             $SETTINGS_FILE
+if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_port_key ; then 
+    sed -i "$mysql_port_line s/.*$mysql_port_key.*=.*/$mysql_port_key = '$mysql_port_value'/"                         $SETTINGS_FILE
+fi
+if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_timeseries_key ; then
+    sed -i "$mysql_timeseries_line s/.*$mysql_timeseries_key.*=.*/$mysql_timeseries_key = '$mysql_timeseries_value'/" $SETTINGS_FILE
+fi
+
+sed -i "$smtp_host_line s/.*$smtp_host_key.*=.*/$smtp_host_key = '$smtp_host_value'/"                  $SETTINGS_FILE
+sed -i "$smtp_user_line s/.*$smtp_user_key.*=.*/$smtp_user_key = '$smtp_user_value'/"                  $SETTINGS_FILE
+sed -i "$smtp_password_line s/.*$smtp_password_key.*=.*/$smtp_password_key = '$smtp_password_value'/"  $SETTINGS_FILE
+sed -i "$smtp_addr_line s/.*$smtp_addr_key.*=.*/$smtp_addr_key = '$smtp_addr_value'/"                  $SETTINGS_FILE
+sed -i "$smtp_name_line s/.*$smtp_name_key.*=.*/$smtp_name_key = '$smtp_name_value'/"                  $SETTINGS_FILE
 
 # Secure mysql
+
 mysql -uroot -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'; FLUSH PRIVILEGES;"
 
 # Create the emoncms database using utf8 character decoding:
-mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_database DEFAULT CHARACTER SET utf8;"
+
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_database_value DEFAULT CHARACTER SET utf8;"
 
 # Create the emoncms timeseries using utf8 character decoding:
-mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_timeseries DEFAULT CHARACTER SET utf8;"
+
+mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_timeseries_value DEFAULT CHARACTER SET utf8;"
 
 # Add emoncms database, set user permissions
-mysql -uroot -e "CREATE USER IF NOT EXISTS '$mysql_user'@'localhost' IDENTIFIED BY '$mysql_password';"
-mysql -uroot -e "GRANT ALL ON $mysql_database.* TO '$mysql_user'@'localhost';FLUSH PRIVILEGES;"
-mysql -uroot -e "GRANT ALL ON $mysql_timeseries.* TO '$mysql_user'@'localhost';FLUSH PRIVILEGES;"
 
-sed -i "s~MYSQL_DATABASE~$mysql_database~" $emoncms_dir/settings.ini
-sed -i "s~MYSQL_USERNAME~$mysql_user~"     $emoncms_dir/settings.ini
-sed -i "s~MYSQL_PASSWORD~$mysql_password~" $emoncms_dir/settings.ini
+mysql -uroot -e "CREATE USER IF NOT EXISTS '$mysql_user_value'@'localhost' IDENTIFIED BY '$mysql_password_value';"
+mysql -uroot -e "GRANT ALL ON $mysql_database_value.* TO '$mysql_user_value'@'localhost';FLUSH PRIVILEGES;"
+mysql -uroot -e "GRANT ALL ON $mysql_timeseries_value.* TO '$mysql_user_value'@'localhost';FLUSH PRIVILEGES;"
+
+php -f "<ROOT_DIR>/scripts/database_update.php"
 
 #DEBHELPER#
 
