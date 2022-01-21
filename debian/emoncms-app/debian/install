@@ -1,0 +1,2 @@
+#!/usr/bin/dh-exec
+app <ROOT_DIR>/Modules

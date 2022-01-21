@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+php -f "<ROOT_DIR>/scripts/database_update.php"
+
+#DEBHELPER#
+
+exit 0
