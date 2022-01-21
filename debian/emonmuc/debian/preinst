@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if [ ! -d "/var/opt/emonmuc" ]; then
+    mkdir "/var/opt/emonmuc"
+fi
+
+#DEBHELPER#
+
+exit 0

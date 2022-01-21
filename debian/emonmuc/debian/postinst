@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+php -f "<ROOT_DIR>/scripts/database_update.php"
+php -f "<ROOT_DIR>/scripts/emonmucdevupdate.php"
+
+#DEBHELPER#
+
+exit 0
