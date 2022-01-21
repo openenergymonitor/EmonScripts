@@ -20,7 +20,7 @@ else
 fi
 
 # Create emoncms logfolder
-if [ ! -f $emoncms_log_location ]; then
+if [ ! -d $emoncms_log_location ]; then
     echo "- creating emoncms log folder"
     sudo mkdir $emoncms_log_location
     sudo chown $user $emoncms_log_location

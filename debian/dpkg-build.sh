@@ -25,8 +25,8 @@ else
     exit 1
 fi
 
-if [ ! -f $debian_dir/config.ini ]; then
-    cp $root_dir/install/emonsd.config.ini $debian_dir/config.ini
+if [ ! -f $root_dir/install/config.ini ]; then
+    cp $root_dir/install/emonsd.config.ini $root_dir/install/config.ini
 fi
 cd $debian_dir
 source $debian_dir/dpkg.ini
