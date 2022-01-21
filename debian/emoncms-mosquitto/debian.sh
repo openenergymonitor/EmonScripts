@@ -10,3 +10,5 @@ mkdir -p $package_build
 
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
+
+sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/postinst

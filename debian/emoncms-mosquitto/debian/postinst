@@ -3,7 +3,7 @@ set -e
 
 mqtt_user=emonmqtt
 mqtt_password=emonmqtt
-package_build="/var/www/emoncms"
+root_dir="<ROOT_DIR>"
 
 # Disable mosquitto persistance
 sed -i "s/^persistence true/persistence false/" /etc/mosquitto/mosquitto.conf
@@ -26,8 +26,8 @@ printf "extension=mosquitto.so" | tee /etc/php/$PHP_VER/mods-available/mosquitto
 phpenmod mosquitto
 
 #emoncms-core-script
-servicepath=$package_build/scripts/services/emoncms_mqtt/emoncms_mqtt.service
-$package_build/common/install_emoncms_service.sh $servicepath emoncms_mqtt
+servicepath=$root_dir/scripts/services/emoncms_mqtt/emoncms_mqtt.service
+$root_dir/common/install_emoncms_service.sh $servicepath emoncms_mqtt
 
 
 if [ ! -d /lib/systemd/system/emoncms_mqtt.service.d ]; then

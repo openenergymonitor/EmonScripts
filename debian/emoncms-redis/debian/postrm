@@ -1,10 +1,6 @@
 #!/bin/sh
 set -e
 
-################################
-package_build="/var/www/emoncms"
-################################
-
 case "$1" in
     purge)
 		if [ -d /lib/systemd/system/service-runner.service.d ]; then

@@ -1,25 +1,37 @@
 #!/bin/sh
 set -e
 
-##################################
-emoncms_datadir="/var/opt/emoncms"
-emoncms_log_location="/var/log/emoncms"
-emoncms_dir="/var/www/emoncms"
-##################################
+. /usr/share/debconf/confmodule
+
+root_dir="<ROOT_DIR>"
+data_dir="<DATA_DIR>"
+log_dir="<LOG_DIR>"
 
 case "$1" in
     purge)
-		if [ -d $emoncms_datadir ]; then
-			rm -r $emoncms_datadir
+		for engine in "mysql" "phpfina" "phptimeseries"; do
+			if [ -d $data_dir/$engine ]; then
+				rm -r $data_dir/$engine
+			fi
+		done
+		
+		if [ -d $data_dir ]; then
+			rm -r $data_dir
 		fi
 		
-		if [ -d $emoncms_log_location ]; then
-			rm -r $emoncms_log_location
+		if [ -d $log_dir ]; then
+			rm -r $log_dir
 		fi
 		
-		if [ -e /var/www/html/emoncms ]; then
-		    rm /var/www/html/emoncms
+		if [ -d /var/www/html/emoncms ]; then
+		    rm -r /var/www/html/emoncms
 	    fi
+		if [ -d /var/www/emoncms ]; then
+		    rm -r /var/www/emoncms
+	    fi
+		if [ -d $root_dir ]; then
+		    rm -r $root_dir 
+		fi
         ;;
     *)
         ;;

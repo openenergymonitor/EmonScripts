@@ -1,13 +1,14 @@
 #!/bin/sh
 set -e
 
-#########################################################################
-emoncms_dir="/var/www/emoncms"
-emoncms_log_location="/var/log/emoncms"
-openenergymonitor_dir="/opt/oem"
-emoncms_datadir="/var/opt/emoncms"
-user=pi
-#########################################################################
+
+root_dir="<ROOT_DIR>"
+
+if cat /proc/device-tree/model | grep -q "Raspberry"; then
+    user="pi"
+else
+    user="root"
+fi
 
 # Disable redis persistance
 sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
@@ -23,8 +24,8 @@ fi
 echo $'[Service]\nUser='$user > /lib/systemd/system/service-runner.service.d/service-runner.conf
 
 if [ ! -f /lib/systemd/system/service-runner.service ]; then
-    ln -s $emoncms_dir/scripts/services/service-runner/service-runner.service /lib/systemd/system
-    systemctl enable service-runner.service #postrm
+    ln -s $root_dir/scripts/services/service-runner/service-runner.service /lib/systemd/system
+    systemctl enable service-runner.service
     systemctl start service-runner.service
 fi
 
@@ -34,7 +35,7 @@ fi
 echo $'[Service]\nEnvironment="USER='$user'"' > /lib/systemd/system/feedwriter.service.d/feedwriter.conf
 
 if [ ! -f /lib/systemd/system/feedwriter.service ]; then
-    ln -s $emoncms_dir/scripts/services/feedwriter/feedwriter.service /lib/systemd/system
+    ln -s $root_dir/scripts/services/feedwriter/feedwriter.service /lib/systemd/system
     systemctl enable feedwriter.service
     systemctl start feedwriter.service
 fi

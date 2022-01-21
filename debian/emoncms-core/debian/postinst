@@ -1,59 +1,70 @@
 #!/bin/sh
 set -e
-#########################################
-emoncms_dir="/var/www/emoncms"
-emoncms_datadir="/var/opt/emoncms"
-emoncms_log_location="/var/log/emoncms"
-user=pi
-mysql_user=emoncms
-mysql_password=emoncms
-mysql_database=emoncms
-mysql_timeseries=emondata
-#########################################
+
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+root_dir="<ROOT_DIR>"
+data_dir="<DATA_DIR>"
+log_dir="<LOG_DIR>"
+
+if cat /proc/device-tree/model | grep -q "Raspberry"; then
+    user="pi"
+else
+    user="root"
+fi
 
 # Create emoncms logfolder
-if [ ! -d $emoncms_log_location ]; then
-    mkdir $emoncms_log_location
-    chown $user $emoncms_log_location
-    touch "$emoncms_log_location/emoncms.log"
-    chmod 666 "$emoncms_log_location/emoncms.log"
+if [ ! -d $log_dir ]; then
+    mkdir $log_dir
+	chown $user $log_dir
+	touch "$log_dir/emoncms.log"
+    chmod 666 "$log_dir/emoncms.log"
 fi
 
 #Create date main directory
-if [ ! -d $emoncms_datadir ]; then
-	mkdir -p $emoncms_datadir 
+if [ ! -d $data_dir ]; then
+	mkdir -p $data_dir 
 fi
 
 # Create data directories for emoncms feed engines:
 for engine in "mysql" "phpfina" "phptimeseries"; do
-    if [ ! -d $emoncms_datadir/$engine ]; then
-        mkdir $emoncms_datadir/$engine
-        chown www-data:root $emoncms_datadir/$engine
+    if [ ! -d $data_dir/$engine ]; then
+        mkdir $data_dir/$engine
+        chown www-data:root $data_dir/$engine
     fi
 done
 
 #Symbolic Link 
 if [ ! -d /var/www/html/emoncms ]; then
-    ln -s $emoncms_dir /var/www/html/emoncms
+    ln -s $root_dir /var/www/html/emoncms
 	if [ -f /var/www/html/index.html ]; then
         rm /var/www/html/index.html
     fi
 fi
 
-sed -i "/OPENENERGYMONITOR_DIR/d" 	         $emoncms_dir/settings.ini
-sed -i "/EMONCMS_DIR/d"                      $emoncms_dir/settings.ini
-sed -i '1{/^$/d}'                            $emoncms_dir/settings.ini
+sed -i "/OPENENERGYMONITOR_DIR/d" 	         $root_dir/settings.ini
+sed -i "/EMONCMS_DIR/d"                      $root_dir/settings.ini
+sed -i '1{/^$/d}'                            $root_dir/settings.ini
 
-sed -i "s~EMONCMS_DATADIR~$emoncms_datadir~" $emoncms_dir/settings.ini
+sed -i "s~EMONCMS_DATADIR~$data_dir~" $root_dir/settings.ini
 
-if ! grep -q "enable_update_ui"              $emoncms_dir/settings.ini; then
+if ! grep -q "\[smtp\]$" $root_dir/settings.ini ; then
+    echo "\n[smtp]" >> $root_dir/settings.ini
+	echo "host = 'SMTP_HOST'" >> $root_dir/settings.ini
+	echo "from_email = 'SMTP_ADDR'" >> $root_dir/settings.ini
+	echo "from_name = 'SMTP_NAME'" >> $root_dir/settings.ini
+	echo "username = 'SMTP_USER'" >> $root_dir/settings.ini
+	echo "password = 'SMTP_PASSWORD'" >> $root_dir/settings.ini
+fi
+
+if ! grep -q "enable_update_ui"              $root_dir/settings.ini; then
     sed -i '/enable_admin_ui.*/a\
-enable_update_ui = false'                    $emoncms_dir/settings.ini
+enable_update_ui = false'                    $root_dir/settings.ini
 fi
 
 #Give Pi the Diretory of emoncms
-
-chown -R $user $emoncms_dir
+chown -R $user $root_dir
 
 #DEBHELPER#
 
