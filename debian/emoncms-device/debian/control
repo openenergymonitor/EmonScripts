@@ -1,0 +1,17 @@
+Source: <package>
+Section: contrib/electronics
+Priority: optional
+Standards-Version: <version>
+Build-Depends: debhelper (>= 9)
+Maintainer: <maintainer>
+Homepage: <homepage>
+Vcs-Browser: <repository>
+Vcs-Git: <repository>.git
+
+Package: <package>
+Architecture: all
+Depends: ${misc:Depends}, emoncms-core, php
+Description: Emoncms-Device package
+ Part of the OpenEnergyMonitor.org project, emoncms is an 
+ open-source web-app for processing, logging and visualising 
+ energy, temperature and other environmental data.
