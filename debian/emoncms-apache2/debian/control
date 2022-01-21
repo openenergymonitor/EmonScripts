@@ -10,7 +10,7 @@ Vcs-Git: <repository>.git
 
 Package: <package>
 Architecture: all
-Depends: ${misc:Depends}, emoncms-core, apache2, libapache2-mod-php, gettext
+Depends: ${misc:Depends}, apache2, gettext, emoncms-core, libapache2-mod-php
 Description: Emoncms Apache2 Virtual Host
  Part of the OpenEnergyMonitor.org project, emoncms is an 
  open-source web-app for processing, logging and visualising 
