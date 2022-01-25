@@ -26,12 +26,19 @@ case "$1" in
 		if [ -d /var/www/html/emoncms ]; then
 		    rm -r /var/www/html/emoncms
 	    fi
-		if [ -d /var/www/emoncms ]; then
-		    rm -r /var/www/emoncms
-	    fi
 		if [ -d $root_dir ]; then
 		    rm -r $root_dir 
 		fi
+		db_purge
+        ;;
+    *)
+        ;;
+esac
+case "$1" in
+    remove | purge)
+		if [ -d /var/www/emoncms ]; then
+		    rm /var/www/emoncms
+	    fi
         ;;
     *)
         ;;
