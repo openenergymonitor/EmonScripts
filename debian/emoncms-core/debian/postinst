@@ -8,8 +8,9 @@ root_dir="<ROOT_DIR>"
 data_dir="<DATA_DIR>"
 log_dir="<LOG_DIR>"
 
-if cat /proc/device-tree/model | grep -q "Raspberry"; then
-    user="pi"
+db_get emoncms/user
+if [ ! -z "$RET" ]; then
+    user=$RET
 else
     user="root"
 fi
@@ -41,6 +42,10 @@ if [ ! -d /var/www/html/emoncms ]; then
 	if [ -f /var/www/html/index.html ]; then
         rm /var/www/html/index.html
     fi
+fi
+
+if [ ! -d "/var/www/emoncms" ]; then
+    ln -s $root_dir /var/www/emoncms
 fi
 
 sed -i "/OPENENERGYMONITOR_DIR/d" 	         $root_dir/settings.ini

@@ -1,7 +1,19 @@
 #!/bin/sh
 set -e
 
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+db_get emoncms/user
+if [ ! -z "$RET" ]; then
+    user=$RET
+else
+    user="root"
+fi
+
 php -f "<ROOT_DIR>/scripts/database_update.php"
+
+chown -R $user "<ROOT_DIR>/Modules/graph"
 
 #DEBHELPER#
 
