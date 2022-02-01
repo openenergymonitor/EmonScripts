@@ -1,18 +1,15 @@
 #!/bin/bash
 #Description: Build script to generate the emonmuc debian package
-
-repository_tmp="$root_dir/build/tmp/emonmuc"
-
-if [ ! -d $repository_tmp ]; then
-    git clone -b $emonmuc_branch ${git_repo[emonmuc]} $repository_tmp
+if [ ! -d $build_tmp/emonmuc ]; then
+    git clone -b $emonmuc_branch ${git_repo[emonmuc]} $build_tmp/emonmuc
 else
-    git -C $repository_tmp pull
+    git -C $build_tmp/emonmuc pull
 fi
-#if [ -f "$repository_tmp/version.txt" ]; then
-#    package_vers=$(cat "$repository_tmp/version.txt")
+#if [ -f "$build_tmp/emonmuc/version.txt" ]; then
+#    package_vers=$(cat "$build_tmp/emonmuc/version.txt")
 #
-#elif [ -f "$repository_tmp/version.json" ]; then
-#    package_vers=$(cat "$repository_tmp/version.json" | jq -r '.version')
+#elif [ -f "$build_tmp/emonmuc/version.json" ]; then
+#    package_vers=$(cat "$build_tmp/emonmuc/version.json" | jq -r '.version')
 #else
 #    echo "Unable to find emonmuc version file"
 #    exit 1
@@ -28,7 +25,7 @@ mkdir -p $package_build
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
-cp -r $repository_tmp/www/modules $package_build
-cp -r $repository_tmp/www/themes $package_build
-cp -r $repository_tmp/lib/device $package_build
-cp -r $repository_tmp/lib/driver $package_build
+cp -r $build_tmp/emonmuc/www/modules $package_build
+cp -r $build_tmp/emonmuc/www/themes $package_build
+cp -r $build_tmp/emonmuc/lib/device $package_build
+cp -r $build_tmp/emonmuc/lib/driver $package_build

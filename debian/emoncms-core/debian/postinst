@@ -49,16 +49,7 @@ fi
 
 case "$1" in
     install | configure)
-        sed -i "/OPENENERGYMONITOR_DIR/d" $SETTINGS_FILE
-        sed -i "/EMONCMS_DIR/d"           $SETTINGS_FILE
-        sed -i '1{/^$/d}'                 $SETTINGS_FILE
-
         sed -i "s|EMONCMS_DATADIR|<data_dir>|" $SETTINGS_FILE
-
-        if ! grep -q "enable_update_ui" $SETTINGS_FILE; then
-            sed -i '/enable_admin_ui.*/a\
-        enable_update_ui = false' $SETTINGS_FILE
-        fi
 
         db_get emoncms/smtp_host
         smtp_host_value=$RET

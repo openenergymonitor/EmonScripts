@@ -1,13 +1,12 @@
 #!/bin/bash
 #Description: Build script to generate the emoncms debian package
-repository_tmp="$root_dir/build/tmp/emoncms-device"
-if [ ! -d $repository_tmp ]; then
-    git clone -b ${emoncms_modules[device]} ${git_repo[device]} $repository_tmp
+if [ ! -d $build_tmp/emoncms-device ]; then
+    git clone -b ${emoncms_modules[device]} ${git_repo[device]} $build_tmp/emoncms-device
 else
-    git -C $repository_tmp pull
+    git -C $build_tmp/emoncms-device pull
 fi
-if [ -f "$repository_tmp/module.json" ]; then
-    package_vers=$(cat "$repository_tmp/module.json" | jq -r '.version')
+if [ -f "$build_tmp/emoncms-device/module.json" ]; then
+    package_vers=$(cat "$build_tmp/emoncms-device/module.json" | jq -r '.version')
 else
     echo "Unable to find module version file"
     exit 1
@@ -22,7 +21,7 @@ mkdir -p $package_build
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
-cp -r $repository_tmp $package_build/device
+cp -r $build_tmp/emoncms-device $package_build/device
 
 mkdir $package_build/scripts
 cp $emonscripts_dir/common/emonmucdevupdate.php $package_build/scripts/device_update.php

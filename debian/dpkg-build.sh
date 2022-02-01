@@ -34,7 +34,23 @@ source $root_dir/install/load_config.sh
 
 rm -rf $build_dir/*
 
-package_date="$(export LC_ALL=POSIX; date '+%a, %d %b %Y %H:%M:%S %z')"
+build_date="$(export LC_ALL=POSIX; date '+%a, %d %b %Y %H:%M:%S %z')"
+build_tmp="$root_dir/build/tmp"
+
+if [ ! -d $build_tmp/emoncms ]; then
+    git clone -b $emoncms_core_branch ${git_repo[emoncms_core]} $build_tmp/emoncms
+else
+    git -C $build_tmp/emoncms pull
+fi
+if [ -f "$build_tmp/emoncms/version.txt" ]; then
+    emoncms_version=$(cat "$build_tmp/emoncms/version.txt")
+
+elif [ -f "$build_tmp/emoncms/version.json" ]; then
+    emoncms_version=$(cat "$build_tmp/emoncms/version.json" | jq -r '.version')
+else
+    echo "Unable to find emoncms version file"
+    exit 1
+fi
 
 for package in $(find $root_dir -name 'debian*.sh'); do
     package_dir=`dirname "${package}"`
@@ -62,7 +78,7 @@ for package in $(find $root_dir -name 'debian*.sh'); do
         sed -i "s|<homepage>|$package_homepage|g"     $control
     done
 
-    sed -i "s/<date>/$package_date/g"             $package_build/debian/changelog
+    sed -i "s/<date>/$build_date/g"               $package_build/debian/changelog
     sed -i "s/<package>/$package_name/g"          $package_build/debian/changelog
     sed -i "s/<version>/$package_vers/g"          $package_build/debian/changelog
     sed -i "s/<maintainer>/$package_maintainer/g" $package_build/debian/changelog
