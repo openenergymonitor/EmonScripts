@@ -10,8 +10,8 @@ Vcs-Git: <repository>.git
 
 Package: <package>
 Architecture: all
-Depends: ${misc:Depends}, apache2, gettext, emoncms-core, libapache2-mod-php
-Description: Emoncms Apache2 Virtual Host
+Depends: ${misc:Depends}, apache2, libapache2-mod-php, gettext, emoncms-core
+Description: Emoncms Apache2 package
  Part of the OpenEnergyMonitor.org project, emoncms is an 
  open-source web-app for processing, logging and visualising 
  energy, temperature and other environmental data.

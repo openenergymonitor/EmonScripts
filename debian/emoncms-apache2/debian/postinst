@@ -1,22 +1,29 @@
 #!/bin/sh
 set -e
 
-sed -i "s/^CustomLog/#CustomLog/" /etc/apache2/conf-available/other-vhosts-access-log.conf
-
-# Enable apache mod rewrite
-a2enmod rewrite
-
-# Default apache2 configuration
-a2enconf emoncms.conf
-
-# Configure virtual host
-if [ -f /etc/apache2/sites-enabled/000-default.conf ]; then
-    a2dissite 000-default.conf
-fi
-a2ensite emoncms.conf
-
-systemctl restart apache2
-
 #DEBHELPER#
+
+case "$1" in
+    install)
+        sed -i "s/^CustomLog/#CustomLog/" /etc/apache2/conf-available/other-vhosts-access-log.conf
+
+        # Enable apache mod rewrite
+        a2enmod rewrite
+
+        # Default apache2 configuration
+        a2enconf emoncms.conf
+
+        # Configure virtual host
+        if [ -f /etc/apache2/sites-enabled/000-default.conf ]; then
+            a2dissite 000-default.conf
+        fi
+        a2ensite emoncms.conf
+
+        systemctl restart apache2
+        ;;
+    *)
+        systemctl reload apache2
+        ;;
+esac
 
 exit 0
