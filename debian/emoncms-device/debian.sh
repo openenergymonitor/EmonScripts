@@ -21,7 +21,12 @@ mkdir -p $package_build
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
-cp -r $build_tmp/emoncms-device $package_build/device
-
 mkdir $package_build/scripts
 cp $emonscripts_dir/common/emonmucdevupdate.php $package_build/scripts/device_update.php
+
+cp -r $build_tmp/emoncms-device $package_build/device
+rm -r $package_build/device/.git*
+rm $package_build/device/.travis.yml
+rm $package_build/device/composer.json
+rm $package_build/device/README.md
+rm $package_build/device/LICENSE*

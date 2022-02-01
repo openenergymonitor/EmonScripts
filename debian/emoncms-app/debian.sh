@@ -22,3 +22,8 @@ cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
 cp -r $build_tmp/emoncms-app $package_build/app
+rm -r $package_build/app/.git*
+rm $package_build/app/.travis.yml
+rm $package_build/app/composer.json
+rm $package_build/app/Readme.md
+rm $package_build/app/LICENSE*
