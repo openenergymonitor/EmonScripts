@@ -5,16 +5,12 @@ if [ ! -d $build_tmp/emonmuc ]; then
 else
     git -C $build_tmp/emonmuc pull
 fi
-#if [ -f "$build_tmp/emonmuc/version.txt" ]; then
-#    package_vers=$(cat "$build_tmp/emonmuc/version.txt")
-#
-#elif [ -f "$build_tmp/emonmuc/version.json" ]; then
-#    package_vers=$(cat "$build_tmp/emonmuc/version.json" | jq -r '.version')
-#else
-#    echo "Unable to find emonmuc version file"
-#    exit 1
-#fi
-
+if [ -f "$build_tmp/emonmuc/version.json" ]; then
+    package_vers=$(cat "$build_tmp/emonmuc/version.json" | jq -r '.version')
+else
+    echo "Unable to find emonmuc version file"
+    exit 1
+fi
 package_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 package_name="$(basename "$package_path")"
 package_id="$package_name"-"$package_vers"
