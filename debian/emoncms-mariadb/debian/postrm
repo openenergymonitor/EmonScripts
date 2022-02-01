@@ -4,22 +4,20 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
-db_get emoncms/mysql_database
-mysql_database_value=$RET
-
-db_get emoncms/mysql_timeseries
-mysql_timeseries_value=$RET
-
-db_get emoncms/mysql_user
-mysql_user_value=$RET
-
 case "$1" in
     purge)
-	    mysql -uroot -e "DROP DATABASE IF EXISTS $mysql_database_value;"
-		mysql -uroot -e "DROP DATABASE IF EXISTS $mysql_timeseries_value;"
-		mysql -uroot -e "DROP USER IF EXISTS '$mysql_user_value'@'localhost';"
-		
-		db_purge
+        db_get emoncms/mysql_database
+        mysql_database_value=$RET
+
+        db_get emoncms/mysql_timeseries
+        mysql_timeseries_value=$RET
+
+        db_get emoncms/mysql_user
+        mysql_user_value=$RET
+
+        mysql -uroot -e "DROP DATABASE IF EXISTS $mysql_database_value;"
+        mysql -uroot -e "DROP DATABASE IF EXISTS $mysql_timeseries_value;"
+        mysql -uroot -e "DROP USER IF EXISTS '$mysql_user_value'@'localhost';"
         ;;
     *)
         ;;

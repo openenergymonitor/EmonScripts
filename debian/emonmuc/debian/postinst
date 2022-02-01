@@ -5,19 +5,18 @@ set -e
 . /usr/share/debconf/confmodule
 
 db_get emoncms/user
-if [ ! -z "$RET" ]; then
-    user=$RET
-else
+user=$RET
+if [ -n "$user" ]; then
     user="root"
 fi
-
-php -f "<root_dir>/scripts/database_update.php"
-php -f "<root_dir>/scripts/emonmucdevupdate.php"
-
+chown -R $user "/var/opt/emonmuc"
 chown -R $user "<root_dir>/Modules/muc"
 chown -R $user "<root_dir>/Modules/channel"
 chown -R $user "<root_dir>/Theme/seal"
 
 #DEBHELPER#
+
+php -f "<root_dir>/scripts/database_update.php"
+php -f "<root_dir>/scripts/device_update.php"
 
 exit 0

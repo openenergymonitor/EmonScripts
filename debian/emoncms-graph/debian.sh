@@ -1,8 +1,6 @@
 #!/bin/bash
 #Description: Build script to generate the emoncms debian package
-
 repository_tmp="$root_dir/build/tmp/emoncms-graph"
-
 if [ ! -d $repository_tmp ]; then
     git clone -b ${emoncms_modules[graph]} ${git_repo[graph]} $repository_tmp
 else
@@ -14,7 +12,6 @@ else
     echo "Unable to find module version file"
     exit 1
 fi
-
 package_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 package_name="$(basename "$package_path")"
 package_id="$package_name"-"$package_vers"
@@ -25,8 +22,4 @@ mkdir -p $package_build
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
-cp -r $repository_tmp $package_build
-mv $package_build/emoncms-graph $package_build/graph
-
-sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/install
-sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/postinst
+cp -r $repository_tmp $package_build/graph

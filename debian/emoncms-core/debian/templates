@@ -1,5 +1,35 @@
 Template: emoncms/user
 Type: string
 Default: root
-Description: Directory owner:
- The name of the owner for the directorys
+Description: Linux user:
+ The name of the linux user, owning all package files
+
+Template: emoncms/smtp_host
+Type: string
+Default:
+Description: SMTP host for outgoing email:
+ Optionally, provide an SMTP host so that emoncms is able to dispatch outgoing mail (password resets, notifications and alerts, and so on).
+
+Template: emoncms/smtp_user
+Type: string
+Default:
+Description: SMTP username:
+ Optionally, enter the SMTP username for emoncms to use to connect to the SMTP host.
+
+Template: emoncms/smtp_password
+Type: password
+Default:
+Description: SMTP password:
+ Optionally, enter the SMTP password for the chosen user.
+
+Template: emoncms/smtp_email_addr
+Type: string
+Default: emoncms.noreply@localhost 
+Description: SMTP originating email address:
+ Optionally, enter the originating email address to use for emoncms outgoing mail
+
+Template: emoncms/smtp_email_name
+Type: string
+Default: emoncms (noreply)
+Description: SMTP originating email name/label: 
+  Optionally, enter the name to associate with the originating email address.

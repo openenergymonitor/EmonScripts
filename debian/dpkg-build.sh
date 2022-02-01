@@ -45,6 +45,15 @@ for package in $(find $root_dir -name 'debian*.sh'); do
     chmod 755 $package_build/debian/post* 2>/dev/null
     chmod 755 $package_build/debian/rules
 
+	for deb_file in "conffiles" "config" "install" "prerm" "preinst" "postinst" "postrm"; do
+	    deb_file_path=$package_build/debian/$deb_file
+	    if [ -f $deb_file_path ]; then
+			sed -i 's|<root_dir>|'$emoncms_www'|g'         $deb_file_path
+			sed -i 's|<data_dir>|'$emoncms_datadir'|g'     $deb_file_path
+			sed -i 's|<log_dir>|'$emoncms_log_location'|g' $deb_file_path
+	    fi
+	done
+
     for control in $(find $package_build/debian -name '*control'); do
         sed -i "s/<package>/$package_name/g"          $control
         sed -i "s/<version>/$package_vers/g"          $control

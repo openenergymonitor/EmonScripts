@@ -10,8 +10,8 @@ Vcs-Git: <repository>.git
 
 Package: <package>
 Architecture: all
-Depends: ${misc:Depends}, php, php-gd, php-curl, php-pear, php-dev, php-common, php-mbstring
-Description: Emoncms-PHP
+Depends: ${misc:Depends}, php, php-gd, php-curl, php-dev, php-common, php-mbstring
+Description: Emoncms PHP package
  Part of the OpenEnergyMonitor.org project, emoncms is an 
  open-source web-app for processing, logging and visualising 
  energy, temperature and other environmental data.

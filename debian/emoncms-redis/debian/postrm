@@ -2,21 +2,9 @@
 set -e
 
 case "$1" in
-    purge)
-		if [ -d /lib/systemd/system/service-runner.service.d ]; then
-            rm -r /lib/systemd/system/service-runner.service.d
-        fi
-		if [ -d /lib/systemd/system/feedwriter.service.d ]; then
-            rm -r /lib/systemd/system/feedwriter.service.d
-        fi
-		if [ -f /lib/systemd/system/service-runner.service ]; then
-            rm /lib/systemd/system/service-runner.service
-            systemctl disable service-runner.service 
-        fi
-		if [ -f /lib/systemd/system/feedwriter.service ]; then
-            rm /lib/systemd/system/feedwriter.service
-            systemctl disable feedwriter.service
-        fi
+    remove)
+        rm -r /lib/systemd/system/feedwriter.service*
+        rm -r /lib/systemd/system/service-runner.service*
         ;;
     *)
         ;;

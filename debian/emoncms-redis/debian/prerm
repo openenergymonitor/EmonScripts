@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    remove)
+        systemctl stop feedwriter.service
+        systemctl disable feedwriter.service
+
+        systemctl stop service-runner.service
+        systemctl disable service-runner.service
+        ;;
+    *)
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

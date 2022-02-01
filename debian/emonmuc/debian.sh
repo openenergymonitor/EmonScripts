@@ -32,7 +32,3 @@ cp -r $repository_tmp/www/modules $package_build
 cp -r $repository_tmp/www/themes $package_build
 cp -r $repository_tmp/lib/device $package_build
 cp -r $repository_tmp/lib/driver $package_build
-cp "/opt/oem/emonscripts/common/emonmucdevupdate.php" $package_build
-
-sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/install
-sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/postinst

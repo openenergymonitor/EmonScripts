@@ -4,72 +4,110 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
-root_dir="<root_dir>"
-data_dir="<data_dir>"
-log_dir="<log_dir>"
+SETTINGS_FILE=<root_dir>/settings.ini
 
 db_get emoncms/user
-if [ ! -z "$RET" ]; then
-    user=$RET
-else
+user=$RET
+if [ -n "$user" ]; then
     user="root"
 fi
 
+# Give user ownership over www folder
+chown -R $user <root_dir>
+
 # Create emoncms logfolder
-if [ ! -d $log_dir ]; then
-    mkdir $log_dir
-	chown $user $log_dir
-	touch "$log_dir/emoncms.log"
-    chmod 666 "$log_dir/emoncms.log"
+if [ ! -d <log_dir> ]; then
+    mkdir <log_dir>
+    chown $user -R <log_dir>
+    touch "<log_dir>/emoncms.log"
+    chmod 666 "<log_dir>/emoncms.log"
 fi
 
-#Create date main directory
-if [ ! -d $data_dir ]; then
-	mkdir -p $data_dir 
+if [ ! -d <data_dir> ]; then
+    mkdir -p <data_dir> 
+    chown $user <data_dir> 
 fi
 
 # Create data directories for emoncms feed engines:
 for engine in "mysql" "phpfina" "phptimeseries"; do
-    if [ ! -d $data_dir/$engine ]; then
-        mkdir $data_dir/$engine
-        chown www-data:root $data_dir/$engine
+    if [ ! -d <data_dir>/$engine ]; then
+        mkdir <data_dir>/$engine
+        chown www-data:root <data_dir>/$engine
     fi
 done
 
-#Symbolic Link 
-if [ ! -d /var/www/html/emoncms ]; then
-    ln -s $root_dir /var/www/html/emoncms
-	if [ -f /var/www/html/index.html ]; then
+# Create a symlink to reference emoncms within the web root folder
+if [ ! -e "/var/www/emoncms" ]; then
+    ln -s <root_dir> /var/www/emoncms
+fi
+if [ ! -e /var/www/html/emoncms ]; then
+    ln -s <root_dir> /var/www/html/emoncms
+    if [ -f /var/www/html/index.html ]; then
         rm /var/www/html/index.html
     fi
 fi
 
-if [ ! -d "/var/www/emoncms" ]; then
-    ln -s $root_dir /var/www/emoncms
-fi
+case "$1" in
+    install | configure)
+        sed -i "/OPENENERGYMONITOR_DIR/d" $SETTINGS_FILE
+        sed -i "/EMONCMS_DIR/d"           $SETTINGS_FILE
+        sed -i '1{/^$/d}'                 $SETTINGS_FILE
 
-sed -i "/OPENENERGYMONITOR_DIR/d" 	         $root_dir/settings.ini
-sed -i "/EMONCMS_DIR/d"                      $root_dir/settings.ini
-sed -i '1{/^$/d}'                            $root_dir/settings.ini
+        sed -i "s|EMONCMS_DATADIR|<data_dir>|" $SETTINGS_FILE
 
-sed -i "s~EMONCMS_DATADIR~$data_dir~" $root_dir/settings.ini
+        if ! grep -q "enable_update_ui" $SETTINGS_FILE; then
+            sed -i '/enable_admin_ui.*/a\
+        enable_update_ui = false' $SETTINGS_FILE
+        fi
 
-if ! grep -q "\[smtp\]$" $root_dir/settings.ini ; then
-    echo "\n[smtp]" >> $root_dir/settings.ini
-	echo "host = 'SMTP_HOST'" >> $root_dir/settings.ini
-	echo "from_email = 'SMTP_ADDR'" >> $root_dir/settings.ini
-	echo "from_name = 'SMTP_NAME'" >> $root_dir/settings.ini
-	echo "username = 'SMTP_USER'" >> $root_dir/settings.ini
-	echo "password = 'SMTP_PASSWORD'" >> $root_dir/settings.ini
-fi
+        db_get emoncms/smtp_host
+        smtp_host_value=$RET
 
-if ! grep -q "enable_update_ui"              $root_dir/settings.ini; then
-    sed -i '/enable_admin_ui.*/a\
-enable_update_ui = false'                    $root_dir/settings.ini
-fi
+        db_get emoncms/smtp_email_addr
+        smtp_addr_value=$RET
 
-#Give Pi the Diretory of emoncms
-chown -R $user $root_dir
+        db_get emoncms/smtp_email_name
+        smtp_name_value=$RET
+
+        db_get emoncms/smtp_user
+        smtp_user_value=$RET
+
+        db_get emoncms/smtp_password
+        smtp_password_value=$RET
+
+        if ! grep -q "\[smtp\]$" $SETTINGS_FILE ; then
+            echo "\n[smtp]" >> $SETTINGS_FILE
+            echo "host = '$smtp_host_value'" >> $SETTINGS_FILE
+            echo "from_email = '$smtp_addr_value'" >> $SETTINGS_FILE
+            echo "from_name = '$smtp_name_value'" >> $SETTINGS_FILE
+            echo "encryption = 'ssl'" >> $SETTINGS_FILE
+            echo "username = '$smtp_user_value'" >> $SETTINGS_FILE
+            echo "password = '$smtp_password_value'" >> $SETTINGS_FILE
+        else
+            smtp_host_key="host"
+            smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            sed -i "$smtp_host_line s/.*$smtp_host_key.*=.*/$smtp_host_key = '$smtp_host_value'/" $SETTINGS_FILE
+
+            smtp_user_key="username"
+            smtp_user_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_user_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            sed -i "$smtp_user_line s/.*$smtp_user_key.*=.*/$smtp_user_key = '$smtp_user_value'/" $SETTINGS_FILE
+
+            smtp_password_key="password"
+            smtp_password_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_password_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            sed -i "$smtp_password_line s/.*$smtp_password_key.*=.*/$smtp_password_key = '$smtp_password_value'/" $SETTINGS_FILE
+
+            smtp_addr_key="from_email"
+            smtp_addr_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_addr_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            sed -i "$smtp_addr_line s/.*$smtp_addr_key.*=.*/$smtp_addr_key = '$smtp_addr_value'/" $SETTINGS_FILE
+
+            smtp_name_key="from_name"
+            smtp_name_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_name_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            sed -i "$smtp_name_line s/.*$smtp_name_key.*=.*/$smtp_name_key = '$smtp_name_value'/" $SETTINGS_FILE
+        fi
+        ;;
+    *)
+        ;;
+esac
 
 #DEBHELPER#
 

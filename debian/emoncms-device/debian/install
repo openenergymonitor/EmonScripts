@@ -1,2 +1,3 @@
 #!/usr/bin/dh-exec
-device <root_dir>/Modules
+device <root_dir>/Modules/
+scripts/* <root_dir>/scripts/

@@ -3,42 +3,29 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-root_dir="<root_dir>"
-data_dir="<data_dir>"
-log_dir="<log_dir>"
-
 case "$1" in
     purge)
-		for engine in "mysql" "phpfina" "phptimeseries"; do
-			if [ -d $data_dir/$engine ]; then
-				rm -r $data_dir/$engine
-			fi
-		done
-		
-		if [ -d $data_dir ]; then
-			rm -r $data_dir
-		fi
-		
-		if [ -d $log_dir ]; then
-			rm -r $log_dir
-		fi
-		
-		if [ -d /var/www/html/emoncms ]; then
-		    rm -r /var/www/html/emoncms
-	    fi
-		if [ -d $root_dir ]; then
-		    rm -r $root_dir 
-		fi
-		db_purge
+        if [ -d <data_dir> ]; then
+            rm -r <data_dir>
+        fi
+        if [ -d <log_dir> ]; then
+            rm -r <log_dir>
+        fi
+        if [ -d <root_dir> ]; then
+            rm -r <root_dir> 
+        fi
         ;;
     *)
         ;;
 esac
 case "$1" in
     remove | purge)
-		if [ -d /var/www/emoncms ]; then
-		    rm /var/www/emoncms
-	    fi
+        if [ -e /var/www/emoncms ]; then
+            rm -rf /var/www/emoncms
+        fi
+        if [ -e /var/www/html/emoncms ]; then
+            rm -rf /var/www/html/emoncms
+        fi
         ;;
     *)
         ;;

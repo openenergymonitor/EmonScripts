@@ -10,8 +10,8 @@ Vcs-Git: <repository>.git
 
 Package: <package>
 Architecture: all
-Depends: ${misc:Depends}, emoncms-core, php
-Description: Emoncms-Device package
+Depends: ${misc:Depends}, emoncms-core
+Description: Emoncms Device module package
  Part of the OpenEnergyMonitor.org project, emoncms is an 
  open-source web-app for processing, logging and visualising 
  energy, temperature and other environmental data.

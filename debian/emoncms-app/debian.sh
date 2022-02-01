@@ -22,8 +22,4 @@ mkdir -p $package_build
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
-cp -r $repository_tmp $package_build
-mv $package_build/emoncms-app $package_build/app
-
-sed -i 's|<root_dir>|'$emoncms_www'|g' $package_build/debian/install
-sed -i 's|<root_dir>|'$emoncms_www'|g' $package_build/debian/postinst
+cp -r $repository_tmp $package_build/app

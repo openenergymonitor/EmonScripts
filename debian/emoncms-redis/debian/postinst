@@ -4,48 +4,56 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
-root_dir="<root_dir>"
-
 db_get emoncms/user
-if [ ! -z "$RET" ]; then
-    user=$RET
-else
+user=$RET
+if [ -n "$user" ]; then
     user="root"
 fi
 
-# Disable redis persistance
-sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
-sed -i "s/^save 300 1/#save 300 1/" /etc/redis/redis.conf
-sed -i "s/^save 60 1/#save 60 1/" /etc/redis/redis.conf
-systemctl restart redis-server
+case "$1" in
+    install | configure)
+        # Disable redis persistance
+        sed -i "s/^save 900 1/#save 900 1/" /etc/redis/redis.conf
+        sed -i "s/^save 300 1/#save 300 1/" /etc/redis/redis.conf
+        sed -i "s/^save 60 1/#save 60 1/" /etc/redis/redis.conf
+        systemctl restart redis-server
+        ;;
+    *)
+        ;;
+esac
+case "$1" in
+    install)
+        if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
+            mkdir /lib/systemd/system/feedwriter.service.d
+        fi
+        echo $'[Service]\nEnvironment="USER='$user'"' > /lib/systemd/system/feedwriter.service.d/feedwriter.conf
 
-#Install services, depending on redis
+        if [ ! -f /lib/systemd/system/feedwriter.service ]; then
+            ln -s <root_dir>/scripts/services/feedwriter/feedwriter.service /lib/systemd/system
+            systemctl enable feedwriter.service
+            systemctl start feedwriter.service
+        fi
 
-if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
-    mkdir /lib/systemd/system/service-runner.service.d
-fi
-echo $'[Service]\nUser='$user > /lib/systemd/system/service-runner.service.d/service-runner.conf
 
-if [ ! -f /lib/systemd/system/service-runner.service ]; then
-    ln -s $root_dir/scripts/services/service-runner/service-runner.service /lib/systemd/system
-    systemctl enable service-runner.service
-    systemctl start service-runner.service
-fi
+        if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
+            mkdir /lib/systemd/system/service-runner.service.d
+        fi
+        echo $'[Service]\nUser='$user > /lib/systemd/system/service-runner.service.d/service-runner.conf
 
-if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
-    mkdir /lib/systemd/system/feedwriter.service.d
-fi
-echo $'[Service]\nEnvironment="USER='$user'"' > /lib/systemd/system/feedwriter.service.d/feedwriter.conf
-
-if [ ! -f /lib/systemd/system/feedwriter.service ]; then
-    ln -s $root_dir/scripts/services/feedwriter/feedwriter.service /lib/systemd/system
-    systemctl enable feedwriter.service
-    systemctl start feedwriter.service
-fi
-
-systemctl daemon-reload
-systemctl restart feedwriter.service
-systemctl restart service-runner.service
+        if [ ! -f /lib/systemd/system/service-runner.service ]; then
+            ln -s <root_dir>/scripts/services/service-runner/service-runner.service /lib/systemd/system
+            systemctl enable service-runner.service
+            systemctl start service-runner.service
+        fi
+        ;;
+    upgrade)
+        systemctl daemon-reload
+        systemctl restart feedwriter.service
+        systemctl restart service-runner.service
+        ;;
+    *)
+        ;;
+esac
 
 #DEBHELPER#
 
