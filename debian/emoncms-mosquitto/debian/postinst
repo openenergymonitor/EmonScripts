@@ -3,7 +3,7 @@ set -e
 
 mqtt_user=emonmqtt
 mqtt_password=emonmqtt
-root_dir="<ROOT_DIR>"
+root_dir="<root_dir>"
 
 # Disable mosquitto persistance
 sed -i "s/^persistence true/persistence false/" /etc/mosquitto/mosquitto.conf

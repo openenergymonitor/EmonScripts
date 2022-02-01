@@ -54,16 +54,16 @@ cp $defaults_dir/emoncms/emonpi.settings.ini $package_build/settings.ini
 cp "/opt/oem/emonscripts/common/emoncmsdbupdate.php" $package_build
 mv $package_build/emoncmsdbupdate.php $package_build/database_update.php
 
-sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/install
-sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/conffiles
+sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/install
+sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/conffiles
 
-sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/postinst
-sed -i 's~<DATA_DIR>~'$emoncms_datadir'~g' $package_build/debian/postinst
-sed -i 's~<LOG_DIR>~'$emoncms_log_location'~g' $package_build/debian/postinst
+sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/postinst
+sed -i 's~<data_dir>~'$emoncms_datadir'~g' $package_build/debian/postinst
+sed -i 's~<log_dir>~'$emoncms_log_location'~g' $package_build/debian/postinst
 
-sed -i 's~<LOG_DIR>~'$emoncms_log_location'~g' $package_build/debian/postrm
-sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/postrm
-sed -i 's~<DATA_DIR>~'$emoncms_datadir'~g' $package_build/debian/postrm
+sed -i 's~<log_dir>~'$emoncms_log_location'~g' $package_build/debian/postrm
+sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/postrm
+sed -i 's~<data_dir>~'$emoncms_datadir'~g' $package_build/debian/postrm
 
 
 sed -i '/mqtt/{N;N;N;N;d;}' $package_build/settings.ini

@@ -10,5 +10,3 @@ mkdir -p $package_build
 
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
-
-

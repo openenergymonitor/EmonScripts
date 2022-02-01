@@ -1,2 +1,2 @@
 #!/usr/bin/dh-exec
-graph <ROOT_DIR>/Modules
+graph <root_dir>/Modules

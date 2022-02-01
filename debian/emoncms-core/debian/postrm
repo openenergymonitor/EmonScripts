@@ -3,9 +3,9 @@ set -e
 
 . /usr/share/debconf/confmodule
 
-root_dir="<ROOT_DIR>"
-data_dir="<DATA_DIR>"
-log_dir="<LOG_DIR>"
+root_dir="<root_dir>"
+data_dir="<data_dir>"
+log_dir="<log_dir>"
 
 case "$1" in
     purge)

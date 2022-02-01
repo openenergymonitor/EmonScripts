@@ -4,7 +4,7 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
-SETTINGS_FILE=<ROOT_DIR>/settings.ini
+SETTINGS_FILE=<root_dir>/settings.ini
 
 # Fetching configuration from debconf
 
@@ -103,7 +103,7 @@ mysql -uroot -e "CREATE USER IF NOT EXISTS '$mysql_user_value'@'localhost' IDENT
 mysql -uroot -e "GRANT ALL ON $mysql_database_value.* TO '$mysql_user_value'@'localhost';FLUSH PRIVILEGES;"
 mysql -uroot -e "GRANT ALL ON $mysql_timeseries_value.* TO '$mysql_user_value'@'localhost';FLUSH PRIVILEGES;"
 
-php -f "<ROOT_DIR>/scripts/database_update.php"
+php -f "<root_dir>/scripts/database_update.php"
 
 #DEBHELPER#
 

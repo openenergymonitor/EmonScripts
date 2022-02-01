@@ -28,5 +28,5 @@ cp -rf $package_dir/debian $package_build
 cp -r $repository_tmp $package_build
 mv $package_build/emoncms-graph $package_build/graph
 
-sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/install
-sed -i 's~<ROOT_DIR>~'$emoncms_www'~g' $package_build/debian/postinst
+sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/install
+sed -i 's~<root_dir>~'$emoncms_www'~g' $package_build/debian/postinst

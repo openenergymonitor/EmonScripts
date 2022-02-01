@@ -11,12 +11,12 @@ else
     user="root"
 fi
 
-php -f "<ROOT_DIR>/scripts/database_update.php"
-php -f "<ROOT_DIR>/scripts/emonmucdevupdate.php"
+php -f "<root_dir>/scripts/database_update.php"
+php -f "<root_dir>/scripts/emonmucdevupdate.php"
 
-chown -R $user "<ROOT_DIR>/Modules/muc"
-chown -R $user "<ROOT_DIR>/Modules/channel"
-chown -R $user "<ROOT_DIR>/Theme/seal"
+chown -R $user "<root_dir>/Modules/muc"
+chown -R $user "<root_dir>/Modules/channel"
+chown -R $user "<root_dir>/Theme/seal"
 
 #DEBHELPER#
 

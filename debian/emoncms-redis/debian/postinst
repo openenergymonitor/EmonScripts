@@ -4,7 +4,7 @@ set -e
 # Source debconf library.
 . /usr/share/debconf/confmodule
 
-root_dir="<ROOT_DIR>"
+root_dir="<root_dir>"
 
 db_get emoncms/user
 if [ ! -z "$RET" ]; then
