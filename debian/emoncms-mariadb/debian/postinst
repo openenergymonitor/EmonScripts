@@ -50,12 +50,7 @@ case "$1" in
         if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_timeseries_key ; then
             sed -i "$mysql_timeseries_line s/.*$mysql_timeseries_key.*=.*/$mysql_timeseries_key = '$mysql_timeseries_value'/" $SETTINGS_FILE
         fi
-        ;;
-    *)
-        ;;
-esac
-case "$1" in
-    install)
+
         # Secure mysql
         mysql -uroot -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
         mysql -uroot  -e "DELETE FROM mysql.user WHERE User='';"

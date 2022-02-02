@@ -1,8 +1,0 @@
-#!/bin/sh
-set -e
-
-#DEBHELPER#
-
-php -f "<root_dir>/scripts/admin/database_update.php"
-
-exit 0

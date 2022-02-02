@@ -4,7 +4,7 @@ set -e
 #DEBHELPER#
 
 case "$1" in
-    install)
+    install | configure)
         sed -i "s/^CustomLog/#CustomLog/" /etc/apache2/conf-available/other-vhosts-access-log.conf
 
         # Enable apache mod rewrite

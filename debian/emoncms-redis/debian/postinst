@@ -14,12 +14,7 @@ case "$1" in
         sed -i "s/^save 300 1/#save 300 1/" /etc/redis/redis.conf
         sed -i "s/^save 60 1/#save 60 1/" /etc/redis/redis.conf
         systemctl restart redis-server
-        ;;
-    *)
-        ;;
-esac
-case "$1" in
-    install)
+
         if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
             mkdir /lib/systemd/system/feedwriter.service.d
         fi
