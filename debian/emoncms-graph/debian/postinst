@@ -6,9 +6,7 @@ set -e
 
 db_get emoncms/user
 user=$RET
-if [ -n "$user" ]; then
-    user="root"
-fi
+
 chown -R $user "<root_dir>/Modules/graph"
 
 #DEBHELPER#

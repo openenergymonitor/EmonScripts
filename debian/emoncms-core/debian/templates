@@ -8,7 +8,13 @@ Template: emoncms/smtp_host
 Type: string
 Default:
 Description: SMTP host for outgoing email:
- Optionally, provide an SMTP host so that emoncms is able to dispatch outgoing mail (password resets, notifications and alerts, and so on).
+ Optionally, provide a SMTP host so that emoncms is able to dispatch outgoing mail (password resets, notifications and alerts, and so on).
+
+Template: emoncms/smtp_port
+Type: string
+Default: 465
+Description: SMTP port for outgoing email:
+ Optionally, enter a SMTP port for emoncms to use to connect to the SMTP host.
 
 Template: emoncms/smtp_user
 Type: string

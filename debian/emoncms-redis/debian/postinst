@@ -6,9 +6,6 @@ set -e
 
 db_get emoncms/user
 user=$RET
-if [ -n "$user" ]; then
-    user="root"
-fi
 
 case "$1" in
     install | configure)

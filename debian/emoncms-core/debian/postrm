@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-. /usr/share/debconf/confmodule
-
 case "$1" in
     purge)
         if [ -d <data_dir> ]; then

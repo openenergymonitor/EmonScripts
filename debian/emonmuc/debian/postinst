@@ -6,9 +6,7 @@ set -e
 
 db_get emoncms/user
 user=$RET
-if [ -n "$user" ]; then
-    user="root"
-fi
+
 chown -R $user "/var/opt/emonmuc"
 chown -R $user "<root_dir>/Modules/muc"
 chown -R $user "<root_dir>/Modules/channel"

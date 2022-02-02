@@ -10,49 +10,59 @@ if [ -e $SETTINGS_FILE ]; then
     smtp_addr_key="from_email"
     smtp_addr_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_addr_key.*=" |\
                      sed "s/${smtp_addr_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
-    if [ "$smtp_addr_value" != "SMTP_ADDR" ]; then
+    if [ -n "$smtp_addr_value" ] && [ "$smtp_addr_value" != "SMTP_ADDR" ]; then
         db_set emoncms/smtp_email_addr "$smtp_addr_value"
     fi
 
     smtp_name_key="from_name"
     smtp_name_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_name_key.*=" |\
                      sed "s/${smtp_name_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
-    if [ "$smtp_name_value" != "SMTP_NAME" ]; then
+    if [ -n "$smtp_name_value" ] && [ "$smtp_name_value" != "SMTP_NAME" ]; then
         db_set emoncms/smtp_email_name "$smtp_name_value"
     fi
 
     smtp_host_key="host"
     smtp_host_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_host_key.*=" |\
                      sed "s/${smtp_host_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
-    if [ "$smtp_host_value" != "SMTP_HOST" ]; then
+    if [ -n "$smtp_host_value" ] && [ "$smtp_host_value" != "SMTP_HOST" ]; then
         db_set emoncms/smtp_host "$smtp_host_value"
-     fi
+    fi
+
+    smtp_port_key="port"
+    smtp_port_value=`grep -A6 -P '^\[smtp\]$' $SETTINGS_FILE | grep -m1 "$smtp_port_key.*=" |\
+                     sed "s/${smtp_port_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+    if [ -n "$smtp_port_value" ] && [ "$smtp_port_value" != "SMTP_PORT" ]; then
+        db_set emoncms/smtp_port "$smtp_port_value"
+    fi
 
     smtp_user_key="username"
     smtp_user_value=`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 "$smtp_user_key.*=" |\
                      sed "s/${smtp_user_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
-    if [ "$smtp_user_value" != "SMTP_USER" ]; then
+    if [ -n "$smtp_user_value" ] && [ "$smtp_user_value" != "SMTP_USER" ]; then
         db_set emoncms/smtp_user "$smtp_user_value"
     fi
 
     smtp_password_key="password"
     smtp_password_value=`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 "$smtp_password_key.*=" |\
                          sed "s/${smtp_password_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
-    if [ "$smtp_password_value" != "SMTP_PASSWORD" ]; then
+    if [ -n "$smtp_password_value" ] && [ "$smtp_password_value" != "SMTP_PASSWORD" ]; then
         db_set emoncms/smtp_password "$smtp_password_value"
     fi
 fi
 
 if cat /proc/device-tree/model | grep -q "Raspberry"; then
-    db_input medium || true
     db_set emoncms/user "pi"
+    db_input medium emoncms/user || true
 else
-    db_input high || true
+    db_input high emoncms/user || true
 fi
 
 db_input high emoncms/smtp_host || true
+db_input medium emoncms/smtp_port || true
+
 db_input high emoncms/smtp_user || true
 db_input high emoncms/smtp_password || true
+
 db_input high emoncms/smtp_email_addr || true
 db_input high emoncms/smtp_email_name || true
 db_go || true 
