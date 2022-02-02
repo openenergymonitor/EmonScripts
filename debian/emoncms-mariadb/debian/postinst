@@ -58,7 +58,10 @@ esac
 case "$1" in
     install)
         # Secure mysql
-        mysql -uroot -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); DELETE FROM mysql.user WHERE User=''; DROP DATABASE IF EXISTS test; DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'; FLUSH PRIVILEGES;"
+        mysql -uroot -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+        mysql -uroot  -e "DELETE FROM mysql.user WHERE User='';"
+        mysql -uroot  -e "DROP DATABASE IF EXISTS test;"
+        mysql -uroot  -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
 
         # Create the emoncms database using utf8 character decoding:
         mysql -uroot -e "CREATE DATABASE IF NOT EXISTS $mysql_database_value DEFAULT CHARACTER SET utf8;"
