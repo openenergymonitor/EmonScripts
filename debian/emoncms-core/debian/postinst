@@ -67,13 +67,15 @@ case "$1" in
         smtp_password_value=$RET
 
         if ! grep -q "\[smtp\]$" $SETTINGS_FILE ; then
-            echo "\n[smtp]" >> $SETTINGS_FILE
-            echo "host = '$smtp_host_value'" >> $SETTINGS_FILE
-            echo "from_email = '$smtp_addr_value'" >> $SETTINGS_FILE
-            echo "from_name = '$smtp_name_value'" >> $SETTINGS_FILE
-            echo "encryption = 'ssl'" >> $SETTINGS_FILE
-            echo "username = '$smtp_user_value'" >> $SETTINGS_FILE
-            echo "password = '$smtp_password_value'" >> $SETTINGS_FILE
+            header_line=$(grep -m1 -n "\[log\]" $SETTINGS_FILE | sed "s/:.*//g")
+
+            sed -i -e "$header_line i \[smtp\]" $SETTINGS_FILE
+            sed -i -e "$((header_line+1)) i host = '$smtp_host_value'" $SETTINGS_FILE
+            sed -i -e "$((header_line+2)) i from_email = '$smtp_addr_value'" $SETTINGS_FILE
+            sed -i -e "$((header_line+3)) i from_name = '$smtp_name_value'" $SETTINGS_FILE
+            sed -i -e "$((header_line+4)) i encryption = 'ssl'" $SETTINGS_FILE
+            sed -i -e "$((header_line+5)) i username = '$smtp_user_value'" $SETTINGS_FILE
+            sed -i -e "$((header_line+6)) i password = '$smtp_password_value'\n" $SETTINGS_FILE
         else
             smtp_host_key="host"
             smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
