@@ -2,8 +2,6 @@
 // Update Emoncms database
 define('EMONCMS_EXEC', 1);
 
-$applychanges = true;
-
 $options_short = "d:";
 $options_long  = array(
     "dir:"
@@ -47,6 +45,8 @@ if ($mysqli->connect_error) {
 }
 // Set charset to utf8
 $mysqli->set_charset("utf8");
+
+$applychanges = true;
 
 require_once "Lib/dbschemasetup.php";
 print json_encode(db_schema_setup($mysqli, load_db_schema(), $applychanges))."\n";

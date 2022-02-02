@@ -1,5 +1,5 @@
 <?php
-// Update Emoncms database
+// Update Emoncms device templates
 define('EMONCMS_EXEC', 1);
 
 $options_short = "d:";
@@ -23,6 +23,8 @@ if(substr_compare($dir, '/', strlen($dir)-1, 1) !== 0) {
 chdir($dir);
 require "process_settings.php";
 require "core.php";
+
+require_once "Lib/EmonLogger.php";
 
 # Check MySQL PHP modules are loaded
 if (!extension_loaded('mysql') && !extension_loaded('mysqli')){
@@ -59,12 +61,12 @@ if ($settings['redis']['enabled']) {
     if (!empty($settings['redis']['dbnum'])) {
         $redis->select($settings['redis']['dbnum']);
     }
-} else {
+}
+else {
     $redis = false;
 }
 
 if ($redis && file_exists("Modules/device/device_model.php")) {
-	require_once "Lib/EmonLogger.php";
     require_once "Modules/device/device_model.php";
     $device = new Device($mysqli,$redis);
     $device->reload_template_list();
