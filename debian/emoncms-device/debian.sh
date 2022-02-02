@@ -21,8 +21,8 @@ mkdir -p $package_build
 cp -r $defaults_dir/debian $package_build
 cp -rf $package_dir/debian $package_build
 
-mkdir $package_build/scripts
-cp $emonscripts_dir/common/emonmucdevupdate.php $package_build/scripts/device_update.php
+mkdir -p $package_build/scripts/admin
+cp $emonscripts_dir/common/emonmucdevupdate.php $package_build/scripts/admin/device_update.php
 
 cp -r $build_tmp/emoncms-device $package_build/device
 rm -r $package_build/device/docs

@@ -13,7 +13,7 @@ chown -R $user "<root_dir>/Modules/device"
 
 #DEBHELPER#
 
-php -f "<root_dir>/scripts/database_update.php"
-php -f "<root_dir>/scripts/device_update.php"
+php -f "<root_dir>/scripts/admin/database_update.php"
+php -f "<root_dir>/scripts/admin/device_update.php"
 
 exit 0
