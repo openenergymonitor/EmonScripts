@@ -77,24 +77,26 @@ case "$1" in
             sed -i -e "$((header_line+5)) i username = '$smtp_user_value'" $SETTINGS_FILE
             sed -i -e "$((header_line+6)) i password = '$smtp_password_value'\n" $SETTINGS_FILE
         else
+        	header_line=$((`grep -m1 -n "\[smtp\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
+
             smtp_host_key="host"
-            smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $header_line))
             sed -i "$smtp_host_line s/.*$smtp_host_key.*=.*/$smtp_host_key = '$smtp_host_value'/" $SETTINGS_FILE
 
             smtp_user_key="username"
-            smtp_user_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_user_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            smtp_user_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_user_key.*=" | sed "s/:.*//g"` + $header_line))
             sed -i "$smtp_user_line s/.*$smtp_user_key.*=.*/$smtp_user_key = '$smtp_user_value'/" $SETTINGS_FILE
 
             smtp_password_key="password"
-            smtp_password_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_password_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            smtp_password_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_password_key.*=" | sed "s/:.*//g"` + $header_line))
             sed -i "$smtp_password_line s/.*$smtp_password_key.*=.*/$smtp_password_key = '$smtp_password_value'/" $SETTINGS_FILE
 
             smtp_addr_key="from_email"
-            smtp_addr_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_addr_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            smtp_addr_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_addr_key.*=" | sed "s/:.*//g"` + $header_line))
             sed -i "$smtp_addr_line s/.*$smtp_addr_key.*=.*/$smtp_addr_key = '$smtp_addr_value'/" $SETTINGS_FILE
 
             smtp_name_key="from_name"
-            smtp_name_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_name_key.*=" | sed "s/:.*//g"` + $smtp_header_line))
+            smtp_name_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_name_key.*=" | sed "s/:.*//g"` + $header_line))
             sed -i "$smtp_name_line s/.*$smtp_name_key.*=.*/$smtp_name_key = '$smtp_name_value'/" $SETTINGS_FILE
         fi
         ;;
@@ -103,7 +105,5 @@ case "$1" in
 esac
 
 #DEBHELPER#
-
-php -f "<root_dir>/scripts/admin/database_update.php"
 
 exit 0

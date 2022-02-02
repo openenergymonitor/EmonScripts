@@ -9,7 +9,6 @@ SETTINGS_FILE=<root_dir>/settings.ini
 case "$1" in
     install | configure)
         mysql_header_line=$((`grep -m1 -n "\[sql\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
-        smtp_header_line=$((`grep -m1 -n "\[smtp\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
 
         db_get emoncms/mysql_server
         mysql_server_value=$RET

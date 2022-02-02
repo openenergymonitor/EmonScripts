@@ -26,7 +26,7 @@ else
 fi
 
 if [ ! -f $root_dir/install/config.ini ]; then
-    cp $root_dir/install/emonsd.config.ini $root_dir/install/config.ini
+    cp $root_dir/install/seal.config.ini $root_dir/install/config.ini
 fi
 cd $debian_dir
 source $debian_dir/dpkg.ini
