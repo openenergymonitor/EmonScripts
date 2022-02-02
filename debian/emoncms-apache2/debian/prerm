@@ -6,12 +6,12 @@ set -e
 case "$1" in
     remove)
         # Default apache2 configuration
-        a2disconf emoncms.conf
+        a2disconf -q emoncms.conf
 
         # Configure virtual host
-        a2dissite emoncms.conf
+        a2dissite -q emoncms.conf
         if [ ! "$(ls -A /etc/apache2/sites-enabled)" ]; then
-            a2ensite 000-default.conf
+            a2ensite -q 000-default.conf
         fi
         ;;
     *)
