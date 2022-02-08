@@ -1,5 +1,5 @@
 #!/usr/bin/dh-exec
-themes/* <root_dir>/Theme/
-modules/* <root_dir>/Modules/
+core <root_dir>/Modules/muc
+channel <root_dir>/Modules/channel
 device/* /var/opt/emonmuc/device/
 driver/* /var/opt/emonmuc/driver/
