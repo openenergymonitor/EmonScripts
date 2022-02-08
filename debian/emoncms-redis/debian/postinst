@@ -18,7 +18,7 @@ case "$1" in
         if [ ! -d /lib/systemd/system/feedwriter.service.d ]; then
             mkdir /lib/systemd/system/feedwriter.service.d
         fi
-        echo $'[Service]\nEnvironment="USER='$user'"' > /lib/systemd/system/feedwriter.service.d/feedwriter.conf
+        echo '[Service]\nEnvironment="USER='$user'"' > /lib/systemd/system/feedwriter.service.d/feedwriter.conf
 
         if [ ! -f /lib/systemd/system/feedwriter.service ]; then
             ln -s <root_dir>/scripts/services/feedwriter/feedwriter.service /lib/systemd/system
@@ -30,7 +30,7 @@ case "$1" in
         if [ ! -d /lib/systemd/system/service-runner.service.d ]; then
             mkdir /lib/systemd/system/service-runner.service.d
         fi
-        echo $'[Service]\nUser='$user > /lib/systemd/system/service-runner.service.d/service-runner.conf
+        echo '[Service]\nUser='$user > /lib/systemd/system/service-runner.service.d/service-runner.conf
 
         if [ ! -f /lib/systemd/system/service-runner.service ]; then
             ln -s <root_dir>/scripts/services/service-runner/service-runner.service /lib/systemd/system

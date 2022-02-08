@@ -3,8 +3,12 @@ set -e
 
 case "$1" in
     remove)
-        rm -r /lib/systemd/system/feedwriter.service*
-        rm -r /lib/systemd/system/service-runner.service*
+        if [ -d /lib/systemd/system/feedwriter.service.d ]; then
+            rm -rf /lib/systemd/system/feedwriter.service*
+        fi
+        if [ -d /lib/systemd/system/service-runner.service.d ]; then
+            rm -rf /lib/systemd/system/service-runner.service*
+        fi
         ;;
     *)
         ;;
