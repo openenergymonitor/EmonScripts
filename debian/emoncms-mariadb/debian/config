@@ -28,6 +28,12 @@ if [ -e $SETTINGS_FILE ]; then
         db_set emoncms/mysql_database "$mysql_database_value"
     fi
 
+    mysql_timeseries_value=`grep -m1 "mysqltimeseries\[database\].*=" $SETTINGS_FILE |\
+                          sed "s/mysqltimeseries\[database\].*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+    if [ "$mysql_timeseries_value" != "MYSQL_TIMESERIES" ]; then
+        db_set emoncms/mysql_timeseries "$mysql_timeseries_value"
+    fi
+
     mysql_user_key="username"
     mysql_user_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_user_key.*=" |\
                       sed "s/${mysql_user_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`

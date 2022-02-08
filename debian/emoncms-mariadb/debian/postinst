@@ -27,8 +27,6 @@ case "$1" in
 
         db_get emoncms/mysql_timeseries
         mysql_timeseries_value=$RET
-        mysql_timeseries_key="timeseries"
-        mysql_timeseries_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_timeseries_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
 
         db_get emoncms/mysql_user
         mysql_user_value=$RET
@@ -47,8 +45,11 @@ case "$1" in
         if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_port_key ; then
             sed -i "$mysql_port_line s/.*$mysql_port_key.*=.*/$mysql_port_key = '$mysql_port_value'/"             $SETTINGS_FILE
         fi
-        if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_timeseries_key ; then
-            sed -i "$mysql_timeseries_line s/.*$mysql_timeseries_key.*=.*/$mysql_timeseries_key = '$mysql_timeseries_value'/" $SETTINGS_FILE
+
+        if grep -q "mysqltimeseries" $SETTINGS_FILE; then
+            sed -i "s/.*mysqltimeseries[database].*=.*/mysqltimeseries[database] = '$mysql_timeseries_value'/" $SETTINGS_FILE
+            sed -i "s/.*mysqltimeseries[username].*=.*/mysqltimeseries[username] = '$mysql_user_value'/" $SETTINGS_FILE
+            sed -i "s/.*mysqltimeseries[password].*=.*/mysqltimeseries[password] = '$mysql_password_value'/" $SETTINGS_FILE
         fi
 
         # Secure mysql
@@ -66,7 +67,7 @@ case "$1" in
         # Add emoncms database, set user permissions
         mysql -uroot -e "CREATE USER IF NOT EXISTS '$mysql_user_value'@'localhost' IDENTIFIED BY '$mysql_password_value';"
         mysql -uroot -e "GRANT ALL ON $mysql_database_value.* TO '$mysql_user_value'@'localhost';"
-        
+
         if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_timeseries_key ; then
             mysql -uroot -e "GRANT ALL ON $mysql_timeseries_value.* TO '$mysql_user_value'@'localhost';"
         fi
