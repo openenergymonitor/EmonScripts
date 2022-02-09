@@ -47,9 +47,9 @@ case "$1" in
         fi
 
         if grep -q "mysqltimeseries" $SETTINGS_FILE; then
-            sed -i "s/.*mysqltimeseries[database].*=.*/mysqltimeseries[database] = '$mysql_timeseries_value'/" $SETTINGS_FILE
-            sed -i "s/.*mysqltimeseries[username].*=.*/mysqltimeseries[username] = '$mysql_user_value'/" $SETTINGS_FILE
-            sed -i "s/.*mysqltimeseries[password].*=.*/mysqltimeseries[password] = '$mysql_password_value'/" $SETTINGS_FILE
+            sed -i "s/.*mysqltimeseries\[database\].*=.*/mysqltimeseries\[database\] = '$mysql_timeseries_value'/" $SETTINGS_FILE
+            sed -i "s/.*mysqltimeseries\[username\].*=.*/mysqltimeseries\[username\] = '$mysql_user_value'/" $SETTINGS_FILE
+            sed -i "s/.*mysqltimeseries\[password\].*=.*/mysqltimeseries\[password\] = '$mysql_password_value'/" $SETTINGS_FILE
         fi
 
         # Secure mysql
