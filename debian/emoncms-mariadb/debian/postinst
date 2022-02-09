@@ -79,6 +79,6 @@ esac
 
 #DEBHELPER#
 
-php -f "<root_dir>/scripts/admin/database_update.php"
+php -f "<root_dir>/scripts/admin/database_update.php" > /dev/null 2>&1
 
 exit 0
