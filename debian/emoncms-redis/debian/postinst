@@ -37,6 +37,11 @@ case "$1" in
             systemctl enable service-runner.service
             systemctl start service-runner.service
         fi
+
+
+        # Reload webserver, to enable freshly installed PHP dependency
+        # TODO: find out which webserver was actually used
+        systemctl reload apache2
         ;;
     upgrade)
         systemctl daemon-reload

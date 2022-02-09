@@ -10,7 +10,7 @@ Vcs-Git: <repository>.git
 
 Package: <package>
 Architecture: all
-Depends: ${misc:Depends}, emoncms-core, redis-server, php-redis
+Depends: ${misc:Depends}, emoncms-core, redis-server, python3-redis, php-redis
 Description: Emoncms Redis package
  Part of the OpenEnergyMonitor.org project, emoncms is an 
  open-source web-app for processing, logging and visualising 
