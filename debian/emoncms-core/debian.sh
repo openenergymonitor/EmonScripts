@@ -40,5 +40,9 @@ sed -i '1{/^$/d}'                 $package_build/settings.ini
 
 sed -i '/\[mqtt\]/,+4 d'          $package_build/settings.ini
 
-sed -i '/enable_admin_ui.*/a\
-enable_update_ui = false'         $package_build/settings.ini
+if ! grep -q 'enable_firmware_ui' $package_build/settings.ini; then
+    sed -i '/enable_admin_ui.*/a\nenable_firmware_ui = false' $package_build/settings.ini
+fi
+if ! grep -q 'enable_update_ui' $package_build/settings.ini; then
+    sed -i '/enable_admin_ui.*/a\nenable_update_ui = false' $package_build/settings.ini
+fi
