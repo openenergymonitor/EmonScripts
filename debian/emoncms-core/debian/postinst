@@ -48,61 +48,66 @@ case "$1" in
     install | configure)
         sed -i "s|EMONCMS_DATADIR|<data_dir>|" $SETTINGS_FILE
 
-        db_get emoncms/smtp_host
-        smtp_host_value=$RET
+        db_get emoncms/smtp
+        smtp_enable=$RET
 
-        db_get emoncms/smtp_port
-        smtp_port_value=$RET
-
-        db_get emoncms/smtp_email_addr
-        smtp_addr_value=$RET
-
-        db_get emoncms/smtp_email_name
-        smtp_name_value=$RET
-
-        db_get emoncms/smtp_user
-        smtp_user_value=$RET
-
-        db_get emoncms/smtp_password
-        smtp_password_value=$RET
-
-        if ! grep -q "\[smtp\]$" $SETTINGS_FILE ; then
-            header_line=$(grep -m1 -n "\[log\]" $SETTINGS_FILE | sed "s/:.*//g")
-
-            sed -i -e "$header_line i \[smtp\]" $SETTINGS_FILE
-            sed -i -e "$((header_line+1)) i host = '$smtp_host_value'" $SETTINGS_FILE
-            sed -i -e "$((header_line+2)) i port = '$smtp_port_value'" $SETTINGS_FILE
-            sed -i -e "$((header_line+3)) i from_email = '$smtp_addr_value'" $SETTINGS_FILE
-            sed -i -e "$((header_line+4)) i from_name = '$smtp_name_value'" $SETTINGS_FILE
-            sed -i -e "$((header_line+5)) i encryption = 'ssl'" $SETTINGS_FILE
-            sed -i -e "$((header_line+6)) i username = '$smtp_user_value'" $SETTINGS_FILE
-            sed -i -e "$((header_line+7)) i password = '$smtp_password_value'\n" $SETTINGS_FILE
-        else
-        	header_line=$((`grep -m1 -n "\[smtp\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
-
-            smtp_host_key="host"
-            smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $header_line))
-            sed -i "$smtp_host_line s/.*$smtp_host_key.*=.*/$smtp_host_key = '$smtp_host_value'/" $SETTINGS_FILE
-
-            smtp_port_key="port"
-            smtp_port_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_port_key.*=" | sed "s/:.*//g"` + $header_line))
-            sed -i "$smtp_port_line s/.*$smtp_port_key.*=.*/$smtp_port_key = '$smtp_port_value'/" $SETTINGS_FILE
-
-            smtp_user_key="username"
-            smtp_user_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_user_key.*=" | sed "s/:.*//g"` + $header_line))
-            sed -i "$smtp_user_line s/.*$smtp_user_key.*=.*/$smtp_user_key = '$smtp_user_value'/" $SETTINGS_FILE
-
-            smtp_password_key="password"
-            smtp_password_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_password_key.*=" | sed "s/:.*//g"` + $header_line))
-            sed -i "$smtp_password_line s/.*$smtp_password_key.*=.*/$smtp_password_key = '$smtp_password_value'/" $SETTINGS_FILE
-
-            smtp_addr_key="from_email"
-            smtp_addr_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_addr_key.*=" | sed "s/:.*//g"` + $header_line))
-            sed -i "$smtp_addr_line s/.*$smtp_addr_key.*=.*/$smtp_addr_key = '$smtp_addr_value'/" $SETTINGS_FILE
-
-            smtp_name_key="from_name"
-            smtp_name_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_name_key.*=" | sed "s/:.*//g"` + $header_line))
-            sed -i "$smtp_name_line s/.*$smtp_name_key.*=.*/$smtp_name_key = '$smtp_name_value'/" $SETTINGS_FILE
+        if [ "$smtp_enable" = "true" ]; then
+            db_get emoncms/smtp_host
+            smtp_host_value=$RET
+    
+            db_get emoncms/smtp_port
+            smtp_port_value=$RET
+    
+            db_get emoncms/smtp_email_addr
+            smtp_addr_value=$RET
+    
+            db_get emoncms/smtp_email_name
+            smtp_name_value=$RET
+    
+            db_get emoncms/smtp_user
+            smtp_user_value=$RET
+    
+            db_get emoncms/smtp_password
+            smtp_password_value=$RET
+    
+            if ! grep -q "\[smtp\]$" $SETTINGS_FILE ; then
+                header_line=$(grep -m1 -n "\[log\]" $SETTINGS_FILE | sed "s/:.*//g")
+    
+                sed -i -e "$header_line i \[smtp\]" $SETTINGS_FILE
+                sed -i -e "$((header_line+1)) i host = '$smtp_host_value'" $SETTINGS_FILE
+                sed -i -e "$((header_line+2)) i port = '$smtp_port_value'" $SETTINGS_FILE
+                sed -i -e "$((header_line+3)) i from_email = '$smtp_addr_value'" $SETTINGS_FILE
+                sed -i -e "$((header_line+4)) i from_name = '$smtp_name_value'" $SETTINGS_FILE
+                sed -i -e "$((header_line+5)) i encryption = 'ssl'" $SETTINGS_FILE
+                sed -i -e "$((header_line+6)) i username = '$smtp_user_value'" $SETTINGS_FILE
+                sed -i -e "$((header_line+7)) i password = '$smtp_password_value'\n" $SETTINGS_FILE
+            else
+                header_line=$((`grep -m1 -n "\[smtp\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
+    
+                smtp_host_key="host"
+                smtp_host_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_host_key.*=" | sed "s/:.*//g"` + $header_line))
+                sed -i "$smtp_host_line s/.*$smtp_host_key.*=.*/$smtp_host_key = '$smtp_host_value'/" $SETTINGS_FILE
+    
+                smtp_port_key="port"
+                smtp_port_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_port_key.*=" | sed "s/:.*//g"` + $header_line))
+                sed -i "$smtp_port_line s/.*$smtp_port_key.*=.*/$smtp_port_key = '$smtp_port_value'/" $SETTINGS_FILE
+    
+                smtp_user_key="username"
+                smtp_user_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_user_key.*=" | sed "s/:.*//g"` + $header_line))
+                sed -i "$smtp_user_line s/.*$smtp_user_key.*=.*/$smtp_user_key = '$smtp_user_value'/" $SETTINGS_FILE
+    
+                smtp_password_key="password"
+                smtp_password_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_password_key.*=" | sed "s/:.*//g"` + $header_line))
+                sed -i "$smtp_password_line s/.*$smtp_password_key.*=.*/$smtp_password_key = '$smtp_password_value'/" $SETTINGS_FILE
+    
+                smtp_addr_key="from_email"
+                smtp_addr_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_addr_key.*=" | sed "s/:.*//g"` + $header_line))
+                sed -i "$smtp_addr_line s/.*$smtp_addr_key.*=.*/$smtp_addr_key = '$smtp_addr_value'/" $SETTINGS_FILE
+    
+                smtp_name_key="from_name"
+                smtp_name_line=$((`grep -A6 -P "^\[smtp\]$" $SETTINGS_FILE | grep -m1 -n "$smtp_name_key.*=" | sed "s/:.*//g"` + $header_line))
+                sed -i "$smtp_name_line s/.*$smtp_name_key.*=.*/$smtp_name_key = '$smtp_name_value'/" $SETTINGS_FILE
+            fi
         fi
         ;;
     *)

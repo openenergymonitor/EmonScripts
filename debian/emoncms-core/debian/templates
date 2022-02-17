@@ -4,11 +4,17 @@ Default: root
 Description: Linux user:
  The name of the linux user, owning all package files
 
+Template: emoncms/smtp
+Type: boolean
+Default: false
+Description: SMTP configurations for outgoing email:
+ Optionally, provide SMTP configurations for emoncms to be able to dispatch outgoing mail (password resets, notifications, alerts and more).
+
 Template: emoncms/smtp_host
 Type: string
 Default:
 Description: SMTP host for outgoing email:
- Optionally, provide a SMTP host so that emoncms is able to dispatch outgoing mail (password resets, notifications and alerts, and so on).
+ Optionally, provide a SMTP host so that emoncms is able to dispatch outgoing mail (password resets, notifications, alerts and more).
 
 Template: emoncms/smtp_port
 Type: string
