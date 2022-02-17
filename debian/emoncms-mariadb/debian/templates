@@ -1,4 +1,4 @@
-Template: emoncms/mysql_server
+Template: emoncms/mysql_host
 Type: string
 Default: 127.0.0.1
 Description: MySQL server name:
@@ -19,8 +19,8 @@ Description: MySQL database name:
 Template: emoncms/mysql_timeseries
 Type: string
 Default: emondata
-Description: MySQL timeseries name:
- Enter the timeseries name of the timeseries database
+Description: MySQL timeseries database name:
+ Enter the name of the timeseries database
 
 Template: emoncms/mysql_user
 Type: string

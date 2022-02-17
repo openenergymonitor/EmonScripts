@@ -10,10 +10,10 @@ case "$1" in
     install | configure)
         mysql_header_line=$((`grep -m1 -n "\[sql\]$" $SETTINGS_FILE | sed "s/:.*//g"` - 1))
 
-        db_get emoncms/mysql_server
-        mysql_server_value=$RET
-        mysql_server_key="server"
-        mysql_server_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_server_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
+        db_get emoncms/mysql_host
+        mysql_host_value=$RET
+        mysql_host_key="server"
+        mysql_host_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_host_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
 
         db_get emoncms/mysql_port
         mysql_port_value=$RET
@@ -39,7 +39,7 @@ case "$1" in
         mysql_password_line=$((`grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -m1 -n "$mysql_password_key.*=" | sed "s/:.*//g"` + $mysql_header_line))
 
         sed -i "$mysql_database_line s/.*$mysql_database_key.*=.*/$mysql_database_key = '$mysql_database_value'/" $SETTINGS_FILE
-        sed -i "$mysql_server_line s/.*$mysql_server_key.*=.*/$mysql_server_key = '$mysql_server_value'/"         $SETTINGS_FILE
+        sed -i "$mysql_host_line s/.*$mysql_host_key.*=.*/$mysql_host_key = '$mysql_host_value'/"                 $SETTINGS_FILE
         sed -i "$mysql_user_line s/.*$mysql_user_key.*=.*/$mysql_user_key = '$mysql_user_value'/"                 $SETTINGS_FILE
         sed -i "$mysql_password_line s/.*$mysql_password_key.*=.*/$mysql_password_key = '$mysql_password_value'/" $SETTINGS_FILE
         if grep -A6 -P "^\[sql\]$" $SETTINGS_FILE | grep -q $mysql_port_key ; then

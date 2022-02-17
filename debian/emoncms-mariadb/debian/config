@@ -7,11 +7,11 @@ set -e
 SETTINGS_FILE=<root_dir>/settings.ini
 
 if [ -e $SETTINGS_FILE ]; then
-    mysql_server_key="server"
-    mysql_server_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_server_key.*=" |\
-                        sed "s/${mysql_server_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
-    if [ "$mysql_server_value" != "127.0.0.1" ]; then
-        db_set emoncms/mysql_server "$mysql_database_value"
+    mysql_host_key="server"
+    mysql_host_value=`grep -A6 -P '^\[sql\]$' $SETTINGS_FILE | grep -m1 "$mysql_host_key.*=" |\
+                        sed "s/${mysql_host_key}.*=//" | sed -r "s/\s+//g" | sed "s/^'//;s/'$//"`
+    if [ "$mysql_host_value" != "127.0.0.1" ]; then
+        db_set emoncms/mysql_host "$mysql_host_value"
     fi
 
     mysql_port_key="port"
@@ -49,7 +49,7 @@ if [ -e $SETTINGS_FILE ]; then
     fi
 fi
 
-db_input low emoncms/mysql_server || true
+db_input low emoncms/mysql_host || true
 db_input low emoncms/mysql_port || true
 db_input medium emoncms/mysql_database || true
 db_input medium emoncms/mysql_timeseries || true
