@@ -25,7 +25,7 @@ if [ -d "$M/.git" ]; then
 
         git -C $M checkout stable
         
-        git -C $M checkout stable
+        git -C $M pull origin stable
 
         git -C $M merge origin/master
 
