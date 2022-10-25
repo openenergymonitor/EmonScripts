@@ -1,0 +1,16 @@
+<package> (<version>) stable; urgency=medium
+
+  * Update dependencies to use unofficial OpenMUC fork v0.20.4
+  * Update dependencies to use Emonjava logger v1.5.3
+  * Fix channel update for missing nodeid
+  * Add template channel record value parsing
+  * Add template dir parsing sanitation
+  * Add Fronius Symo SunSpec device template
+
+ -- <maintainer>  <date>
+
+ <package> (4.2.2) stable; urgency=medium
+
+  * Initial release
+
+ -- Adrian Minde <adrian.minde@isc-konstanz.de>  Thu, 14 Jul 2022 10:52:37 +0200

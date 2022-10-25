@@ -1,10 +1,10 @@
 <package> (<version>) stable; urgency=medium
 
-  * Update releases
+  * Update release
 
  -- <maintainer>  <date>
 
-<package> (1.4.0) stable; urgency=medium
+<package> (2.1.5) stable; urgency=medium
 
   * Initial release
 
