@@ -13,6 +13,11 @@
 # - emonhub installer
 # Format as documentation
 
+# fix interactive popup that keeps asking for service restart
+if [ -f /etc/needrestart/needrestart.conf ]; then
+  sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+fi
+
 #!/bin/bash
 if [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
