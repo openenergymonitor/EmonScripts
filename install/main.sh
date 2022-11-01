@@ -63,7 +63,7 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     
     echo "Important: Did you get a request to reboot your machine, if so we recommend you do this now."
     read -p "Would you like to exit installation to reboot your machine? (y/n) " reboot_confirm
-    if [ "$reboot_confirm" != "y" ] && [ "$reboot_confirm" != "Y" ]; then
+    if [ "$reboot_confirm" != "n" ] && [ "$reboot_confirm" != "N" ]; then
         exit 0
     fi
 fi
