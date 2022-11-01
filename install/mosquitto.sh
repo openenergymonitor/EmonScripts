@@ -27,7 +27,13 @@ if [ "$install_mosquitto_client" = true ]; then
     echo "Mosquitto Client installation and configuration"
     echo "-------------------------------------------------------------"
     sudo apt-get install -y libmosquitto-dev
-    printf "\n" | sudo pecl install Mosquitto-beta
+    cd
+    git clone https://github.com/openenergymonitor/Mosquitto-PHP
+    cd Mosquitto-PHP
+    phpize
+    ./configure
+    make
+    sudo make install
     echo "-------------------------------------------------------------"
     # Add mosquitto to php mods available
     PHP_VER=$(php -v | head -n 1 | cut -d " " -f 2 | cut -f1-2 -d"." )
