@@ -60,6 +60,12 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
 
     # Needed on stock raspbian lite 19th March 2019
     sudo apt --fix-broken install
+    
+    echo "Important: Did you get a request to reboot your machine, if so we recommend you do this now."
+    read -p "Would you like to exit installation to reboot your machine? (y/n) " reboot_confirm
+    if [ "$reboot_confirm" != "y" ] && [ "$reboot_confirm" != "Y" ]; then
+        exit 0
+    fi
 fi
 
 # Required for emonpiLCD, wifi, rfm69pi firmware (review)
