@@ -10,11 +10,12 @@ if [ ! -d $openenergymonitor_dir/emonhub ]; then
     git clone -b $emonhub_branch ${git_repo[emonhub]}
 else 
     echo "- emonhub repository already installed"
-    git pull
+    echo "- emonhub running git pull:"
+    git -C $openenergymonitor_dir/emonhub pull
 fi
 
 if [ -f $openenergymonitor_dir/emonhub/install.sh ]; then
-    $openenergymonitor_dir/emonhub/install.sh $emonSD_pi_env
+    $openenergymonitor_dir/emonhub/install.sh $emonSD_pi_env $user
 else
     echo "ERROR: $openenergymonitor_dir/emonhub/install.sh script does not exist"
 fi
