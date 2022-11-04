@@ -6,13 +6,18 @@ echo "Redis configuration"
 echo "-------------------------------------------------------------"
 sudo apt-get install -y redis-server
 
-if [ "$install_php" = true ]; then 
+if [ "$install_php" = true ]; then
     echo "-------------------------------------------------------------"
-    printf "\n" | sudo pecl install redis
+    printf "\n"
+    git clone https://github.com/phpredis/phpredis
+    cd phpredis
+    phpize
+    ./configure
+    make
+    sudo make install
     echo "-------------------------------------------------------------"
-
     PHP_VER=$(php -v | head -n 1 | cut -d " " -f 2 | cut -f1-2 -d"." )
-    # Add redis to php mods available 
+    # Add redis to php mods available
     printf "extension=redis.so" | sudo tee /etc/php/$PHP_VER/mods-available/redis.ini 1>&2
     sudo phpenmod redis
 fi
