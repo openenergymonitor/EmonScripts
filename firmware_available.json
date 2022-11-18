@@ -1,7 +1,37 @@
 {
+  "emonTxV4_LPL":{
+    "hardware":"emonTx4",
+    "radio_format":"lowpowerlabs",
+    "version":"1.2.0", 
+    "date":"18 Nov 2022",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.2.0/EmonTxV4_LPL.hex",
+    "description":"emonTx v4 single phase, 6 channel firmware"
+  },
+  
+  "emonTxV4_JeeLib_Native":{
+    "hardware":"emonTx4",
+    "radio_format":"jeelib_native",
+    "version":"1.2.0", 
+    "date":"18 Nov 2022",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.2.0/EmonTxV4_JeeLib_Classic.hex",
+    "description":"emonTx v4 single phase, 6 channel firmware"
+  },
+  
+  "emonTxV4_JeeLib_Classic":{
+    "hardware":"emonTx4",
+    "radio_format":"jeelib_classic",
+    "version":"1.2.0", 
+    "date":"18 Nov 2022",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.2.0/EmonTxV4_JeeLib_Classic.hex",
+    "description":"emonTx v4 single phase, 6 channel firmware"
+  },
+  
   "emonPiFrontEndCM":{
     "hardware":"emonPi",
-    "radio_format":"rfm69n",
+    "radio_format":"jeelib_native",
     "version":"1.0.0", 
     "date":"10 Jul 2021",
     "baud":115200,
@@ -11,7 +41,7 @@
   
   "emonPi_discrete_jeelib":{
     "hardware":"emonPi",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"2.9.3", 
     "date":"5 Jan 2021",
     "baud":115200,
@@ -21,7 +51,7 @@
   
   "emonTxV34CM_rfm69n":{
     "hardware":"emonTx",
-    "radio_format":"rfm69n",
+    "radio_format":"jeelib_native",
     "version":"1.0.0", 
     "date":"10 Jul 2021",
     "baud":115200,
@@ -30,7 +60,7 @@
   },
   "emonTxV34CM_jeelib":{
     "hardware":"emonTx",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"2.0.0", 
     "date":"18 Aug 2020", 
     "baud":115200,
@@ -39,7 +69,7 @@
   },
   "emonTxV34_jeelib":{
     "hardware":"emonTx",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"3.4.0", 
     "date":"5 Jan 2021", 
     "baud":115200,
@@ -48,7 +78,7 @@
   },
   "emonTxV34_3phase_jeelib":{
     "hardware":"emonTx",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"1.6", 
     "date":"25 Feb 2019", 
     "baud":115200,
@@ -58,7 +88,7 @@
   
   "emonBase_rfm69n":{
     "hardware":"rfm69pi",
-    "radio_format":"rfm69n",
+    "radio_format":"jeelib_native",
     "version":"2.0.0", 
     "date":"10 Jul 2021", 
     "baud":38400,
@@ -67,7 +97,7 @@
   },
   "emonBase_jeelib":{
     "hardware":"rfm69pi",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"1.4.0", 
     "date":"13 Jan 2017", 
     "baud":38400,
@@ -76,7 +106,7 @@
   },
   "rfm12pi_jeelib":{
     "hardware":"rfm12pi",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"RFM12_Demo_ATmega328",
     "date":"2 May 2015", 
     "baud":38400,
@@ -86,7 +116,7 @@
   
   "emonTH2_rfm69n":{
     "hardware":"emonTH2",
-    "radio_format":"rfm69n",
+    "radio_format":"jeelib_native",
     "version":"4.0.0", 
     "date":"10 Jul 2021", 
     "baud":115200,
@@ -95,7 +125,7 @@
   },
   "emonTH2_rfm69n_multi":{
     "hardware":"emonTH2",
-    "radio_format":"rfm69n",
+    "radio_format":"jeelib_native",
     "version":"4.0.0", 
     "date":"10 Jul 2021", 
     "baud":115200,
@@ -104,7 +134,7 @@
   },
   "emonTH2_jeelib":{
     "hardware":"emonTH2",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"3.2.5", 
     "date":"20 Sep 2021", 
     "baud":115200,
@@ -113,7 +143,7 @@
   },
   "emonTH2_2Ext_jeelib":{
     "hardware":"emonTH2",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"3.2.5", 
     "date":"20 Sep 2021", 
     "baud":115200,
@@ -122,7 +152,7 @@
   },  
   "emonTH1_jeelib":{
     "hardware":"emonTH1",
-    "radio_format":"jeelib",
+    "radio_format":"jeelib_classic",
     "version":"2.6.0", 
     "date":"24 Oct 2016", 
     "baud":115200,
