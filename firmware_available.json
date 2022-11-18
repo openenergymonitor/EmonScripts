@@ -94,7 +94,16 @@
     "download_url":"https://github.com/openenergymonitor/emontx-3phase/releases/download/v1.6/firmware.hex", 
     "description":"emonTx 3 phase continuous sampling firmware"
   },
-  
+  "emonBase_rfm69pi_LPL ":{
+    "hardware":"rfm69pi",
+    "core":"ATMEGA328P",
+    "radio_format":"lowpowerlabs",
+    "version":"1.0.0", 
+    "date":"18 Nov 2022",
+    "baud":38400,
+    "download_url":"https://github.com/openenergymonitor/emonBase_rfm69pi_LPL/releases/download/1.0.0/emonBase_rfm69pi_LPL.hex", 
+    "description":"emonBase RFM69Pi firmware"
+  },  
   "emonBase_rfm69n":{
     "hardware":"rfm69pi",
     "core":"ATMEGA328P",
