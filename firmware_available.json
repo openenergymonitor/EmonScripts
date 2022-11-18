@@ -134,7 +134,16 @@
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/RFM2Pi/master/firmware/RFM69CW_RF_Demo_ATmega328/RFM12_Demo_ATmega328.cpp.hex", 
     "description":"emonBase RFM12Pi firmware"
   },
-  
+  "emonTH2_LPL":{
+    "hardware":"emonTH2",
+    "core":"ATMEGA328P",
+    "radio_format":"lowpowerlabs",
+    "version":"5.0.0", 
+    "date":"18 Nov 2022", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_LPL/releases/download/5.0.0/EmonTH_V2_LPL.hex", 
+    "description":"emonTH V2 firmware"
+  },  
   "emonTH2_rfm69n":{
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
