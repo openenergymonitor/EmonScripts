@@ -11,7 +11,7 @@ if len(sys.argv)==2:
     firmware_key = sys.argv[1]
     if firmware_key in firmware_available:
         firmware = firmware_available[firmware_key]
-        print(firmware['download_url']+" "+str(firmware['baud'])+" "+str(firmware['version']))
+        print(firmware['download_url']+" "+str(firmware['baud'])+" "+str(firmware['version'])+" "+str(firmware['core']))
         sys.exit(0)
 
 # Error
