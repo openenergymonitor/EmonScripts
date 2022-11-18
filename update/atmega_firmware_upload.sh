@@ -56,7 +56,7 @@ if [ "$result" != "firmware not found" ]; then
     echo
     echo "Uploading $firmware_key on serial port $serial_port"
         
-    for attempt in {1..3}
+    for attempt in {1..1}
     do
       echo "Attempt $attempt..."
       echo

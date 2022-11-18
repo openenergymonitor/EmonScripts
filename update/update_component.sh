@@ -38,8 +38,8 @@ if [ -d "$M/.git" ]; then
         
         # run module install (& update) script if present
         if [ -f $M/install.sh ]; then
-            echo "- running module install/update script"
-            $M/install.sh $openenergymonitor_dir
+            echo "- running module install/update script (user=$user)"
+            $M/install.sh $openenergymonitor_dir $user
         fi
         
         echo "- component updated" 
