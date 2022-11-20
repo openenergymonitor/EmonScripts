@@ -138,10 +138,10 @@
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"5.0.0", 
+    "version":"5.0.1", 
     "date":"18 Nov 2022", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_LPL/releases/download/5.0.0/EmonTH_V2_LPL.hex", 
+    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_LPL/releases/download/5.0.1/EmonTH_V2_LPL.hex", 
     "description":"emonTH V2 firmware"
   },  
   "emonTH2_rfm69n":{
