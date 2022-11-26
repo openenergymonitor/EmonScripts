@@ -25,7 +25,7 @@ if [ -d "$M/.git" ]; then
         echo "- git fetch: $result"
         result=$(git -C $M checkout $switch_branch)
         echo "- git checkout: $result"
-        result=$(git -C $M pull.rebase false)
+        result=$(git -C $M pull --no-rebase)
         echo "- git pull: $result"
         
         # update mysql database    
