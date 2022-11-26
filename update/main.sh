@@ -108,7 +108,7 @@ fi
 
 # -----------------------------------------------------------------
 
-if [ "$type" == "all" ] || [ "$type" == "firmware" ]; then
+if [ "$type" == "firmware" ]; then
     if [ "$firmware_key" != "none" ]; then
         $openenergymonitor_dir/EmonScripts/update/atmega_firmware_upload.sh $serial_port $firmware_key
     fi
