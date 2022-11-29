@@ -5,7 +5,7 @@ Including: emoncms core, emoncms modules, emonhub, apache2, mysql, redis, mqtt, 
 ## Install the Emoncms Stack
 
 To install the stack see: <br>
-https://github.com/openenergymonitor/EmonScripts/blob/master/install/readme.md
+https://github.com/openenergymonitor/EmonScripts/blob/master/docs/install.md
 
 ## Update the Emoncms Stack
 
