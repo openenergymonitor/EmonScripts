@@ -2,44 +2,21 @@
 
 ## Introduction
 
-This build script can be used to build a fully fledged emonCMS installation on debian based operating systems, including: installation of LAMP server and related packages, redis, MQTT, emonCMS core, emonCMS modules, and if applicable, emonhub & RaspberryPi support for serial port, and WiFi access point.
+The [EmonScripts build scripts](https://github.com/openenergymonitor/EmonScripts/) can be used to build a fully fledged emonCMS installation on debian based operating systems, including: installation of LAMP server and related packages, redis, MQTT, emonCMS core, emonCMS modules, and if applicable, emonhub & RaspberryPi support for serial port, and WiFi access point.
 
-The script is a series of scripts that install each required component. To see what is installed and how open each script.
+We use EmonScripts to build the pre-built emonSD SD card image for the Raspberry Pi. If you prefer to build your own or customise the installation using EmonScripts directly is a good approach.
 
-**New image released July20<br>[https://community.openenergymonitor.org/t/emonsd-24jul20-release/15170](https://community.openenergymonitor.org/t/emonsd-24jul20-release/15170)**
-
-As of July 2020 - Tested on:
-
-- Raspberry Pi OS (32-bit) Lite 2020-05-27
-- Ubuntu 20.04 LTS
+The installation process is carried out by a series of scripts that install each required component. These can be explored here: [https://github.com/openenergymonitor/EmonScripts/tree/master/install](https://github.com/openenergymonitor/EmonScripts/tree/master/install).
 
 It is **strongly recommended** that you dedicate a single device (NUC/VM/Pi) to emoncms. Using it alongside other software can prove problematic.
 
-[**Forum:** EmonSD build script progress update and beta release](https://community.openenergymonitor.org/t/emonsd-build-script-progress-update-and-beta-release/11222)
-
-## Pre-built Image
-
-Download (1.4 GB)
-
-- [UK Server](https://openenergymonitor.org/files/emonSD-24Jul20.img.zip)
-
-```
-(.img) MD5: 1db713787a1f3469fc3a1027767fd607
-(.zip) MD5: a160f746595872d30b735ab17e8a0b1c
-```
-- Minimum 16Gb SD Card
-- Built using EmonScripts emonCMS installation script, see
-- Based on Raspberry Pi OS (32-bit) Lite 2020-05-27
-- Compatible with Raspberry Pi 3, 3B+ & 4
-- EmonCMS data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
-- Log partition `/var/log` mounted as tmpfs using log2ram, now presistant after reboot
-- [SSH access disabled by default](https://community.openenergymonitor.org/t/emonpi-ssh-disabled-by-default/8847), long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.
+**Before starting,** please review the EmonScripts issue list for any new issues that might affect your build. We try to list new issues and notes from recent builds there that might be useful or required to complete a successful build: [https://github.com/openenergymonitor/EmonScripts/issues](https://github.com/openenergymonitor/EmonScripts/issues).
 
 ## Building Your Own - Base OS Preparation
 
 ### RaspberryPi
 
-To install on a RaspberryPi, a number of tasks are required. Please follow [these instructions first](https://github.com/openenergymonitor/EmonScripts/blob/master/install/rpi-install.md).
+To install on a RaspberryPi, a number of tasks are first required. Please follow [these instructions first](rpi-install.md).
 
 ### Ubuntu
 
@@ -51,7 +28,7 @@ sudo echo $USER' ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/$USER && sud
 
 ### Digital Ocean Droplet
 
-For installation on a Digital Ocean Droplet, follow [these instructions](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/digital-ocean-install.md).
+For installation on a Digital Ocean Droplet, follow [these instructions](digital-ocean-install.md).
 
 ## Install the EmonCMS Installation Scripts
 
