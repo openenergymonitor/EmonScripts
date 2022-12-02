@@ -1015,6 +1015,8 @@ pi@emonpi:~ $ sudo systemctl disable apache2.service
 
 **Option 2:** [Use the Raspberry Pi Imager](https://www.raspberrypi.com/software/), select 'Use custom: Select a custom.img from your computer' and then select the emonSD image that you have just downloaded. There is no need to unzip the image first, just use the .zip file directly.
 
+## Before bootup SSH & WiFi configuration
+
 **Before booting up the Raspberry Pi** you may want to enable SSH and pre-configure your WiFi details on the image first. SSH provides command line access to the RaspberryPi. If you are not sure if you need this, leave it disabled for now, it can be enabled later.
 
 Plug the SD card into your computer again and wait for the SD card partitions to load. On Linux you should see three partitions: boot, rootfs and a larger data volume. On Windows you may only see the boot partition.
