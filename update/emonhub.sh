@@ -5,6 +5,9 @@ echo "-------------------------------------------------------------"
 echo "emonHub update"
 echo "-------------------------------------------------------------"
 
+echo "Enabling SPI for RFM69SPI"
+sudo sed -i 's/#dtparam=spi=on/dtparam=spi=on/' /boot/config.txt
+
 M=$openenergymonitor_dir/emonhub
 
 if [ -d "$M/.git" ]; then
