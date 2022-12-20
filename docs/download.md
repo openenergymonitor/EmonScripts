@@ -9,19 +9,30 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 <summary><b>emonSD-10Nov22 (Stable)</b></summary>
 <br>
 
-**Download (1.0 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov22.zip)
+<!--**Download (1.0 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov22.zip)-->
+**Download (1.0 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov22_16gb.zip)
 
 (eligible for updates)
 ```
 (.zip) MD5: d4d27fcc553996768366662709307dda
 ```
-- SSH Credentials: username: pi, password: emonsd (default - please change)
+
+**Credentials**
+
+- **SSH:** username: `pi`, password: `emonsd` (default - please change)
+- **WiFi Access Point:** SSID: `emonsd`, Password: `emonsd2022`
+- **MQTT:** username: `emonpi`, password: `emonpimqtt2016`
+- **MySQL:** username: `emoncms`, password: `emonpiemoncmsmysql2016`
+
+*SSH access disabled by default. Long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.*
+
+**Build**
+
 - Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
 - Based on Debian Raspberry Pi OS (32-bit) Lite, 2021-03-04
 - Compatible with Raspberry Pi 2, 3, 3B+, 4 & Pi Zero
 - Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
 - Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
-- SSH access disabled by default. Long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.
 
 **Kernel**
 ```
@@ -1040,7 +1051,7 @@ Safely dismount the SD card and insert in the Raspberry Pi.
 
 **First boot update:** If connected to the internet by Ethernet (or pre-configured WiFi), a fresh emonSD will run a full system update. It's best not to interrupt this process. Leave about 10 min before switching off or rebooting. See `/var/log/emoncms/update.log` if you want to view the update log to check if it's finished.
 
-**WiFi Access Point:** If the SD card is booted without ethernet connected or WiFi configured it will create a WiFi access point (SSID: `emonSD`, Password: `emonsd2022`) to allow scanning for a local network and configuration via the web user interface `IP address: 192.168.42.1`. The first boot update is not performed in this case and we suggest updating via the emoncms admin interfacer at a convenient time once the system is up and running.
+**WiFi Access Point:** If the SD card is booted without ethernet connected or WiFi configured it will create a WiFi access point (emonSD-10Nov22 SSID: `emonSD`, Password: `emonsd2022`) to allow scanning for a local network and configuration via the web user interface `IP address: 192.168.42.1`. The first boot update is not performed in this case and we suggest updating via the emoncms admin interfacer at a convenient time once the system is up and running.
 
 ***
 
