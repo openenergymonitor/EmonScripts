@@ -1,0 +1,9 @@
+/var/log/logrotate/*.log {
+        rotate 7
+        daily
+        compress
+        nocreate
+        missingok
+        notifempty
+        delaycompress
+}

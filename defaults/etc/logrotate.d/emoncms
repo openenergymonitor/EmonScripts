@@ -3,4 +3,5 @@
     compress
     olddir /var/log.old/emoncms
     createolddir 775 root root
+    renamecopy
 }

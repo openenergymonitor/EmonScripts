@@ -1,11 +1,7 @@
 /var/log/emonhub/emonhub.log {
     maxsize 3M
-
-    norenamecopy
-    copytruncate
-    su root root
     compress
-    
     olddir /var/log.old/emonhub
     createolddir 775 root root
+    renamecopy
 }
