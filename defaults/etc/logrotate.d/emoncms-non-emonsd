@@ -3,7 +3,7 @@
         daily
         compress
         copytruncate
-        size 100k
+        size 3M
         nocreate
         missingok
         notifempty
