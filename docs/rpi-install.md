@@ -1,15 +1,14 @@
 # EmonScripts: SD Card Preparation for RaspberryPi
 
-1\. Start by following this nice guide by Pimoroni: [Setting up a Headless Pi](https://learn.pimoroni.com/article/setting-up-a-headless-pi). Choose a Lite 32-bit image. Set a username and password and add your WiFi credentials if required.
+1\. Start by following the first part of this nice guide by Pimoroni: [Setting up a Headless Pi](https://learn.pimoroni.com/article/setting-up-a-headless-pi) to flash the base OS Image. Choose the Lite 32-bit image. Set a username and password and add your WiFi credentials if required. **Do not insert into the Pi**.
 
-2\. Open the SD card on your computer and edit the file `/usr/lib/raspberrypi-sys-mods/firstboot`. Comment out the lines:
+2\. Eject the SD Card and reinsert. On Windows you need the `boot` partition (ignore other error messages). Open the SD card on your computer and edit the file `/usr/lib/raspberrypi-sys-mods/firstboot` on the boot partition. Comment out the lines:
 
 ```
 # if check_variables; then
   # do_resize
 # fi
 ```
-
 
 3\. Our automated step for partition creation and resizing needs revisiting. In the mean time use gParted to extend the root (usually /dev/mmcblk0p2) to around 6GB. Create a 3rd partition to house the emoncms data using the ext2 filesystem, this can fill the rest of the disk. We usually create this to be around 10GB which should give about 10 years of data storage with 85x 10s PHPFina feeds.
 
