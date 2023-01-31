@@ -20,7 +20,7 @@ echo "type: $type"
 echo "serial_port: $serial_port"
 echo "firmware: $firmware_key"
 
-if [ "$EUID" = "0" ] ; then
+if [ "$EUID" = "0" ] &&  [ "$user" != "root" ]; then
     # update is being ran mistakenly as root, switch to user
     echo "update running as root, switch to user"
     exit 0
@@ -57,7 +57,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     fi
     
     # Ensure logrotate configuration has correct permissions
-    sudo chown root:pi $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
+    sudo chown root:$user $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/*
 
 fi
 
