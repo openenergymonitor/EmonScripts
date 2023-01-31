@@ -1,9 +1,7 @@
-/var/log/emoncms/*.log {
+/var/log/logrotate/*.log {
         rotate 7
         daily
         compress
-        copytruncate
-        size 3M
         nocreate
         missingok
         notifempty

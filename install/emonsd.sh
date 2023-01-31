@@ -25,10 +25,12 @@ fi
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/00_defaults /etc/logrotate.d/00_defaults
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emonhub /etc/logrotate.d/emonhub
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/emoncms /etc/logrotate.d/emoncms
+sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/logrotate.d/logrotate /etc/logrotate.d/logrotate
 
 sudo chown root /etc/logrotate.d/00_defaults
 sudo chown root /etc/logrotate.d/emonhub
 sudo chown root /etc/logrotate.d/emoncms
+sudo chown root /etc/logrotate.d/logrotate
 
 # log2ram cron hourly entry
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/cron.hourly/log2ram /etc/cron.hourly/log2ram
