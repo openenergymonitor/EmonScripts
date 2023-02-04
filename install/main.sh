@@ -69,6 +69,10 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     fi
 fi
 
+# Required to allow the webserver to use git commands. ref 
+# https://community.openenergymonitor.org/t/ubuntu-22-04-lxc-install-issues-git/22189/1
+sudo git config --system --add safe.directory '*'
+
 # Required for emonpiLCD, wifi, rfm69pi firmware (review)
 if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
 
