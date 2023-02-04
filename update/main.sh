@@ -64,6 +64,11 @@ fi
 if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
     echo "Running apt-get update"
     sudo apt-get update
+    # Required to allow the webserver to use git commands. ref 
+    # https://community.openenergymonitor.org/t/ubuntu-22-04-lxc-install-issues-git/22189/1
+    # Not enabled on update yet
+
+    # sudo git config --system --add safe.directory '*'
 fi
 
 # -----------------------------------------------------------------
