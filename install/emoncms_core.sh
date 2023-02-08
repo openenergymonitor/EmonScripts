@@ -9,22 +9,29 @@ echo "-------------------------------------------------------------"
 sudo chown $user /var/www
 
 # Install emoncms core repository with git
-if [ ! -d $emoncms_www ]; then
+if [ -f "$emoncms_www/version.json" ]; then
+    echo "- emoncms already installed"
+else
     cd /var/www && git clone -b $emoncms_core_branch ${git_repo[emoncms_core]}
     cd
-else
-    echo "- emoncms already installed"
 fi
 
 # Create emoncms logfolder
-if [ ! -f $emoncms_log_location ]; then
+if [ ! -d $emoncms_log_location ]; then
     echo "- creating emoncms log folder"
     sudo mkdir $emoncms_log_location
     sudo chown $user $emoncms_log_location
+else
+    echo "- log folder already exists"
+fi
+
+# Create emoncms logfile
+if [ ! -f "$emoncms_log_location/emoncms.log" ]; then
+    echo "- creating emoncms log file"
     sudo touch "$emoncms_log_location/emoncms.log"
     sudo chmod 666 "$emoncms_log_location/emoncms.log"
 else
-    echo "- log folder already exists"
+    echo "- log file already exists"
 fi
 
 # Copy and install emonpi.settings.ini
