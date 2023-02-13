@@ -1,65 +1,79 @@
 # EmonScripts: SD Card Preparation for RaspberryPi
 
-1\. Start by following the first part of this nice guide by Pimoroni: [Setting up a Headless Pi](https://learn.pimoroni.com/article/setting-up-a-headless-pi) to flash the base OS Image. Choose the Lite 32-bit image. Set a username and password and add your WiFi credentials if required. **Do not insert into the Pi**.
+1\. Start by following the first part of this nice guide by Pimoroni: [Setting up a Headless Pi](https://learn.pimoroni.com/article/setting-up-a-headless-pi) to flash the base OS Image. Choose the Lite 32-bit image. Set a username (`pi`) & password, Enable SSH, and add your WiFi credentials if required. **Do not insert into the Pi**.
 
-2\. Eject the SD Card and reinsert. On Windows you need the `boot` partition (ignore other error messages). Open the SD card on your computer and edit the file `/usr/lib/raspberrypi-sys-mods/firstboot` on the boot partition. Comment out the lines:
+2\. Eject the SD Card from computer and reinsert. On Windows open 'Disk Management' and look for the SDCard. At the end there will be a lareg area of unallocated space. Right Click on that and select `New Simple Volume`. What you select here does not matter, but do not format it (waste of time!). Eject card and insert into the Pi. Let the Pi do it's first boot (be patient it reboots several times).
 
+3\. Once it has booted SSH into the Pi. e.g. `ssh pi@192.168.1.100` (password: your password)` or use PuTTY.
+
+4\. You now need to delete the partition you created. It was there to prevent the Pi expanding the `rootfs` on first boot. You cannot easily shrink `rootfs`! You will then create a new partition at the end of the card and then increase `rootfs` to fill the remaining space. Follow the following instructions:
+
+5\. Delete additional partition
+
+```shell
+sudo parted /dev/mmcblk0 rm 3
 ```
-# if check_variables; then
-  # do_resize
-# fi
+
+6\. Create a new partition at the end - you specify the **start** point and the partition filles to the end of the card. The **example** 20G figure is the **start** point for the data partition and can vary depending on size of card of course. For testing make it small so the mkfs doesn't take an age!! You will get an error message in red - ignore it.
+
+Create partition starting at XX and filling to the end.
+
+```shell
+echo "20G, +" | sudo sfdisk --force -N 3 /dev/mmcblk0
 ```
 
-3\. Our automated step for partition creation and resizing needs revisiting. In the mean time use gParted to extend the root (usually /dev/mmcblk0p2) to around 6GB. Create a 3rd partition to house the emoncms data using the ext2 filesystem, this can fill the rest of the disk. We usually create this to be around 10GB which should give about 10 years of data storage with 85x 10s PHPFina feeds.
+7\. Expand the root partition in the space available. Again an error message - ignore it!
 
-4\. Eject the SD card from your PC. Place the SD card in your RaspberryPi & power up. After a couple of minutes you will be able to SSH into the new image e.g:
-
-`ssh pi@192.168.1.100 (password: your password)`
-
-5\. Finish the partition creation process by formatting the data partition.
-
-We set the blocksize here to be 1024 bytes instead of the default 4096 bytes. A lower block size results in significant write load reduction when using an application like emoncms that only makes small but frequent and across many files updates to disk. Ext2 is choosen because it supports multiple linux user ownership options which are needed for the mysql data folder. Ext2 is non-journaling which reduces the write load a little although it may make data recovery harder vs Ext4, The data disk size is small however and the downtime from running fsck is perhaps less critical.
-
-
+```shell
+echo ", +" | sudo sfdisk --force -N 2 /dev/mmcblk0
 ```
+
+8\. Run partprobe
+
+```shell
+sudo partprobe
+```
+
+9\. Resize the rootfs
+
+```shell
+sudo resize2fs /dev/mmcblk0p2
+```
+
+10\. Format the new partition. We set the blocksize here to be 1024 bytes instead of the default 4096 bytes. A lower block size results in significant write load reduction when using an application like emoncms that only makes small but frequent and across many files updates to disk. Ext2 is choosen because it supports multiple linux user ownership options which are needed for the mysql data folder. Ext2 is non-journaling which reduces the write load a little although it may make data recovery harder vs Ext4, The data disk size is small however and the downtime from running fsck is perhaps less critical.
+
+```shell
 sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3
 ```
 
-*This step can take ages, depending on the type of SD card - it's faster with the latest generation SanDisks.*
+11\. Pull down the fstab as before (change `stable` to `master` if you want the master branch)
 
-6\. Update the fstab to include the data partition
-
-```
+```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/defaults/etc/fstab
-sudo mv fstab /etc/fstab
-sudo reboot
 ```
 
-7\. Add a data directory.
+12\. Then
 
-```
-sudo mkdir /var/opt/emoncms
-sudo chown www-data /var/opt/emoncms
+```shell
+sudo mv fstab /etc/fstab && sudo reboot now
 ```
 
-You can now continue with installing the EmonCMS stack.
+After the rebbot it should look like this (roughly, your sizes may vary).
+
+```shell
+pi@emonsdtestZ:~ $ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        14G  1.3G   12G  10% /
+devtmpfs         87M     0   87M   0% /dev
+tmpfs           215M     0  215M   0% /dev/shm
+tmpfs            86M  968K   85M   2% /run
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs            30M     0   30M   0% /tmp
+tmpfs           1.0M     0  1.0M   0% /var/lib/php/sessions
+tmpfs           1.0M     0  1.0M   0% /var/tmp
+/dev/mmcblk0p3  479M   14K  454M   1% /var/opt/emoncms
+/dev/mmcblk0p1  255M   50M  206M  20% /boot
+tmpfs            43M     0   43M   0% /run/user/1000
+```
 
 Note post EmonScripts steps listed in the [RaspberryPi OS 32bit Lite install (10th Nov 2022) PROCESS UPDATE issue](https://github.com/openenergymonitor/EmonScripts/issues/148).
-
-## Manual setup of ext2 data partition without gParted
-
-Steps for creating 3rd partition for data using fdisk and mkfs:
-
-```
-sudo fdisk -l
-Note end of last partition (5785599 on standard sd card)
-sudo fdisk /dev/mmcblk0
-enter: n->p->3
-enter: 5785600
-enter: default or 7626751
-enter: w (write partition to disk)
-fails with error, will write at reboot
-sudo reboot
-```
-
-Continue at this point with step 5 onwards above.
