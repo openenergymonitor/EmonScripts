@@ -32,7 +32,7 @@ For installation on a Digital Ocean Droplet, follow [these instructions](digital
 
 ## Install the EmonCMS Installation Scripts
 
-Pull the script from GitHub (note if you wish to pull the script from `master` change the path).
+Pull the script from GitHub (note if you wish to pull the script from `master` change the path). If you **want** to install the master branch
 
 ```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/init.sh
