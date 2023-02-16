@@ -31,19 +31,30 @@
     "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.4/EmonTxV4_JeeLib_Classic.hex",
     "description":"emonTx v4 single phase, 6 channel firmware"
   },
-  
-  "emonPiFrontEndCM":{
+
+  "emonPi_CM_LPL":{
     "hardware":"emonPi",
     "core":"ATMEGA328P",
-    "radio_format":"jeelib_native",
-    "version":"1.0.0", 
-    "date":"10 Jul 2021",
+    "radio_format":"lowpowerlabs",
+    "version":"1.1.0", 
+    "date":"16 Feb 2023",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonPiFrontEndCM/releases/download/1.0.0/firmware.hex",
+    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/16-02-23/emonPi_CM_LPL_1_1.hex",
     "description":"emonPi continuous sampling firmware"
   },
   
-  "emonPi_discrete_jeelib":{
+  "emonPi_CM_jeelib_native":{
+    "hardware":"emonPi",
+    "core":"ATMEGA328P",
+    "radio_format":"jeelib_native",
+    "version":"1.1.0", 
+    "date":"10 Jul 2021",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/16-02-23/emonPi_CM_jeelib_native_1_1.hex",
+    "description":"emonPi continuous sampling firmware"
+  },
+  
+  "emonPi_DS_jeelib_classic":{
     "hardware":"emonPi",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
