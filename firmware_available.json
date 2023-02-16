@@ -75,7 +75,7 @@
     "description":"emonTx v3.4 continuous sampling firmware"
   },
   "emonTx34_DS_jeelib_classic":{
-    "hardware":"emonTx",
+    "hardware":"emonTx3",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
     "version":"3.4.0", 
@@ -85,7 +85,7 @@
     "description":"emonTx v3.4 discrete sampling firmware"
   },
   "emonTx_3Phase_PLL_LPL":{
-    "hardware":"emonTx",
+    "hardware":"emonTx3",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
     "version":"2.1", 
@@ -95,7 +95,7 @@
     "description":"emonTx 3 phase continuous sampling firmware"
   },
   "emonTx_3Phase_PLL_jeelib_classic":{
-    "hardware":"emonTx",
+    "hardware":"emonTx3",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
     "version":"2.1", 
