@@ -54,44 +54,54 @@
     "description":"emonPi discrete sampling firmware"
   },
   
-  "emonTxV34CM_rfm69n":{
-    "hardware":"emonTx",
+  "emonTx34_CM_LPL":{
+    "hardware":"emonTx3",
     "core":"ATMEGA328P",
-    "radio_format":"jeelib_native",
-    "version":"1.0.0", 
-    "date":"10 Jul 2021",
+    "radio_format":"lowpowerlabs",
+    "version":"2.4.0", 
+    "date":"16 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/EmonTxV34CM_rfm69n/releases/download/1.0.0/firmware.hex",
+    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/tx3-16-02-23/emonTx34_CM_LPL_2_4.hex", 
     "description":"emonTx v3.4 continuous sampling firmware"
   },
-  "emonTxV34CM_jeelib":{
-    "hardware":"emonTx",
+  "emonTx34_CM_jeelib_classic":{
+    "hardware":"emonTx3",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
-    "version":"2.0.0", 
-    "date":"18 Aug 2020", 
+    "version":"2.4.0", 
+    "date":"16 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/EmonTxV3CM/releases/download/2.0.0/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/tx3-16-02-23/emonTx34_CM_jeelib_classic_2_4.hex", 
     "description":"emonTx v3.4 continuous sampling firmware"
   },
-  "emonTxV34_jeelib":{
+  "emonTx34_DS_jeelib_classic":{
     "hardware":"emonTx",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
     "version":"3.4.0", 
-    "date":"5 Jan 2021", 
+    "date":"16 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/3.4.0/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/tx3-16-02-23/emonTx34_DS_jeelib_classic_3_4.hex", 
     "description":"emonTx v3.4 discrete sampling firmware"
   },
-  "emonTxV34_3phase_jeelib":{
+  "emonTx_3Phase_PLL_LPL":{
+    "hardware":"emonTx",
+    "core":"ATMEGA328P",
+    "radio_format":"lowpowerlabs",
+    "version":"2.1", 
+    "date":"16 Feb 2023", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/tx3-16-02-23/emonTx_3Phase_PLL_LPL_2_1.hex", 
+    "description":"emonTx 3 phase continuous sampling firmware"
+  },
+  "emonTx_3Phase_PLL_jeelib_classic":{
     "hardware":"emonTx",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
-    "version":"1.6", 
-    "date":"25 Feb 2019", 
+    "version":"2.1", 
+    "date":"16 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx-3phase/releases/download/v1.6/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/tx3-16-02-23/emonTx_3Phase_PLL_jeelib_classic_2_1.hex", 
     "description":"emonTx 3 phase continuous sampling firmware"
   },
   "emonBase_rfm69pi_LPL":{
