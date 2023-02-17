@@ -159,40 +159,30 @@
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"5.0.1", 
-    "date":"18 Nov 2022", 
+    "version":"4.1.0", 
+    "date":"17 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_LPL/releases/download/5.0.1/EmonTH_V2_LPL.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.0/emonth2_LPL_4_1.hex", 
     "description":"emonTH V2 firmware"
   },  
-  "emonTH2_rfm69n":{
+  "emonTH2_jeelib_native":{
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_native",
-    "version":"4.0.0", 
-    "date":"10 Jul 2021", 
+    "version":"4.1.0", 
+    "date":"17 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_rfm69n/releases/download/4.0.0/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.0/emonth2_jeelib_native_4_1.hex", 
     "description":"emonTH V2 firmware"
   },
-  "emonTH2_rfm69n_multi":{
-    "hardware":"emonTH2",
-    "core":"ATMEGA328P",
-    "radio_format":"jeelib_native",
-    "version":"4.0.0", 
-    "date":"10 Jul 2021", 
-    "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/EmonTH_V2_rfm69n/releases/download/4.0.0/multiple_ds18b20_external.hex", 
-    "description":"emonTH V2 firmware (2x external DS18B20)"
-  },
-  "emonTH2_jeelib":{
+  "emonTH2_jeelib_classic":{
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
-    "version":"3.2.5", 
-    "date":"20 Sep 2021", 
+    "version":"4.1.0", 
+    "date":"17 Feb 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/3.2.5/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.0/emonth2_jeelib_classic_4_1.hex", 
     "description":"emonTH V2 firmware"
   },
   "emonTH2_2Ext_jeelib":{
