@@ -1,3 +1,4 @@
+#!/bin/bash
 # --------------------------------------------------------------------------------
 # RaspberryPi Strech Build Script
 # Emoncms, Emoncms Modules, EmonHub & dependencies
@@ -13,12 +14,20 @@
 # - emonhub installer
 # Format as documentation
 
+# Copy stdout and stderr to a log file in addition to the console
+# tee -a used in case script is run multiple times
+
+LOG_FILE=/tmp/$(basename "$0").log
+exec > >(tee -a "${LOG_FILE}") 2>&1
+
+echo "Script output also stored in ${LOG_FILE}"
+echo -e "Started: $(date)\n"
+
 # fix interactive popup that keeps asking for service restart
 if [ -f /etc/needrestart/needrestart.conf ]; then
   sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 fi
 
-#!/bin/bash
 if [ ! -f config.ini ]; then
     cp emonsd.config.ini config.ini
 fi
@@ -100,13 +109,8 @@ if [ "$emonSD_pi_env" = "1" ]; then
     # update checks for image type and only runs with a valid image name file in the boot partition
     # Update this value to the latest safe image version - this could be automated to pull from safe list
     sudo touch /boot/emonSD-10Nov22
-    exit 0
-    # Reboot to complete
-    sudo reboot
 else
     $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
-    # sudo touch /boot/emonSD-30Oct18
-    exit 0
-    # Reboot to complete
-    sudo reboot
 fi
+
+echo -e "\nScript output also stored in ${LOG_FILE}"

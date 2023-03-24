@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Copy stdout and stderr to a log file in addition to the console
+# tee -a used in case script is run multiple times
+
+LOG_FILE=/tmp/$(basename "$0").log
+exec > >(tee -a "${LOG_FILE}") 2>&1
+
+echo "Script output also stored in ${LOG_FILE}"
+echo -e "Started: $(date)\n"
+
 user=$USER
 openenergymonitor_dir=/opt/openenergymonitor
 emoncms_dir=/opt/emoncms
@@ -24,3 +33,5 @@ cd $openenergymonitor_dir/EmonScripts/install
 cd
 
 rm init.sh
+
+echo -e "\nScript output also stored in ${LOG_FILE}"
