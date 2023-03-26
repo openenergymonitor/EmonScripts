@@ -4,9 +4,9 @@ All these links, link to the `stable` branch.
 
 The installation process is broken out into separate scripts that can be run individually.
 
-**[init.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/init.sh)** Launches the full installation script, first downloading the EmonScripts repository that contains the rest of the installation scripts. All output sent to screen also stored in `/tmp/init.sh.log`.
+**[init.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/init.sh)** Launches the full installation script, first downloading the EmonScripts repository that contains the rest of the installation scripts. All output sent to screen also stored in the user's home directory `~/init.sh.log`.
 
-**[main.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/main.sh)** Loads the configuration file and runs the individual installation scripts as applicable. All output sent to screen also stored in `/tmp/main.sh.log`.
+**[main.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/main.sh)** Loads the configuration file and runs the individual installation scripts as applicable. All output sent to screen also stored in the user's home directory `~/main.sh.log`.
 
 ---
 

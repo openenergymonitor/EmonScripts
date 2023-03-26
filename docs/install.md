@@ -41,7 +41,7 @@ chmod +x init.sh && ./init.sh
 
 The `init` script automatically calls the `main` script. At this point you will be offered the option to configure the installation process.
 
-Output from `init.sh` is displayed on screen and also stored in `/tmp/init.sh.log`. Output from `main.sh` is also displayed on screen and stored in `/tmp/main.sh.log`.
+Output from `init.sh` is displayed on screen and also stored in the user's home directory `~/init.sh.log`. Output from `main.sh` is also displayed on screen and stored in the user's home directory `~/main.sh.log`.
 
 If you are on a RaspberryPi or EmonPi you can usually just proceed.
 
