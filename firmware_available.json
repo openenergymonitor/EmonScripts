@@ -119,20 +119,20 @@
     "hardware":"rfm69pi",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"1.0.0", 
-    "date":"18 Nov 2022",
+    "version":"1.1.0", 
+    "date":"29 Mar 2023",
     "baud":38400,
-    "download_url":"https://github.com/openenergymonitor/emonBase_rfm69pi_LPL/releases/download/1.0.0/emonBase_rfm69pi_LPL.hex", 
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_LPL_v1_1_0.hex", 
     "description":"emonBase RFM69Pi firmware"
   },  
   "emonBase_rfm69n":{
     "hardware":"rfm69pi",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_native",
-    "version":"2.0.0", 
-    "date":"10 Jul 2021", 
+    "version":"1.1.0", 
+    "date":"29 Mar 2023",
     "baud":38400,
-    "download_url":"https://github.com/openenergymonitor/emonBase_rfm69n/releases/download/2.0.0/firmware.hex", 
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_jeelib_native_v1_1_0.hex", 
     "description":"emonBase RFM69Pi firmware"
   },
   "emonBase_jeelib":{
