@@ -122,7 +122,7 @@
     "version":"1.1.0", 
     "date":"29 Mar 2023",
     "baud":38400,
-    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_LPL_v1_1_0.hex", 
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_LPL_v1_1_1.hex", 
     "description":"emonBase RFM69Pi firmware"
   },  
   "emonBase_rfm69n":{
@@ -132,7 +132,7 @@
     "version":"1.1.0", 
     "date":"29 Mar 2023",
     "baud":38400,
-    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_jeelib_native_v1_1_0.hex", 
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_jeelib_native_v1_1_1.hex", 
     "description":"emonBase RFM69Pi firmware"
   },
   "emonBase_jeelib":{
