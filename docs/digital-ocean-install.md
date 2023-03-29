@@ -74,9 +74,9 @@
     Comment out config, wifi and setup module:
 
     ```shell
-    #emoncms_modules[config]=stable
-    #emoncms_modules[wifi]=stable
-    #emoncms_modules[setup]=stable
+    #emoncms_emonpi_modules[config]=stable
+    #emoncms_emonpi_modules[wifi]=stable
+    #emoncms_emonpi_modules[setup]=stable
     ```
 
 1. Run main installation script:

@@ -77,9 +77,9 @@ install_wifiap=false
 ```
 Comment out the following:
 ```
-#emoncms_modules[config]=stable
-#emoncms_modules[wifi]=stable
-#emoncms_modules[setup]=stable
+#emoncms_emonpi_modules[config]=stable
+#emoncms_emonpi_modules[wifi]=stable
+#emoncms_emonpi_modules[setup]=stable
 ```
 To restart the installation:
 
