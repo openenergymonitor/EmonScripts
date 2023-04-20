@@ -36,10 +36,10 @@
     "hardware":"emonPi",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"1.1.3", 
-    "date":"04 April 2023",
+    "version":"1.1.4", 
+    "date":"20 April 2023",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/04-04-23/emonPi_CM_LPL_1_1_3.hex",
+    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/20-04-23/emonPi_CM_LPL_1_1_4.hex",
     "description":"emonPi continuous sampling firmware"
   },
   
@@ -47,10 +47,10 @@
     "hardware":"emonPi",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_native",
-    "version":"1.1.3", 
-    "date":"04 April 2023",
+    "version":"1.1.4", 
+    "date":"20 April 2023",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/04-04-23/emonPi_CM_jeelib_native_1_1_3.hex",
+    "download_url":"https://github.com/openenergymonitor/emonpi/releases/download/20-04-23/emonPi_CM_jeelib_native_1_1_4.hex",
     "description":"emonPi continuous sampling firmware"
   },
   
