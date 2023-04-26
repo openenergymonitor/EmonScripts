@@ -3,10 +3,10 @@
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.5.4", 
-    "date":"19 Dec 2022",
+    "version":"1.5.7", 
+    "date":"26 Apr 2023",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.4/EmonTxV4_LPL.hex",
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_LPL.hex",
     "description":"emonTx v4 single phase, 6 channel firmware"
   },
   
@@ -14,10 +14,10 @@
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"jeelib_native",
-    "version":"1.5.4", 
-    "date":"19 Dec 2022",
+    "version":"1.5.7", 
+    "date":"26 Apr 2023",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.4/EmonTxV4_JeeLib_Classic.hex",
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_JeeLib_Classic.hex",
     "description":"emonTx v4 single phase, 6 channel firmware"
   },
   
@@ -25,10 +25,10 @@
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"jeelib_classic",
-    "version":"1.5.4", 
-    "date":"19 Dec 2022",
+    "version":"1.5.7", 
+    "date":"26 Apr 2023",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.4/EmonTxV4_JeeLib_Classic.hex",
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_JeeLib_Classic.hex",
     "description":"emonTx v4 single phase, 6 channel firmware"
   },
 
