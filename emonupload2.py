@@ -3,6 +3,8 @@
 import sys
 import json
 import subprocess
+import os.path
+import urllib.request
 
 with open("firmware_available.json") as jsonFile:
     firmware_available = json.load(jsonFile)
@@ -42,6 +44,25 @@ except IndexError:
   sys.exit(0)
   
 print(selected_firmware)
-bashCommand = "update/atmega_firmware_upload.sh ttyUSB0 "+selected_firmware
-process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-output, error = process.communicate()
+
+download_url = firmware_available[selected_firmware]['download_url']
+radio_format = firmware_available[selected_firmware]['radio_format']
+version = firmware_available[selected_firmware]['version']
+core = firmware_available[selected_firmware]['core']
+baud = firmware_available[selected_firmware]['baud']
+
+# File name of downloaded firmware
+download_filename = selected_firmware + "_" + radio_format + "_v" + version + ".hex"
+
+# Download using python
+urllib.request.urlretrieve(download_url, download_filename)
+
+# Check if firmware downloaded
+if not os.path.isfile(download_filename):
+  print("Error: Firmware download failed")
+
+serial_port = "/dev/ttyUSB0"
+
+cmd = ' avrdude -Cupdate/avrdude.conf -v -p' + core + ' -carduino -D -P' + str(serial_port) + ' -b' + str(baud) + ' -Uflash:w:' + download_filename
+print(cmd)
+subprocess.call(cmd, shell=True)
