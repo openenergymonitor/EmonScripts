@@ -66,3 +66,6 @@ serial_port = "/dev/ttyUSB0"
 cmd = ' avrdude -Cupdate/avrdude.conf -v -p' + core + ' -carduino -D -P' + str(serial_port) + ' -b' + str(baud) + ' -Uflash:w:' + download_filename
 print(cmd)
 subprocess.call(cmd, shell=True)
+
+# cleanup
+os.remove(download_filename)
