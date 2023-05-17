@@ -36,10 +36,10 @@
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.0.1", 
-    "date":"9 May 2023",
+    "version":"2.0.2", 
+    "date":"17 May 2023",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emontx4/main/firmware/EmonTxV4_DB_3phase_6CT/compiled/EmonTxV4_DB_3phase_6CT_2_0_1.ino.hex",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emontx4/main/firmware/EmonTxV4_DB_3phase_6CT/compiled/EmonTxV4_DB_3phase_6CT_2_0_2.ino.hex",
     "description":"emonTx4 3-phase phase, 6 channel firmware"
   },
 
