@@ -91,7 +91,7 @@ See explanation and settings in the installation configuration file here: [confi
 
 ## Run Scripts Individually
 
-It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
+It is possible to run the [scripts individually](https://github.com/openenergymonitor/EmonScripts/blob/stable/docs/install-scripts.md) for a single part of the stack. These are not guaranteed to be a complete solution (some folders may not be created for instance).
 
 ## Post Install - Settings
 
