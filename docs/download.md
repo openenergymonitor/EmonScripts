@@ -1022,9 +1022,7 @@ pi@emonpi:~ $ sudo systemctl disable apache2.service
 
 ## Writing the image to an SD card:
 
-**Option 1:** [Flash using Etcher tool](https://www.etcher.io/). See [forum discussion](https://community.openenergymonitor.org/t/using-etcher-tool-to-flash-emonsd-image-to-sd-card/1773)
-
-**Option 2:** [Use the Raspberry Pi Imager](https://www.raspberrypi.com/software/), select 'Use custom: Select a custom.img from your computer' and then select the emonSD image that you have just downloaded. There is no need to unzip the image first, just use the .zip file directly.
+We recommend using [balenaEtcher to flash an SD card](https://www.etcher.io/). See [forum discussion](https://community.openenergymonitor.org/t/using-etcher-tool-to-flash-emonsd-image-to-sd-card/1773).
 
 ## Before bootup SSH & WiFi configuration
 
