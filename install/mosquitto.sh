@@ -16,7 +16,9 @@ if [ "$install_mosquitto_server" = true ]; then
     sudo sed -i -n '/password_file \/etc\/mosquitto\/passwd/!p;$a password_file \/etc\/mosquitto\/passwd' /etc/mosquitto/mosquitto.conf
     # append line: log_type error
     sudo sed -i -n '/log_type error/!p;$a log_type error' /etc/mosquitto/mosquitto.conf
-
+    # append line: listener 1883
+    sudo sed -i -n '/listener 1883/!p;$a listener 1883' /etc/mosquitto/mosquitto.conf
+     
     # Create mosquitto password file
     sudo touch /etc/mosquitto/passwd
     sudo mosquitto_passwd -b /etc/mosquitto/passwd $mqtt_user $mqtt_password
