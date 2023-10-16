@@ -14,7 +14,7 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 
 (eligible for updates)
 ```
-(.zip) MD5: d4d27fcc553996768366662709307dda
+(.zip) MD5: 271d8d502e822e3703500a5762519c1d
 ```
 
 **Credentials**
