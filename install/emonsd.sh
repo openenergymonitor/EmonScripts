@@ -55,6 +55,11 @@ sudo apt-get install -y ufw
 # Removed see: https://github.com/openenergymonitor/EmonScripts/issues/83
 # sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
 
+# Disable 1-Wire to prevent errors in logs
+# Issue #156
+echo "Disabling 1-Wire - will take effect on next reboot"
+sudo sed -i 's/dtoverlay=w1-gpio/#dtoverlay=w1-gpio/' /boot/config.txt
+
 # 6 Sep 2019 decision to leave elevator setting as default
 # option to review in future: elevator=noop
 
