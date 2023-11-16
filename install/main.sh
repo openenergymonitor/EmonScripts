@@ -87,6 +87,12 @@ if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data;
 
 echo "-------------------------------------------------------------"
 sudo apt-get install -y git build-essential python3-pip python3-dev
+
+# It's probably better to fix this by using python venv
+if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
+    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
+    echo "Removed pip3 external management warning."
+fi
 echo "-------------------------------------------------------------"
 
 if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi
