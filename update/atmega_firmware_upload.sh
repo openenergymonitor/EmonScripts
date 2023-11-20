@@ -93,6 +93,7 @@ if [ "$result" != "firmware not found" ]; then
             echo "emonPiLCD is running. Restarting in 5s..."
             sleep 5
             sudo systemctl restart emonPiLCD
+            echo "emonPiLCD service has been restarted"
         fi
       fi
     fi
