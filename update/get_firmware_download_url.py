@@ -11,7 +11,12 @@ with urllib.request.urlopen("https://raw.githubusercontent.com/openenergymonitor
         firmware_key = sys.argv[1]
         if firmware_key in firmware_available:
             firmware = firmware_available[firmware_key]
-            print(firmware['download_url']+" "+str(firmware['baud'])+" "+str(firmware['version'])+" "+str(firmware['core']))
+            
+            autoreset = ""
+            if 'autoreset' in firmware:
+                autoreset = firmware['autoreset']
+            
+            print(firmware['download_url']+" "+str(firmware['baud'])+" "+str(firmware['version'])+" "+str(firmware['core'])+" "+str(firmware['autoreset']))
             sys.exit(0)
 
 # Error

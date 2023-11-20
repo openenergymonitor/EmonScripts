@@ -30,6 +30,7 @@ if [ "$result" != "firmware not found" ]; then
   download_url=${result[0]}
   baud_rate=${result[1]}
   core=${result[3]}
+  autoreset=${result[4]}
 
   hexfile=$openenergymonitor_dir/data/firmware/$firmware_key.hex
 
@@ -61,7 +62,7 @@ if [ "$result" != "firmware not found" ]; then
     do
       echo "Attempt $attempt..."
       echo
-      avrdude -Cavrdude.conf -v -p$core -carduino -D -P/dev/$serial_port -b$baud_rate -Uflash:w:$hexfile:i 
+      avrdude -Cavrdude.conf -v -p$core -carduino -D -P/dev/$serial_port -b$baud_rate -Uflash:w:$hexfile:i $autoreset
 
       # Find output logfile
       output_log_file=$( lsof -p $$ -a -d 1 -F n | awk '/^n/ {print substr($1, 2)}' )
