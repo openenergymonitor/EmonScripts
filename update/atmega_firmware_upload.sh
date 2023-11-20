@@ -62,6 +62,7 @@ if [ "$result" != "firmware not found" ]; then
     do
       echo "Attempt $attempt..."
       echo
+      echo "avrdude -Cavrdude.conf -v -p$core -carduino -D -P/dev/$serial_port -b$baud_rate -Uflash:w:$hexfile:i $autoreset"
       avrdude -Cavrdude.conf -v -p$core -carduino -D -P/dev/$serial_port -b$baud_rate -Uflash:w:$hexfile:i $autoreset
 
       # Find output logfile
@@ -86,6 +87,14 @@ if [ "$result" != "firmware not found" ]; then
       echo
       echo "Restarting EmonHub"
       sudo systemctl start emonhub
+      
+      if [ "$serial_port" = "ttyAMA0" ]; then 
+        if [ "$(systemctl is-active emonPiLCD)" = "active" ]; then
+            echo "emonPiLCD is running. Restarting in 5s..."
+            sleep 5
+            sudo systemctl restart emonPiLCD
+        fi
+      fi
     fi
 
   else
