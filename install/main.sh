@@ -109,6 +109,7 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$install_firmware" = true ]; then $openenergymonitor_dir/EmonScripts/install/firmware.sh; fi
     if [ "$install_emonpilcd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonpilcd.sh; fi
     if [ "$install_wifiap" = true ]; then $openenergymonitor_dir/EmonScripts/install/wifiap.sh; fi
+    if [ "$install_docker" = true ]; then $openenergymonitor_dir/EmonScripts/install/docker.sh; fi
     if [ "$install_emonsd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonsd.sh; fi
 
     # Enable service-runner update

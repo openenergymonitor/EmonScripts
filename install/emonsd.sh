@@ -55,6 +55,12 @@ sudo apt-get install -y ufw
 # Removed see: https://github.com/openenergymonitor/EmonScripts/issues/83
 # sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
 
+
+# One wire temperature sensing support for emonPi v2 
+# IMPORTANT: This will likely interfere with shutdown button on emonPi v1
+# It's best to disable onewire if using this image with an emonPi v1
+sudo sed -i 's/^dtoverlay=w1-gpio.*$/dtoverlay=w1-gpio,gpiopin=17/' /boot/config.txt
+
 if [ "$enable_onewire" != true ]; then
     # Disable 1-Wire to prevent errors in logs
     # Issue #156
