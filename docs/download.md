@@ -4,6 +4,175 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 
 ---
 
+<details>
+<summary><b>emonSD-20Nov23 (Beta)</b></summary>
+<br>
+
+<!--**Download (1.3 GB):** [UK Server](http://openenergymonitor.org/files/emonSD-20Nov23.zip)-->
+**Download (1.3 GB):** [UK Server](http://openenergymonitor.org/files/emonSD-20Nov23.zip)
+
+(eligible for updates)
+```
+(.zip) MD5: 164899034638325952572dbe68f3285e
+```
+
+**Credentials**
+
+- **SSH:** username: `pi`, password: `emonsd` (default - please change)
+- **WiFi Access Point:** SSID: `emonpi`, Password: `emonpi2016`
+- **MQTT:** username: `emonpi`, password: `emonpimqtt2016`
+- **MySQL:** username: `emoncms`, password: `emonpiemoncmsmysql2016`
+
+*SSH access disabled by default. Long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.*
+
+**Build**
+
+- Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
+- Based on Debian Raspberry Pi OS (32-bit) Legacy Lite, 2023-05-03
+- Compatible with Raspberry Pi 2, 3, 3B+, 4 & Pi Zero
+- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
+
+**Kernel**
+```
+$ uname -a
+Linux emonpi 6.1.21-v8+ #1642 SMP PREEMPT Mon Apr  3 17:24:16 BST 2023 aarch64 GNU/Linux
+
+```
+**File System**
+```
+$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       5.7G  2.5G  3.0G  46% /
+devtmpfs        667M     0  667M   0% /dev
+tmpfs           925M     0  925M   0% /dev/shm
+tmpfs           370M  5.8M  365M   2% /run
+tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+tmpfs            30M     0   30M   0% /tmp
+tmpfs           1.0M     0  1.0M   0% /var/lib/php/sessions
+tmpfs           1.0M     0  1.0M   0% /var/tmp
+/dev/mmcblk0p1  255M   51M  205M  20% /boot
+/dev/mmcblk0p3  8.7G   23K  8.3G   1% /var/opt/emoncms
+log2ram          50M  3.0M   47M   6% /var/log
+tmpfs           185M     0  185M   0% /run/user/1000
+```
+**Emoncms**
+
+```
+Server Information
+-----------------------
+
+Services
+	emonhub :	 Active Running                      
+	emoncms_mqtt :	 Active Running                      
+	feedwriter :	 Active Running - sleep 300s 0 feed points pending write
+	service-runner :	 Active Running                      
+	emonPiLCD :	 Active Running                      
+	redis-server :	 Active Running                      
+	mosquitto :	 Active Running                      
+	demandshaper :	 Not found or not installed                                  
+Emoncms
+	Version :	 low-write 11.4.2
+	Git :	 
+		URL :	 https://github.com/emoncms/emoncms.git
+		Branch :	 * stable
+		Describe :	 11.4.2
+	Components :	 Emoncms Core v11.4.2 | App v2.7.9 | EmonHub Config v2.1.5 | Dashboard v2.3.3 | Device v2.2.3 | Graph v2.2.3 | Network Setup v1.0.2 | WiFi v2.1.1 | Backup v2.3.3 | Postprocess v2.4.7 | Sync v2.1.5 | Usefulscripts v2.3.11 | EmonScripts v1.6.25 | RFM2Pi v1.4.2 | Avrdude-rpi v1.0.3 | Emonhub v2.6.2 | EmonPi v3.0.2
+
+Server
+	CPU :	 1 Threads(s) | 4 Core(s) | 1 Sockets(s) | Cortex-A72 | 108.00MIPS | 
+	OS :	 Linux 6.1.21-v8+
+	Host :	 emonpi | emonpi | (10.0.206.98)
+	Date :	 2023-11-21 13:46:54 UTC
+	Uptime :	 13:46:54 up 5 min,  1 user,  load average: 0.10, 0.13, 0.07
+
+Memory
+	RAM :	 Used: 12.57%
+		Total :	 1.81 GB
+		Used :	 232.36 MB
+		Free :	 1.58 GB
+	Swap :	 Used: 0.00%
+		Total :	 100 MB
+		Used :	 0 B
+		Free :	 100 MB
+
+Disk
+	 :	 - / :	 Used: 43.43%
+		Total :	 5.62 GB
+		Used :	 2.44 GB
+		Free :	 2.92 GB
+		Read Load :	 336.44 KB/s
+		Write Load :	 0 B/s
+		Load Time :	 0 mins
+	/boot :	 Used: 19.77%
+		Total :	 254.99 MB
+		Used :	 50.42 MB
+		Free :	 204.57 MB
+		Read Load :	 0 B/s
+		Write Load :	 0 B/s
+		Load Time :	 0 mins
+	/var/opt/emoncms :	 Used: 0.00%
+		Total :	 8.69 GB
+		Used :	 23 KB
+		Free :	 8.25 GB
+		Read Load :	 0 B/s
+		Write Load :	 113.78 B/s
+		Load Time :	 0 mins
+	/var/log :	 Used: 6.01%
+		Total :	 50 MB
+		Used :	 3 MB
+		Free :	 47 MB
+		Read Load :	 n/a
+		Write Load :	 n/a
+		Load Time :	 n/a
+
+HTTP
+	Server :	 Apache/2.4.56 (Raspbian) HTTP/1.1 CGI/1.1 80
+
+MySQL
+	Version :	 10.5.21-MariaDB-0+deb11u1
+	Host :	 127.0.0.1 (127.0.0.1)
+	Date :	 2023-11-21 13:46:53 (UTC 00:00‌​)
+	Stats :	 Uptime: 2768  Threads: 7  Questions: 170  Slow queries: 0  Opens: 45  Open tables: 38  Queries per second avg: 0.061
+
+Redis
+	Version :	 
+		Redis Server :	 6.0.16
+		PHP Redis :	 6.0.3-dev
+	Host :	 localhost:6379
+	Size :	 73 keys (722.77K)
+	Uptime :	 0 days
+
+MQTT Server
+	Version :	 Mosquitto 2.0.11
+	Host :	 localhost:1883 (127.0.0.1)
+
+PHP
+	Version :	 8.1.25 (Zend Version 4.1.25)
+	Run user :	 User: www-data Group: www-data video Script Owner: pi
+	Modules :	 apache2handler calendar Core ctype curl date exif FFI fileinfo filter ftp gd gettext hash iconv json libxml mbstring mosquitto v0.4.0mysqli mysqlnd vmysqlnd 8.1.25openssl pcre PDO pdo_mysql Phar posix readline redis v6.0.3-devReflection session shmop sockets sodium SPL standard sysvmsg sysvsem sysvshm tokenizer Zend OPcache zlib 
+Pi
+	Model :	 Raspberry Pi 4 Model B Rev 1.5 - 2GB (Sony UK)
+	Serial num. :	 100000003F81AAAB
+	CPU Temperature :	 36.51°C
+	GPU Temperature :	 N/A (to show GPU temp execute this command from the console "sudo usermod -G video www-data" )
+	emonpiRelease :	 emonSD-20Nov23
+	File-system :	 read-write
+
+Client Information
+-----------------------
+
+HTTP
+	Browser :	 Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0
+	Language :	 en-GB,en;q=0.5
+
+Window
+	Size :	 1848 x 938
+
+Screen
+	Resolution :	 1920 x 1080
+```
+</details>
 
 <details>
 <summary><b>emonSD-10Nov22 (Stable)</b></summary>
