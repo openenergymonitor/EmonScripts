@@ -9,11 +9,11 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 
 ---
 
-**Download standard emonPi1 / emonBase image (1.3 GB):** [UK Server](http://openenergymonitor.org/files/emonSD-20Nov23.zip)<br>(MD5: ed9ecc0d8930d7f7422890e462b3020c)
+**Download standard emonPi1 / emonBase image (1.3 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-20Nov23.zip)<br>(MD5: ed9ecc0d8930d7f7422890e462b3020c)
 
 ---
 
-*Download emonPi2 version (1.3 GB): [UK Server](http://openenergymonitor.org/files/emonSD-20Nov23-emonpi2.zip)<br>(MD5: 164899034638325952572dbe68f3285e)<br>Includes emonPi2 compatible emonhub.conf and one wire temperature sensing on GPIO17 is enabled. Download the emonPi1/emonBase image for existing installations.*
+*Download emonPi2 version (1.3 GB): [UK Server](https://openenergymonitor.org/files/emonSD-20Nov23-emonpi2.zip)<br>(MD5: 164899034638325952572dbe68f3285e)<br>Includes emonPi2 compatible emonhub.conf and one wire temperature sensing on GPIO17 is enabled. Download the emonPi1/emonBase image for existing installations.*
 
 ---
 
