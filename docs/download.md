@@ -31,8 +31,8 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 **Build**
 
 - Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
-- Based on Debian Raspberry Pi OS (32-bit) Legacy Lite, 2023-05-03
-- Compatible with Raspberry Pi 2, 3, 3B+, 4 & Pi Zero
+- Based on Debian Raspberry Pi OS (64-bit) Legacy Lite, 2023-05-03
+- Compatible with Raspberry Pi 3, 3B+, 4 & Pi Zero2
 - Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
 - Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
 
