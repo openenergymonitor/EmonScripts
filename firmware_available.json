@@ -67,7 +67,7 @@
     "date":"02 Jan 2023",
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_CM_6CT_current_only/compiled/EmonPi2_CM_6CT_current_only_v1_0_0.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input",
+    "description":"emonPi2 DB single phase, 6 channel firmware, CURRENT ONLY",
     "autoreset":"-pi2"
   },
   
