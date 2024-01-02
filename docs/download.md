@@ -9,11 +9,11 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 
 ---
 
-**Download standard emonPi1 / emonBase image (1.3 GB):** [UK Server](http://openenergymonitor.org/files/emonSD-20Nov23.zip)<br>(MD5: ed9ecc0d8930d7f7422890e462b3020c)
+**Download standard emonPi1 / emonBase image (1.3 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-20Nov23.zip)<br>(MD5: ed9ecc0d8930d7f7422890e462b3020c)
 
 ---
 
-*Download emonPi2 version (1.3 GB): [UK Server](http://openenergymonitor.org/files/emonSD-20Nov23-emonpi2.zip)<br>(MD5: 164899034638325952572dbe68f3285e)<br>Includes emonPi2 compatible emonhub.conf and one wire temperature sensing on GPIO17 is enabled. Download the emonPi1/emonBase image for existing installations.*
+*Download emonPi2 version (1.3 GB): [UK Server](https://openenergymonitor.org/files/emonSD-20Nov23-emonpi2.zip)<br>(MD5: 164899034638325952572dbe68f3285e)<br>Includes emonPi2 compatible emonhub.conf and one wire temperature sensing on GPIO17 is enabled. Download the emonPi1/emonBase image for existing installations.*
 
 ---
 
@@ -31,8 +31,8 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 **Build**
 
 - Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
-- Based on Debian Raspberry Pi OS (32-bit) Legacy Lite, 2023-05-03
-- Compatible with Raspberry Pi 2, 3, 3B+, 4 & Pi Zero
+- Based on Debian Raspberry Pi OS (64-bit) Legacy Lite, 2023-05-03
+- Compatible with Raspberry Pi 3, 3B+, 4 & Pi Zero2
 - Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
 - Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
 
