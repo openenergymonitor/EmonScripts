@@ -76,18 +76,6 @@ sudo usermod -a -G video www-data
 # Review automated install: Emoncms Language Support
 # sudo dpkg-reconfigure locales
 
-# Wifi setup
-sudo ln -s $openenergymonitor_dir/emonpi/wifi-check /usr/local/bin/wifi-check
-
-sudo crontab -l > mycron
-if grep -Fq "wifi-check" mycron; then
-    echo "wifi-check already present in crontab"
-else
-    echo "*/5 * * * * /usr/local/bin/wifi-check > /var/log/emoncms/wificheck.log 2>&1" >> mycron
-    sudo crontab mycron
-    rm mycron
-fi
-
 # emonSD rc.local includes wifiAP start and first boot update
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 
