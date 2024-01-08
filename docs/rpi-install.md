@@ -19,7 +19,7 @@ sudo parted /dev/mmcblk0 rm 3
 Create partition starting at XX and filling to the end.
 
 ```shell
-echo "20G, +" | sudo sfdisk --force -N 3 /dev/mmcblk0
+echo "5G, +" | sudo sfdisk --force -N 3 /dev/mmcblk0
 ```
 
 7\. Expand the root partition in the space available. Again an error message - ignore it!
@@ -63,17 +63,17 @@ After the rebbot it should look like this (roughly, your sizes may vary).
 ```shell
 pi@emonsdtestZ:~ $ df -h
 Filesystem      Size  Used Avail Use% Mounted on
-/dev/root        14G  1.3G   12G  10% /
-devtmpfs         87M     0   87M   0% /dev
-tmpfs           215M     0  215M   0% /dev/shm
-tmpfs            86M  968K   85M   2% /run
-tmpfs           5.0M  4.0K  5.0M   1% /run/lock
+udev            661M     0  661M   0% /dev
+tmpfs           185M  1.2M  184M   1% /run
+/dev/mmcblk0p2  4.4G  1.7G  2.6G  39% /
+tmpfs           925M     0  925M   0% /dev/shm
+tmpfs           5.0M   16K  5.0M   1% /run/lock
 tmpfs            30M     0   30M   0% /tmp
 tmpfs           1.0M     0  1.0M   0% /var/lib/php/sessions
 tmpfs           1.0M     0  1.0M   0% /var/tmp
-/dev/mmcblk0p3  479M   14K  454M   1% /var/opt/emoncms
-/dev/mmcblk0p1  255M   50M  206M  20% /boot
-tmpfs            43M     0   43M   0% /run/user/1000
+/dev/mmcblk0p1  510M   93M  418M  19% /boot
+/dev/mmcblk0p3  9.7G   14K  9.2G   1% /var/opt/emoncms
+tmpfs           185M     0  185M   0% /run/user/1000
 ```
 
 Note post EmonScripts steps listed in the [RaspberryPi OS 32bit Lite install (10th Nov 2022) PROCESS UPDATE issue](https://github.com/openenergymonitor/EmonScripts/issues/148).
