@@ -31,7 +31,7 @@
     "date":"1 Dec 2023",
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_CM_3x_temperature_transmitter/compiled/EmonPi2_CM_3x_temperature_transmitter_v1_5_7.ino.hex",
-    "description":"emonPi2 CM single phase, 5 channel + temperature, transmitter",
+    "description":"emonPi2 CM single phase, 6 channel + temperature transmitter",
     "autoreset":"-pi2"
   },
   
@@ -63,10 +63,10 @@
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.0.0", 
-    "date":"02 Jan 2023",
+    "version":"1.0.1", 
+    "date":"08 Jan 2023",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_CM_6CT_current_only/compiled/EmonPi2_CM_6CT_current_only_v1_0_0.ino.hex",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_CM_6CT_current_only/compiled/EmonPi2_CM_6CT_current_only_v1_0_1.ino.hex",
     "description":"emonPi2 DB single phase, 6 channel firmware, CURRENT ONLY",
     "autoreset":"-pi2"
   },
