@@ -94,7 +94,7 @@ sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/readme.md /home/pi/
 sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
 printf $hostname | sudo tee /etc/hostname > /dev/null
 
-echo "Please enter a new SSH password to secure your system"
-read ssh_password
+# echo "Please enter a new SSH password to secure your system"
+# read ssh_password
 # Set default SSH password:
-printf "raspberry\n$ssh_password\n$ssh_password" | passwd
+# printf "raspberry\n$ssh_password\n$ssh_password" | passwd
