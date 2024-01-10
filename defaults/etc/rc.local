@@ -21,7 +21,7 @@ fi
 su pi -c '/opt/openenergymonitor/EmonScripts/update/firstbootupdate'
 
 # WiFi check
-/usr/local/bin/wifi-check >> /var/log/emoncms/wificheck.log
+# /usr/local/bin/wifi-check >> /var/log/emoncms/wificheck.log
 
 exit 0
 
