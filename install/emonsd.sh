@@ -76,18 +76,6 @@ sudo usermod -a -G video www-data
 # Review automated install: Emoncms Language Support
 # sudo dpkg-reconfigure locales
 
-# Wifi setup
-sudo ln -s $openenergymonitor_dir/emonpi/wifi-check /usr/local/bin/wifi-check
-
-sudo crontab -l > mycron
-if grep -Fq "wifi-check" mycron; then
-    echo "wifi-check already present in crontab"
-else
-    echo "*/5 * * * * /usr/local/bin/wifi-check > /var/log/emoncms/wificheck.log 2>&1" >> mycron
-    sudo crontab mycron
-    rm mycron
-fi
-
 # emonSD rc.local includes wifiAP start and first boot update
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 
@@ -103,10 +91,10 @@ sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/readme.md /home/pi/
 # Review: provide configuration file for default password and hostname
 
 # Set hostname
-sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
-printf $hostname | sudo tee /etc/hostname > /dev/null
+# sudo sed -i "s/raspberrypi/$hostname/g" /etc/hosts
+# printf $hostname | sudo tee /etc/hostname > /dev/null
 
-echo "Please enter a new SSH password to secure your system"
-read ssh_password
+# echo "Please enter a new SSH password to secure your system"
+# read ssh_password
 # Set default SSH password:
-printf "raspberry\n$ssh_password\n$ssh_password" | passwd
+# printf "raspberry\n$ssh_password\n$ssh_password" | passwd
