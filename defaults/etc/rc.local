@@ -20,8 +20,8 @@ fi
 # Update emonpi on first boot if applicable
 su pi -c '/opt/openenergymonitor/EmonScripts/update/firstbootupdate'
 
-# WiFi check
-# /usr/local/bin/wifi-check >> /var/log/emoncms/wificheck.log
+# Start wifi AP if applicable
+/opt/openenergymonitor/emonpi/wifiAP/startAP.sh >> /var/log/wifiAP.log
 
 exit 0
 
