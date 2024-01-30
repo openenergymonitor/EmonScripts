@@ -13,11 +13,14 @@ fi
 echo "-------------------------------------------------------------"
 echo "EmonPi LCD Update"
 echo "-------------------------------------------------------------"
-if [ -f $openenergymonitor_dir/emonpi/lcd/install.sh ]; then
-    $openenergymonitor_dir/emonpi/lcd/./install.sh
+
+if [ -d $openenergymonitor_dir/emonPiLCD ]; then
+    $openenergymonitor_dir/emonPiLCD/install.sh
+elif [ -f $openenergymonitor_dir/emonpi/lcd/install.sh ]; then
+    $openenergymonitor_dir/emonpi/lcd/install.sh
 fi
 
 echo "Stopping emonPiLCD service"
 sudo systemctl stop emonPiLCD
-echo "Display update message on LCD"
-$python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
+# echo "Display update message on LCD"
+# $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py

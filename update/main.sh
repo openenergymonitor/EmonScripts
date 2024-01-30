@@ -26,34 +26,32 @@ if [ "$EUID" = "0" ] &&  [ "$user" != "root" ]; then
     exit 0
 fi
 
+i2c_address=$(python3 $openenergymonitor_dir/EmonScripts/other/i2cdetect.py)
+
+if [ "$i2c_address" == "0x3c" ]; then
+    hardware="EmonPi" # emonPi v2
+elif [ "$i2c_address" == "0x3f" ]; then
+    hardware="EmonPi" # emonPi v1
+elif [ "$i2c_address" == "0x27" ]; then
+    hardware="EmonPi" # emonPi v1
+else
+    hardware="rfm2pi"
+fi
+
+echo "Hardware detected: $hardware"
+
 sudo apt-get install -y python3-pip
 pip3 install redis
 
 if [ "$emonSD_pi_env" = "1" ]; then
-    # Check if we have an emonpi LCD connected, 
-    # if we do assume EmonPi hardware else assume RFM69Pi
-    lcd27=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 27 1)
-    lcd3f=$(sudo $openenergymonitor_dir/emonpi/lcd/emonPiLCD_detect.sh 3f 1)
-    
-    # Check if python3-smbus is available for LCD
-    lcdp3=$(dpkg-query -W -f='${Status}' python3-smbus)
-    if [ "$lcdp3" == 'install ok installed' ]; then python_cmd="python3"; else python_cmd="python"; fi
-    
-    if [ $lcd27 == 'True' ] || [ $lcd3f == 'True' ]; then
-        hardware="EmonPi"
-    else
-        hardware="rfm2pi"
-    fi
-    echo "Hardware detected: $hardware"
     
     if [ "$hardware" == "EmonPi" ]; then    
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
         sudo systemctl stop emonPiLCD
-
         # Display update message on LCD
-        echo "Display update message on LCD"
-        $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
+        # echo "Display update message on LCD"
+        # $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
     
     # Ensure logrotate configuration has correct permissions
@@ -64,11 +62,6 @@ fi
 if [ "$type" == "all" ] || [ "$type" == "emonhub" ]; then
     echo "Running apt-get update"
     sudo apt-get update
-    # Required to allow the webserver to use git commands. ref 
-    # https://community.openenergymonitor.org/t/ubuntu-22-04-lxc-install-issues-git/22189/1
-    # Not enabled on update yet
-
-    # sudo git config --system --add safe.directory '*'
 fi
 
 # -----------------------------------------------------------------
@@ -76,7 +69,7 @@ fi
 if [ "$type" == "all" ]; then
     sudo rm -rf hardware/emonpi/emonpi2c/
 
-    for repo in "emonpi" "RFM2Pi" "usefulscripts" "huawei-hilink-status" "oem_openHab" "oem_node-red"; do
+    for repo in "emonpi" "RFM2Pi" "huawei-hilink-status" "emonPiLCD"; do
         if [ -d $openenergymonitor_dir/$repo ]; then
             echo "git pull $openenergymonitor_dir/$repo"
             cd $openenergymonitor_dir/$repo
@@ -126,7 +119,7 @@ if [ "$hardware" == "EmonPi" ]; then
     # Wait for update to finish
     echo "Starting emonPi LCD service.."
     sleep 5
-    sudo service emonPiLCD restart
+    sudo systemctl restart emonPiLCD
     echo
 fi
 
