@@ -5,8 +5,13 @@ echo "-------------------------------------------------------------"
 echo "emonHub update"
 echo "-------------------------------------------------------------"
 
+boot_config=/boot/config.txt
+if [ -f /boot/firmware/config.txt ]; then
+    boot_config=/boot/firmware/config.txt
+fi
+
 echo "Enabling SPI for RFM69SPI"
-sudo sed -i 's/#dtparam=spi=on/dtparam=spi=on/' /boot/config.txt
+sudo sed -i 's/#dtparam=spi=on/dtparam=spi=on/' $boot_config
 
 M=$openenergymonitor_dir/emonhub
 

@@ -49,6 +49,11 @@ sudo apt-get install -y ufw
 # sudo ufw allow 1883/tcp #(optional, Mosquitto)
 # sudo ufw enable
 
+boot_config=/boot/config.txt
+if [ -f /boot/firmware/config.txt ]; then
+    boot_config=/boot/firmware/config.txt
+fi
+
 # Underclock and memory tweak
 # change arm_freq to 1200 and gpu_mem to 16
 # more ram for general purpose, less for GPU
@@ -59,13 +64,13 @@ sudo apt-get install -y ufw
 # One wire temperature sensing support for emonPi v2 
 # IMPORTANT: This will likely interfere with shutdown button on emonPi v1
 # It's best to disable onewire if using this image with an emonPi v1
-sudo sed -i 's/^dtoverlay=w1-gpio.*$/dtoverlay=w1-gpio,gpiopin=17/' /boot/firmware/config.txt
+sudo sed -i 's/^dtoverlay=w1-gpio.*$/dtoverlay=w1-gpio,gpiopin=17/' $boot_config
 
 if [ "$enable_onewire" != true ]; then
     # Disable 1-Wire to prevent errors in logs
     # Issue #156
     echo "Disabling 1-Wire - will take effect on next reboot"
-    sudo sed -i 's/dtoverlay=w1-gpio/#dtoverlay=w1-gpio/' /boot/firmware/config.txt
+    sudo sed -i 's/dtoverlay=w1-gpio/#dtoverlay=w1-gpio/' $boot_config
 fi
 # 6 Sep 2019 decision to leave elevator setting as default
 # option to review in future: elevator=noop
