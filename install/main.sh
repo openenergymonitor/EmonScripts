@@ -93,6 +93,14 @@ if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
     sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
     echo "Removed pip3 external management warning."
 fi
+
+# Not 100% if this is needed (error with pip3 paho install on last build)
+if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED.orig ]; then
+    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED.orig
+    echo "Removed pip3 external management warning."
+fi
+
+
 echo "-------------------------------------------------------------"
 
 if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi
