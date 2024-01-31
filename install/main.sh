@@ -121,9 +121,6 @@ if [ "$emonSD_pi_env" = "1" ]; then
     # Network must be run last
     if [ "$install_network" = true ]; then $openenergymonitor_dir/EmonScripts/install/network.sh; fi
     # Enable service-runner update
-    # update checks for image type and only runs with a valid image name file in the boot partition
-    # Update this value to the latest safe image version - this could be automated to pull from safe list
-    sudo touch /boot/emonSD-10Nov22
 else
     $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
 fi

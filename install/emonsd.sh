@@ -110,3 +110,15 @@ sudo ln -sf $emoncms_dir/modules/usefulscripts/sdpart/sdpart_imagefile /usr/bin/
 # --------------------------------------------------------------------------------
 echo "-- Installing /home/pi/readme.md"
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/readme.md /home/pi/
+
+# --------------------------------------------------------------------------------
+
+# update checks for image type and only runs with a valid image name file in the boot partition
+# Update this value to the latest safe image version - this could be automated to pull from safe list
+emonsd_date=$(date +"%d%b%y")
+echo "-- creating version file: emonSD-$emonsd_date"
+
+sudo touch /boot/emonSD-$emonsd_date
+if [ -d /boot/firmware ]; then
+    sudo cp /boot/emonSD-$emonsd_date /boot/firmware
+fi
