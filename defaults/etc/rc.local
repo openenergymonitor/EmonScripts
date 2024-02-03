@@ -27,6 +27,10 @@ if [ ! -d /opt/emoncms/modules/network ]; then
         # Start wifi AP if applicable
         /opt/openenergymonitor/emonpi/wifiAP/startAP.sh >> /var/log/wifiAP.log
     fi
+else
+    if [ -f /opt/emoncms/modules/network/scripts/wifi-check ]; then
+        /opt/emoncms/modules/network/scripts/wifi-check
+    fi
 fi
 
 exit 0
