@@ -5,7 +5,49 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 ---
 
 <details>
-<summary><b>emonSD-20Nov23 (Beta)</b></summary>
+<summary><b>emonSD-01Jan24</b></summary>
+
+**Download (1.4 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-01Jan24.zip)
+
+(eligible for updates)
+```
+(.zip) MD5: b64503d08704d1605a7ea23745f0a6fc
+```
+
+**Credentials**
+
+- **SSH:** username: `pi`, password: `emonsd` (default - please change)
+- **WiFi Access Point:** SSID: `emonpi`, Password: `emonpi2016`
+- **MQTT:** username: `emonpi`, password: `emonpimqtt2016`
+- **MySQL:** username: `emoncms`, password: `emonpiemoncmsmysql2016`
+
+*SSH access disabled by default. Long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.*
+
+**Build**
+
+- Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
+- Based on Raspberry Pi OS Lite (32-bit Bookworm), 2023-12-11
+- Compatible with Raspberry Pi 3, 3B+, 4 & Pi Zero2
+- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
+
+**Kernel**
+```
+```
+
+**File System**
+```
+```
+
+**Emoncms**
+
+```
+```
+
+</details>
+
+<details>
+<summary><b>emonSD-20Nov23</b></summary>
 
 ---
 
@@ -178,7 +220,7 @@ Screen
 </details>
 
 <details>
-<summary><b>emonSD-10Nov22 (Stable)</b></summary>
+<summary><b>emonSD-10Nov22</b></summary>
 <br>
 
 <!--**Download (1.0 GB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov22.zip)-->
