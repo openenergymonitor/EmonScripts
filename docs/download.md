@@ -33,15 +33,142 @@ emonSD is a pre-built SD card for the Raspberry Pi to function as an OpenEnergyM
 
 **Kernel**
 ```
+$ uname -a
+Linux emonpi 6.1.0-rpi8-rpi-v8 #1 SMP PREEMPT Debian 1:6.1.73-1+rpt1 (2024-01-25) aarch64 GNU/Linux
 ```
 
 **File System**
 ```
+$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            661M     0  661M   0% /dev
+tmpfs           185M  4.3M  181M   3% /run
+/dev/mmcblk0p2  4.4G  3.0G  1.3G  71% /
+tmpfs           925M     0  925M   0% /dev/shm
+tmpfs           5.0M   16K  5.0M   1% /run/lock
+tmpfs            30M   28K   30M   1% /tmp
+tmpfs           1.0M     0  1.0M   0% /var/lib/php/sessions
+tmpfs           128M     0  128M   0% /var/tmp
+/dev/mmcblk0p1  510M   93M  418M  19% /boot/firmware
+/dev/mmcblk0p3  9.7G   19K  9.2G   1% /var/opt/emoncms
+log2ram          50M  824K   50M   2% /var/log
+tmpfs           185M     0  185M   0% /run/user/1000
 ```
 
 **Emoncms**
 
 ```
+Server Information
+-----------------------
+
+Services
+	emonhub :	 Active Running                      
+	emoncms_mqtt :	 Active Running                      
+	feedwriter :	 Active Running - sleep 300s 0 feed points pending write
+	service-runner :	 Active Running                      
+	emonPiLCD :	 Active Running                      
+	redis-server :	 Active Running                      
+	mosquitto :	 Active Running                      
+	demandshaper :	 Not found or not installed                                  
+Emoncms
+	Version :	 low-write 11.4.11
+	Git :	 
+		URL :	 https://github.com/emoncms/emoncms.git
+		Branch :	 * stable
+		Describe :	 11.4.11
+	Components :	 Emoncms Core v11.4.11 | App v2.8.1 | EmonHub Config v2.1.5 | Dashboard v2.3.3 | Device v2.2.3 | Graph v2.2.3 | Network Setup v1.0.5 | Backup v2.3.3 | Network v3.1.2 | Postprocess v2.4.7 | Sync v2.1.5 | Usefulscripts v2.3.11 | EmonScripts v1.7.10 | RFM2Pi v1.4.2 | Avrdude-rpi v1.0.3 | EmonPiLCD v2.0.1 | Emonhub v2.6.5
+
+Server
+	CPU :	 Cortex-A72 | 1 Threads(s) | - Sockets(s) | 108.00MIPS | 
+	OS :	 Linux 6.1.0-rpi8-rpi-v8
+	Host :	 emonpi | emonpi | (192.168.42.1)
+	Date :	 2024-02-01 15:59:51 UTC
+	Uptime :	 15:59:51 up 20 min,  1 user,  load average: 0.03, 0.04, 0.04
+
+Memory
+	RAM :	 Used: 14.09%
+		Total :	 1.8 GB
+		Used :	 260.43 MB
+		Free :	 1.55 GB
+	Swap :	 Used: 0.00%
+		Total :	 100 MB
+		Used :	 0 B
+		Free :	 100 MB
+
+Disk
+	 :	 - / :	 Used: 66.84%
+		Total :	 4.39 GB
+		Used :	 2.94 GB
+		Free :	 1.24 GB
+		Read Load :	 n/a
+		Write Load :	 n/a
+		Load Time :	 n/a
+	/boot/firmware :	 Used: 18.07%
+		Total :	 509.99 MB
+		Used :	 92.17 MB
+		Free :	 417.83 MB
+		Read Load :	 n/a
+		Write Load :	 n/a
+		Load Time :	 n/a
+	/var/opt/emoncms :	 Used: 0.00%
+		Total :	 9.68 GB
+		Used :	 19 KB
+		Free :	 9.19 GB
+		Read Load :	 n/a
+		Write Load :	 n/a
+		Load Time :	 n/a
+	/var/log :	 Used: 1.63%
+		Total :	 50 MB
+		Used :	 836 KB
+		Free :	 49.18 MB
+		Read Load :	 n/a
+		Write Load :	 n/a
+		Load Time :	 n/a
+
+HTTP
+	Server :	 Apache/2.4.57 (Raspbian) HTTP/1.1 CGI/1.1 80
+
+MySQL
+	Version :	 10.11.3-MariaDB-1+rpi1
+	Host :	 127.0.0.1 (127.0.0.1)
+	Date :	 2024-02-01 15:59:51 (UTC 00:00‌​)
+	Stats :	 Uptime: 1232  Threads: 6  Questions: 281  Slow queries: 0  Opens: 46  Open tables: 39  Queries per second avg: 0.228
+
+Redis
+	Version :	 
+		Redis Server :	 7.0.11
+		PHP Redis :	 6.0.3-dev
+	Host :	 localhost:6379
+	Size :	 52 keys (1.01M)
+	Uptime :	 0 days
+
+MQTT Server
+	Version :	 Mosquitto 2.0.11
+	Host :	 localhost:1883 (127.0.0.1)
+
+PHP
+	Version :	 8.1.27 (Zend Version 4.1.27)
+	Run user :	 User: www-data Group: www-data video Script Owner: pi
+	Modules :	 apache2handler calendar Core ctype curl date exif FFI fileinfo filter ftp gd gettext hash iconv json libxml mbstring mosquitto v0.4.0mysqli mysqlnd vmysqlnd 8.1.27openssl pcre PDO pdo_mysql Phar posix readline redis v6.0.3-devReflection session shmop sockets sodium SPL standard sysvmsg sysvsem sysvshm tokenizer Zend OPcache zlib 
+Pi
+	Model :	 Raspberry Pi  Model N/A Rev  -  ()
+	Serial num. :	 - CPU Temperature :	 39.43°C
+	GPU Temperature :	 N/A (to show GPU temp execute this command from the console "sudo usermod -G video www-data" )
+	emonpiRelease :	 emonSD-01Feb24
+	File-system :	 read-write
+
+Client Information
+-----------------------
+
+HTTP
+	Browser :	 Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0
+	Language :	 en-GB,en;q=0.5
+
+Window
+	Size :	 1856 x 968
+
+Screen
+	Resolution :	 1920 x 1080
 ```
 
 </details>
