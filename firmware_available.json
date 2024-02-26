@@ -245,7 +245,7 @@
     "version":"4.1.5", 
     "date":"21 Aug 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.5/emonth2_lpl.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.6/emonth2_lpl.hex", 
     "description":"emonTH2 LPL firmware"
   },  	
   "emonTH2_jeelib_classic":{
@@ -255,7 +255,7 @@
     "version":"4.1.5", 
     "date":"21 Aug 2023", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.5/emonth2_jeelib_classic.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.6/emonth2_jeelib_classic.hex", 
     "description":"emonTH2 JeeLib firmware"
   }
 }
