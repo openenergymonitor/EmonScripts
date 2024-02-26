@@ -24,10 +24,12 @@ sudo chown $user $emoncms_dir
 
 cd $openenergymonitor_dir
 
+echo "-- Installing EmonScripts"
 git clone https://github.com/openenergymonitor/EmonScripts.git
 cd $openenergymonitor_dir/EmonScripts
 git checkout stable
 
+echo "-- Running install/main.sh"
 cd $openenergymonitor_dir/EmonScripts/install
 ./main.sh
 cd

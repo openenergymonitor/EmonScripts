@@ -8,6 +8,10 @@
 
 # Check if update log file is empty if so then proceed to update
 
+# THIS SCRIPT IS NOW DISABLED
+echo "firstbootupdate script disabled"
+exit 1
+
 if [ -s /var/log/emoncms/update.log ]; then
     echo "Not first boot: /var/log/emoncms/update.log exists"
     exit

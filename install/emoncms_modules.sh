@@ -9,10 +9,10 @@ cd $emoncms_www/Modules
 for module in ${!emoncms_modules[@]}; do
     branch=${emoncms_modules[$module]}
     if [ ! -d $module ]; then
-        echo "- Installing module: $module"
+        echo "-- Installing module: $module"
         git clone -b $branch ${git_repo[$module]}
     else
-        echo "- Module $module already exists"
+        echo "-- Module $module already exists"
     fi
 done
 
@@ -31,11 +31,11 @@ cd $emoncms_dir/modules
 for module in ${!symlinked_emoncms_modules[@]}; do
     branch=${symlinked_emoncms_modules[$module]}
     if [ ! -d $module ]; then
-        echo "- Installing module: $module"
+        echo "-- Installing module: $module"
         git clone -b $branch ${git_repo[$module]}
         # If module contains emoncms UI folder, symlink to $emoncms_www/Modules
         if [ -d $emoncms_dir/modules/$module/$module-module ]; then
-            echo "-- UI directory symlink"
+            echo "--- UI directory symlink"
             ln -s $emoncms_dir/modules/$module/$module-module $emoncms_www/Modules/$module
         fi
         # run module install script if present
@@ -44,9 +44,9 @@ for module in ${!symlinked_emoncms_modules[@]}; do
             echo
         fi
     else
-        echo "- Module $module already exists"
+        echo "-- Module $module already exists"
     fi
 done
 
-echo "Update Emoncms database"
+echo "-- Update Emoncms database"
 php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php

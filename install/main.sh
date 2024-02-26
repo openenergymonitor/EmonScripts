@@ -93,6 +93,14 @@ if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
     sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
     echo "Removed pip3 external management warning."
 fi
+
+# Not 100% if this is needed (error with pip3 paho install on last build)
+if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED.orig ]; then
+    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED.orig
+    echo "Removed pip3 external management warning."
+fi
+
+
 echo "-------------------------------------------------------------"
 
 if [ "$install_apache" = true ]; then $openenergymonitor_dir/EmonScripts/install/apache.sh; fi
@@ -113,9 +121,6 @@ if [ "$emonSD_pi_env" = "1" ]; then
     # Network must be run last
     if [ "$install_network" = true ]; then $openenergymonitor_dir/EmonScripts/install/network.sh; fi
     # Enable service-runner update
-    # update checks for image type and only runs with a valid image name file in the boot partition
-    # Update this value to the latest safe image version - this could be automated to pull from safe list
-    sudo touch /boot/emonSD-10Nov22
 else
     $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
 fi

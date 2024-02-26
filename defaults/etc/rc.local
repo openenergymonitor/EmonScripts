@@ -18,10 +18,20 @@ if [ "$_IP" ]; then
 fi
 
 # Update emonpi on first boot if applicable
-su pi -c '/opt/openenergymonitor/EmonScripts/update/firstbootupdate'
+# su pi -c '/opt/openenergymonitor/EmonScripts/update/firstbootupdate'
 
-# Start wifi AP if applicable
-/opt/openenergymonitor/emonpi/wifiAP/startAP.sh >> /var/log/wifiAP.log
+# Available here for backwards compatibility with old images
+# Newer images will start the access point from the wifi-check cron task
+if [ ! -d /opt/emoncms/modules/network ]; then
+    if [ -f /opt/openenergymonitor/emonpi/wifiAP/startAP.sh ]; then
+        # Start wifi AP if applicable
+        /opt/openenergymonitor/emonpi/wifiAP/startAP.sh >> /var/log/wifiAP.log
+    fi
+else
+    if [ -f /opt/emoncms/modules/network/scripts/wifi-check ]; then
+        /opt/emoncms/modules/network/scripts/wifi-check
+    fi
+fi
 
 exit 0
 

@@ -8,11 +8,11 @@ echo "-------------------------------------------------------------"
 PHP_Ver="8.1"
 
 if grep -Fq "ARMv6" /proc/cpuinfo; then
-    echo "ARMv6 architecture Use PHP8.0"
+    echo "-- ARMv6 architecture Use PHP8.0"
     PHP_Ver="8.0"
 
 else
-    echo "not ARMv6 architecture OK to use PHP8.1"
+    echo "-- not ARMv6 architecture OK to use PHP8.1"
 
     if [ "$emonSD_pi_env" = "1" ]; then
         curl https://packages.sury.org/php/apt.gpg | sudo tee /usr/share/keyrings/suryphp-archive-keyring.gpg >/dev/null

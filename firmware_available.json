@@ -92,6 +92,17 @@
     "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_JeeLib_Classic.hex",
     "description":"emonTx4 single phase, 6 channel firmware"
   },
+
+    "emonTxV4_6x_Temperature_LPL":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.5.7", 
+    "date":"26 Apr 2023",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_6x_temperature_LPL.hex",
+    "description":"emonTx4 6x temperature, single phase, 6 channel firmware"
+  },
   
   "emonTxV4_JeeLib_Classic":{
     "hardware":"emonTx4",
