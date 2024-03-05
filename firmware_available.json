@@ -253,20 +253,20 @@
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"4.1.6", 
-    "date":"26 Feb 2024", 
+    "version":"4.1.7", 
+    "date":"05 Mar 2024", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.6/emonth2_lpl.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.7/emonth2_lpl.hex", 
     "description":"emonTH2 LPL firmware"
   },  	
   "emonTH2_jeelib_classic":{
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"jeelib_classic",
-    "version":"4.1.6", 
-    "date":"26 Feb 2024", 
+    "version":"4.1.7", 
+    "date":"05 Mar 2024", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.6/emonth2_jeelib_classic.hex", 
+    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.7/emonth2_jeelib_classic.hex", 
     "description":"emonTH2 JeeLib firmware"
   }
 }
