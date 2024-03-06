@@ -219,16 +219,6 @@
     "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_LPL_v1_1_1.hex", 
     "description":"emonBase RFM69Pi firmware"
   },  
-  "emonBase_rfm69n":{
-    "hardware":"rfm69pi",
-    "core":"ATMEGA328P",
-    "radio_format":"jeelib_native",
-    "version":"1.1.1", 
-    "date":"29 Mar 2023",
-    "baud":38400,
-    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_jeelib_native_v1_1_1.hex", 
-    "description":"emonBase RFM69Pi firmware"
-  },
   "emonBase_jeelib":{
     "hardware":"rfm69pi",
     "core":"ATMEGA328P",
@@ -268,5 +258,35 @@
     "baud":115200,
     "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.7/emonth2_jeelib_classic.hex", 
     "description":"emonTH2 JeeLib firmware"
+  },
+    "JeeLink_rfm69pi_LPL":{
+    "hardware":"JeeLink",
+    "core":"ATMEGA328P",
+    "radio_format":"lowpowerlabs",
+    "version":"1.1.1", 
+    "date":"29 Mar 2023",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/29-03-23/emonBase_rfm69pi_LPL_v1_1_1.hex", 
+    "description":"emonBase RFM69Pi firmware"
+  },  
+  "JeeLink_jeelib":{
+    "hardware":"JeeLink",
+    "core":"ATMEGA328P",
+    "radio_format":"jeelib_classic",
+    "version":"1.4.0", 
+    "date":"13 Jan 2017", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/1.4.0/firmware.hex", 
+    "description":"emonBase RFM69Pi firmware"
+  },
+    "JeeLink_repeater":{
+    "hardware":"JeeLink",
+    "core":"ATMEGA328P",
+    "radio_format":"lowpowerlabs",
+    "version":"1.0.0", 
+    "date":"06 Mar 2024", 
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/RFM2Pi/releases/download/1.4.2/jeelink_repeater.hex", 
+    "description":"JeeLink emonBase LPL"
   }
 }
