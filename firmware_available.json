@@ -59,6 +59,18 @@
     "autoreset":"-pi2"
   },
   
+  "EmonPi2_DB_6CT_1phase_pulse_on_analog_100ms":{
+    "hardware":"emonPi2",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.0.3", 
+    "date":"15 Dec 2023",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_1phase_pulse_on_analog_v1_0_3_100ms.ino.hex",
+    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input (100ms pulse width)",
+    "autoreset":"-pi2"
+  },
+    
   "EmonPi2_DB_6CT_1phase_pulse_on_analog_10ms":{
     "hardware":"emonPi2",
     "core":"avr128db48",
