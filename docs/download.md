@@ -1,6 +1,6 @@
 # emonSD Download
 
-emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenEnergyMonitor emonPi / emonBase. The image is available for download below or if you need a new SD card we also offer industrial grade SD cards with the image pre-loaded [in the shop](https://shop.openenergymonitor.com/pre-loaded-emonsd-microsd-card-for-raspberry-pi/).
+emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenEnergyMonitor emonPi / emonBase. The image is available for download below or if you need a new SD card we also offer industrial grade SD cards with the image pre-loaded [in the shop](https://shop.openenergymonitor.com/emonsd-industrial-pre-loaded-sd-card/).
 
 ---
 
