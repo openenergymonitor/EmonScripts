@@ -23,6 +23,18 @@
     "autoreset":"-pi2"
   },
   
+  "EmonPi2_DB_6CT_3phase_pulse_on_analog":{
+    "hardware":"emonPi2",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.0.3", 
+    "date":"26 Apr 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_3phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_3phase_pulse_on_analog_v1_0_3.ino.hex",
+    "description":"emonPi2 DB three phase, 6 channel firmware, pulse on analog",
+    "autoreset":"-pi2"
+  },
+  
   "EmonPi2_CM_3x_temperature_transmitter":{
     "hardware":"emonPi2",
     "core":"avr128db48",
