@@ -3,9 +3,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 source load_config.sh
 
+# Check for emonHP image version
+# do not update these
+image_version=$(ls /boot | grep emonHP)
+if [ "$image_version" = "emonHP-20Nov23" ]; then
+    echo "emonHP image 20Nov23 cannot be updated"
+    exit
+fi
+
+
 echo "-------------------------------------------------------------"
 echo "Main Update Script"
 echo "-------------------------------------------------------------"
+
 
 type=$1
 firmware_key=$2
