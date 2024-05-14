@@ -1,189 +1,105 @@
 {
-  "EmonPi2_DB_6CT_1phase":{
+
+  "emonTx5_DB_6CT_1phase_LPL":{
+    "hardware":"emonTx5",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_1phase_LPL_v2_1_0.ino.hex",
+    "description":"emonTx5 DB single phase, 6 channel firmware, pulse on analog"
+  },
+  
+  "emonTx5_DB_6CT_3phase_LPL":{
+    "hardware":"emonTx5",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_3phase_LPL_v2_1_0.ino.hex",
+    "description":"emonTx5 DB three phase, 6 channel firmware, pulse on analog"
+  },
+  
+  "emonTx5_CM_6CT_temperature_LPL":{
+    "hardware":"emonTx5",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.6.0", 
+    "date":"14 May 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_CM_6CT_temperature_LPL_v1_6_0.ino.hex",
+    "description":"emonTx5 CM single phase, 6 channel firmware with temperature sensing support. Pulse on analog. Can be used without an emonVs voltage sensor (current only)"
+  },
+  
+  "emonPi2_DB_6CT_1phase":{
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.0.2", 
-    "date":"1 Dec 2023",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase/compiled/EmonPi2_DB_6CT_1phase_v1_0_2.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_1phase_v2_1_0.ino.hex",
+    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog",
     "autoreset":"-pi2"
   },
   
-  "EmonPi2_DB_6CT_3phase":{
+  "emonPi2_DB_6CT_3phase":{
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.0.2", 
-    "date":"1 Dec 2023",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_3phase/compiled/EmonPi2_DB_6CT_3phase_v1_0_2.ino.hex",
-    "description":"emonPi2 DB three phase, 6 channel firmware",
-    "autoreset":"-pi2"
-  },
-  
-  "EmonPi2_DB_6CT_3phase_pulse_on_analog":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"26 Apr 2024",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_3phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_3phase_pulse_on_analog_v1_0_3.ino.hex",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_3phase_v2_1_0.ino.hex",
     "description":"emonPi2 DB three phase, 6 channel firmware, pulse on analog",
     "autoreset":"-pi2"
   },
   
-  "EmonPi2_CM_3x_temperature_transmitter":{
+  "emonPi2_CM_6CT":{
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.5.7", 
-    "date":"1 Dec 2023",
+    "version":"1.6.0", 
+    "date":"14 May 2024",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_CM_3x_temperature_transmitter/compiled/EmonPi2_CM_3x_temperature_transmitter_v1_5_7.ino.hex",
-    "description":"emonPi2 CM single phase, 6 channel + temperature transmitter",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_CM_6CT_v1_6_0.ino.hex",
+    "description":"emonPi2 CM single phase, 6 channel firmware, pulse on analog. Can be used without an emonVs voltage sensor (current only)",
     "autoreset":"-pi2"
   },
   
-  "EmonPi2_DB_6CT_1phase_with_analog":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"1 Dec 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_with_analog/compiled/EmonPi2_DB_6CT_1phase_with_analog.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, analog input",
-    "autoreset":"-pi2"
-  },
-  
-  "EmonPi2_DB_6CT_1phase_pulse_on_analog":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"15 Dec 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_1phase_pulse_on_analog_v1_0_3.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input",
-    "autoreset":"-pi2"
-  },
-  
-  "EmonPi2_DB_6CT_1phase_pulse_on_analog_100ms":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"15 Dec 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_1phase_pulse_on_analog_v1_0_3_100ms.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input (100ms pulse width)",
-    "autoreset":"-pi2"
-  },
-    
-  "EmonPi2_DB_6CT_1phase_pulse_on_analog_10ms":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"15 Dec 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_1phase_pulse_on_analog_v1_0_3_10ms.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input (10ms pulse width)",
-    "autoreset":"-pi2"
-  },
-  
-  "EmonPi2_DB_6CT_1phase_pulse_on_analog_5ms":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"15 Dec 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_1phase_pulse_on_analog_v1_0_3_5ms.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input (5ms pulse width)",
-    "autoreset":"-pi2"
-  },
-  
-  "EmonPi2_DB_6CT_1phase_pulse_on_analog_2ms":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.3", 
-    "date":"15 Dec 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_DB_6CT_1phase_pulse_on_analog/compiled/EmonPi2_DB_6CT_1phase_pulse_on_analog_v1_0_3_2ms.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog input (2ms pulse width)",
-    "autoreset":"-pi2"
-  },
-  
-  "EmonPi2_CM_6CT_current_only":{
-    "hardware":"emonPi2",
-    "core":"avr128db48",
-    "radio_format":"lowpowerlabs",
-    "version":"1.0.1", 
-    "date":"08 Jan 2023",
-    "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonpi2/main/firmware/EmonPi2_CM_6CT_current_only/compiled/EmonPi2_CM_6CT_current_only_v1_0_1.ino.hex",
-    "description":"emonPi2 CM single phase, 6 channel firmware, CURRENT ONLY",
-    "autoreset":"-pi2"
-  },
-  
-  "emonTxV4_LPL":{
+  "emonTx4_DB_6CT_1phase_LPL":{
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.5.7", 
-    "date":"26 Apr 2023",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_LPL.hex",
-    "description":"emonTx v4 single phase, 6 channel firmware"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_1phase_LPL_v2_1_0.ino.hex",
+    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on analog"
   },
   
-  "emonTxV4_JeeLib_Native":{
-    "hardware":"emonTx4",
-    "core":"avr128db48",
-    "radio_format":"jeelib_native",
-    "version":"1.5.7", 
-    "date":"26 Apr 2023",
-    "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_JeeLib_Classic.hex",
-    "description":"emonTx4 single phase, 6 channel firmware"
-  },
-
-    "emonTxV4_6x_Temperature_LPL":{
+  "emonTx4_DB_6CT_3phase_LPL":{
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"1.5.7", 
-    "date":"26 Apr 2023",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_6x_temperature_LPL.hex",
-    "description":"emonTx4 6x temperature, single phase, 6 channel firmware"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_LPL_v2_1_0.ino.hex",
+    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on analog"
   },
   
-  "emonTxV4_JeeLib_Classic":{
-    "hardware":"emonTx4",
-    "core":"avr128db48",
-    "radio_format":"jeelib_classic",
-    "version":"1.5.7", 
-    "date":"26 Apr 2023",
-    "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emontx4/releases/download/1.5.7/EmonTxV4_JeeLib_Classic.hex",
-    "description":"emonTx4 single phase, 6 channel firmware"
-  },
-  
-  "EmonTxV4_DB_3phase_6CT":{
+  "emonTx4_CM_6CT_temperature_LPL":{
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.0.2", 
-    "date":"17 May 2023",
+    "version":"1.6.0", 
+    "date":"14 May 2024",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emontx4/main/firmware/EmonTxV4_DB_3phase_6CT/compiled/EmonTxV4_DB_3phase_6CT_2_0_2.ino.hex",
-    "description":"emonTx4 3-phase phase, 6 channel firmware"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_CM_6CT_temperature_LPL_v1_6_0.ino.hex",
+    "description":"emonTx4 CM single phase, 6 channel firmware with temperature sensing support. Pulse on analog. Can be used without an emonVs voltage sensor (current only)"
   },
 
   "emonPi_CM_LPL":{
