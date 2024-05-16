@@ -36,7 +36,7 @@
   "emonPi2_DB_6CT_1phase":{
     "hardware":"emonPi2",
     "core":"avr128db48",
-    "radio_format":"disabled",
+    "radio_format":"lowpowerlabs",
     "version":"2.1.0", 
     "date":"14 May 2024",
     "baud":115200,
@@ -48,7 +48,7 @@
   "emonPi2_DB_6CT_3phase":{
     "hardware":"emonPi2",
     "core":"avr128db48",
-    "radio_format":"disabled",
+    "radio_format":"lowpowerlabs",
     "version":"2.1.0", 
     "date":"14 May 2024",
     "baud":115200,
@@ -60,7 +60,7 @@
   "emonPi2_CM_6CT":{
     "hardware":"emonPi2",
     "core":"avr128db48",
-    "radio_format":"disabled",
+    "radio_format":"lowpowerlabs",
     "version":"1.6.0", 
     "date":"14 May 2024",
     "baud":115200,
