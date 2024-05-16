@@ -77,7 +77,7 @@
     "date":"14 May 2024",
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_1phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on analog"
+    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on RJ45 digital"
   },
   
   "emonTx4_DB_6CT_3phase_LPL":{
@@ -88,7 +88,7 @@
     "date":"14 May 2024",
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on analog"
+    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on RJ45 digital"
   },
   
   "emonTx4_CM_6CT_temperature_LPL":{
@@ -99,7 +99,40 @@
     "date":"14 May 2024",
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_CM_6CT_temperature_LPL_v1_6_0.ino.hex",
-    "description":"emonTx4 CM single phase, 6 channel firmware with temperature sensing support. Pulse on analog. Can be used without an emonVs voltage sensor (current only)"
+    "description":"emonTx4 CM single phase, 6 channel firmware with temperature sensing support. Pulse on RJ45 digital. Can be used without an emonVs voltage sensor (current only)"
+  },
+  
+  "emonTx4_DB_6CT_1phase_JeeLib_Classic":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"jeelib_classic",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_1phase_JeeLib_Classic_v2_1_0.ino.hex",
+    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on RJ45 digital"
+  },
+  
+  "emonTx4_DB_6CT_3phase_JeeLib_Classic":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"jeelib_classic",
+    "version":"2.1.0", 
+    "date":"14 May 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_JeeLib_Classic_v2_1_0.ino.hex",
+    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on RJ45 digital"
+  },
+  
+  "emonTx4_CM_6CT_temperature_JeeLib_Classic":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"jeelib_classic",
+    "version":"1.6.0", 
+    "date":"14 May 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_CM_6CT_temperature_JeeLib_Classic_v1_6_0.ino.hex",
+    "description":"emonTx4 CM single phase, 6 channel firmware with temperature sensing support. Pulse on RJ45 digital. Can be used without an emonVs voltage sensor (current only)"
   },
 
   "emonPi_CM_LPL":{
