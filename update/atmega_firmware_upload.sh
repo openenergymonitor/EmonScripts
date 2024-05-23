@@ -26,6 +26,18 @@ if [ $firmware_key == "custom" ]; then
   core=$5
   autoreset=$6
 
+  # Create upload folder if it does not exist
+  if [ ! -d $openenergymonitor_dir/data/firmware/upload ]; then
+    mkdir $openenergymonitor_dir/data/firmware/upload
+    # change ownership of upload folder to www-data
+    sudo chown -R www-data:www-data $openenergymonitor_dir/data/firmware/upload
+    # this is the first time and so no fimware will have been uploaded
+    echo "Looks like this is the first custom upload attempt."
+    echo "Upload directory has now been created and permissions set."
+    echo "Please upload firmware again to continue."
+    exit 0
+  fi
+
   hexfile=$openenergymonitor_dir/data/firmware/upload/$custom_firmware_filename
   # check if custom firmware file exists
   if [ ! -f $hexfile ]; then
