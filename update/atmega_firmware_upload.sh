@@ -116,7 +116,7 @@ if [ -f $hexfile ]; then
       
       # if [ "$not_in_sync" == "0" ]; then
       if [ $flash_verified == "1" ]; then
-          echo "SUCCESS: flash verifed"
+          echo "SUCCESS: flash verified"
           break;
       else 
           echo "ERROR: Not in sync" 
