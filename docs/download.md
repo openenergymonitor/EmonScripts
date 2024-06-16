@@ -1361,7 +1361,7 @@ pi@emonpi:~ $ sudo systemctl disable apache2.service
 
 ---
 
-## Writing the image to an SD card:
+## Writing the image to an SD card
 
 **Option 1:** We recommend using [balenaEtcher](https://www.etcher.io/) to flash the image to an SD card. See [forum discussion](https://community.openenergymonitor.org/t/using-etcher-tool-to-flash-emonsd-image-to-sd-card/1773).
 
