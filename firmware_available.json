@@ -126,6 +126,17 @@
     "autoreset":"-pi2"
   },
   
+  "emonPi2_CM_6CT_digital":{
+    "hardware":"emonPi2",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.6.3", 
+    "date":"29 Aug 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_CM_6CT_digital_v1_6_3.ino.hex",
+    "description":"emonPi2 CM single phase, 6 channel firmware. Digital input on analog (e.g for use with DHW sensor). Can be used without an emonVs voltage sensor (current only)"
+  },
+  
   "emonTx4_DB_6CT_1phase_LPL":{
     "hardware":"emonTx4",
     "core":"avr128db48",
