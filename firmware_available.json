@@ -217,6 +217,17 @@
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_LPL_v2_1_0.ino.hex",
     "description":"emonTx4 DB three phase, 6 channel firmware, pulse on RJ45 digital"
   },
+
+  "emonTx4_DB_6CT_N_American_split_phase_LPL":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.1.0", 
+    "date":"21 Nov 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_N_American_split_phase_LPL_v2_1_0.ino.hex",
+    "description":"emonTx4 DB N.American split phase, 6 channel firmware, pulse on RJ45 digital"
+  },
   
   "emonTx4_DB_12CT_1phase_LPL":{
     "hardware":"emonTx4",
@@ -238,6 +249,17 @@
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_12CT_3phase_LPL_v1_2_0.ino.hex",
     "description":"emonTx4 DB three phase, 12 channel firmware"
+  },
+
+  "emonTx4_DB_12CT_N_American_split_phase_LPL":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.2.0", 
+    "date":"21 Nov 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_12CT_N_American_split_phase_LPL_v1_2_0.ino.hex",
+    "description":"emonTx4 DB N.American split phase, 12 channel firmware"
   },
   
   "emonTx4_CM_6CT_temperature_LPL":{
