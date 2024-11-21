@@ -111,6 +111,18 @@
     "description":"emonPi2 DB three phase, 6 channel firmware, pulse on analog",
     "autoreset":"-pi2"
   },
+
+  "emonPi2_DB_6CT_N_American_split_phase":{
+    "hardware":"emonPi2",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.1.0", 
+    "date":"21 Nov 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_N_American_split_phase_v2_1_0.ino.hex",
+    "description":"emonPi2 DB N.American split phase, 6 channel firmware, pulse on analog",
+    "autoreset":"-pi2"
+  },
   
   "emonPi2_DB_12CT_1phase_LPL":{
     "hardware":"emonPi2",
@@ -133,6 +145,18 @@
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_12CT_3phase_LPL_v1_2_0.ino.hex",
     "description":"emonPi2 DB three phase, 12 channel firmware",
+    "autoreset":"-pi2"
+  },
+
+  "emonPi2_DB_12CT_N_American_split_phase_LPL":{
+    "hardware":"emonPi2",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"1.2.0", 
+    "date":"21 Nov 2024",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_12CT_N_American_split_phase_LPL_v1_2_0.ino.hex",
+    "description":"emonPi2 DB N.American split phase, 12 channel firmware",
     "autoreset":"-pi2"
   },
   
