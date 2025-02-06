@@ -195,6 +195,18 @@
     "description":"emonPi2 CM single phase, 6 channel firmware. Analog input. Can be used without an emonVs voltage sensor (current only)",
     "autoreset":"-pi2"
   },
+
+  "emonPi2_DB_6CT_3phase_analog":{
+    "hardware":"emonPi2",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.1.0", 
+    "date":"6 Feb 2025",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_3phase_analog_v2_1_0.ino.hex",
+    "description":"emonPi2 DB three phase, 6 channel firmware, Analog input",
+    "autoreset":"-pi2"
+  },
   
   "emonTx4_DB_6CT_1phase_LPL":{
     "hardware":"emonTx4",
