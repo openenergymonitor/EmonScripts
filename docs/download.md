@@ -16,6 +16,7 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 
 **Credentials**
 
+- **Local Emoncms:** username `emonsd`, password `emonsd` 
 - **SSH:** username: `pi`, password: `emonsd` (default - please change)
 - **WiFi Access Point:** SSID: `emonpi`, Password: `emonpi2016`
 - **MQTT:** username: `emonpi`, password: `emonpimqtt2016`
