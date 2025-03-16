@@ -1376,24 +1376,11 @@ Plug the SD card into your computer again and wait for the SD card partitions to
 
 **To enable SSH:** Open the boot partition and add an empty file called `ssh`.
 
-**To configure WiFi:** add a file called `wpa_supplicant.conf` to the boot folder. Add the following template and replace the <> parts with your WiFi details:
-
-```
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-update_config=1
-country=<Insert 2 letter ISO 3166-1 country code here>
-
-network={
-  ssid="<Name of your wireless LAN>"
-  psk="<Password for your wireless LAN>"
-}
-```
-
 Safely dismount the SD card and insert in the Raspberry Pi.
 
 **First boot update:** If connected to the internet by Ethernet (or pre-configured WiFi), a fresh emonSD will run a full system update. It's best not to interrupt this process. Leave about 10 min before switching off or rebooting. See `/var/log/emoncms/update.log` if you want to view the update log to check if it's finished.
 
-**WiFi Access Point:** If the SD card is booted without ethernet connected or WiFi configured it will create a WiFi access point (emonSD-10Nov22 SSID: `emonSD`, Password: `emonsd2022`) to allow scanning for a local network and configuration via the web user interface `IP address: 192.168.42.1`. The first boot update is not performed in this case and we suggest updating via the emoncms admin interfacer at a convenient time once the system is up and running.
+**WiFi Access Point:** If the SD card is booted without ethernet connected or WiFi configured it will create a WiFi access point to allow scanning for a local network and configuration via the web user interface `IP address: 192.168.42.1`. The first boot update is not performed in this case and we suggest updating via the emoncms admin interfacer at a convenient time once the system is up and running.
 
 ***
 
