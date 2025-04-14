@@ -435,10 +435,10 @@
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"4.1.7", 
-    "date":"05 Mar 2024", 
+    "version":"4.1.8", 
+    "date":"14 Apr 2025", 
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emonth2/releases/download/4.1.7/emonth2_lpl.hex", 
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonth2/refs/heads/master/firmware/emonth2_LPL_4_1_8.hex", 
     "description":"emonTH2 LPL firmware"
   },  	
   "emonTH2_jeelib_classic":{
