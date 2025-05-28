@@ -2,7 +2,7 @@
 
 1\. Start by following the first part of this nice guide by Pimoroni: [Setting up a Headless Pi](https://learn.pimoroni.com/article/setting-up-a-headless-pi) to flash the base OS Image. Choose the Lite 32-bit image. Set a username (`pi`) & password, Enable SSH, and add your WiFi credentials if required. **Do not insert into the Pi**.
 
-2\. Eject the SD Card from computer and reinsert. On Windows open 'Disk Management' and look for the SDCard. At the end there will be a lareg area of unallocated space. Right Click on that and select `New Simple Volume`. What you select here does not matter, but do not format it (waste of time!). Eject card and insert into the Pi. Let the Pi do it's first boot (be patient it reboots several times).
+2\. Eject the SD Card from computer and reinsert. On Windows open 'Disk Management' and look for the SDCard. At the end there will be a large area of unallocated space. Right Click on that and select `New Simple Volume`. What you select here does not matter, but do not format it (waste of time!). Eject card and insert into the Pi. Let the Pi do it's first boot (be patient it reboots several times).
 
 3\. Once it has booted SSH into the Pi. e.g. `ssh pi@192.168.1.100` (password: your password)` or use PuTTY.
 
