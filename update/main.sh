@@ -51,6 +51,16 @@ fi
 echo "Hardware detected: $hardware"
 
 sudo apt-get install -y python3-pip
+
+if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
+    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
+    echo "Removed pip3 external management warning."
+fi
+if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED.orig ]; then
+    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED.orig
+    echo "Removed pip3 external management warning."
+fi
+
 pip3 install redis
 
 if [ "$emonSD_pi_env" = "1" ]; then
