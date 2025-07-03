@@ -5,7 +5,7 @@ echo "-------------------------------------------------------------"
 echo "Install PHP"
 echo "-------------------------------------------------------------"
 
-PHP_Ver="8.1"
+PHP_Ver=""
 
 if grep -Fq "ARMv6" /proc/cpuinfo; then
     echo "-- ARMv6 architecture Use PHP8.0"
