@@ -1,6 +1,6 @@
 {
     "name"         : "EmonScripts",
-    "version"      : "1.8.10",
+    "version"      : "1.8.11",
     "location"     : "/opt/openenergymonitor",
     "branches_available": ["stable","master"],
     "requires": []
