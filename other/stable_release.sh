@@ -34,15 +34,28 @@ if [ -d "$M/.git" ]; then
 
         git -C $M push origin $version
 
+        # Get repo info from git remote
+        remote_url=$(git -C $M config --get remote.origin.url)
+        repo=$(echo "$remote_url" | sed -n 's#.*github.com[:/]\(.*\)\.git#\1#p')
+
         # Get commit messages since last tag (no filtering)
         last_tag=$(git -C $M describe --tags --abbrev=0 HEAD^ 2>/dev/null)
         if [ -z "$last_tag" ]; then
             commit_range=""
+            compare_url=""
         else
             commit_range="$last_tag..HEAD"
+            compare_url="https://github.com/$repo/compare/$last_tag...$version"
         fi
 
         release_notes=$(git -C $M log $commit_range --pretty=format:"* %s")
+
+        # Append compare link if available
+        if [ -n "$compare_url" ]; then
+            release_notes="$release_notes
+
+[Full commit diff]($compare_url)"
+        fi
 
         # Create GitHub release with notes
         gh release create "$version" --title "$version" --notes "$release_notes" --target stable
