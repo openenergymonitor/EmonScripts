@@ -150,15 +150,6 @@ fi
 
 datestr=$(date)
 
-# Display REBOOT REQUIRED message if flag file exists
-if [ -f /tmp/emon_reboot_required ]; then
-    echo
-    echo "*************************************************************"
-    echo "******************** REBOOT REQUIRED ************************"
-    echo "*************************************************************"
-    echo
-fi
-
 echo
 echo "-------------------------------------------------------------"
 echo "System update done: $datestr" # this text string is used by service runner to stop the log window polling, DO NOT CHANGE!
@@ -169,4 +160,12 @@ echo "-------------------------------------------------------------"
 if [ "$type" == "all" ] || [ "$type" == "emoncms" ]; then
     echo "restarting service-runner"
     sudo systemctl restart service-runner.service 
+fi
+
+# Display REBOOT REQUIRED message if flag file exists
+if [ -f /tmp/emon_reboot_required ]; then
+    echo
+    echo "*************************************************************"
+    echo "******************** REBOOT REQUIRED ************************"
+    echo "*************************************************************"
 fi
