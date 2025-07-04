@@ -15,7 +15,10 @@ fi
 echo "-------------------------------------------------------------"
 echo "Main Update Script"
 echo "-------------------------------------------------------------"
-
+# Remove /tmp/emon_reboot_required if it exists
+if [ -f /tmp/emon_reboot_required ]; then
+    sudo rm -f /tmp/emon_reboot_required
+fi
 
 type=$1
 firmware_key=$2
@@ -146,6 +149,15 @@ fi
 # -----------------------------------------------------------------
 
 datestr=$(date)
+
+# Display REBOOT REQUIRED message if flag file exists
+if [ -f /tmp/emon_reboot_required ]; then
+    echo
+    echo "*************************************************************"
+    echo "******************** REBOOT REQUIRED ************************"
+    echo "*************************************************************"
+    echo
+fi
 
 echo
 echo "-------------------------------------------------------------"
