@@ -86,7 +86,7 @@ sudo git config --system --add safe.directory '*'
 if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data; fi
 
 echo "-------------------------------------------------------------"
-sudo apt-get install -y git build-essential python3-pip python3-dev
+sudo apt-get install -y git build-essential python3-pip python3-dev sysstat
 
 # It's probably better to fix this by using python venv
 if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
