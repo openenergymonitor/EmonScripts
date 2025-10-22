@@ -19,7 +19,7 @@ if [[ $EUID -ne 0 ]] && [[ -z "${SUDO_USER:-}" ]]; then
    exit 1
 fi
 
-sudo apt-get update
+apt-get update
 
 # 1. Architecture Check
 if grep -Fq "ARMv6" /proc/cpuinfo; then
@@ -52,7 +52,7 @@ else
     # Security: Use temporary file and verify download
     TEMP_KEY=$(mktemp)
     if curl -fsSL https://packages.sury.org/php/apt.gpg -o "$TEMP_KEY"; then
-        sudo gpg --dearmor < "$TEMP_KEY" > /usr/share/keyrings/suryphp-archive-keyring.gpg
+        gpg --dearmor < "$TEMP_KEY" > /usr/share/keyrings/suryphp-archive-keyring.gpg
         rm "$TEMP_KEY"
     else
         echo "Failed to download Sury GPG key"
@@ -61,18 +61,18 @@ else
     fi
     
     echo "Adding Sury repository source file..."
-    echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $DISTRO_CODENAME main" | sudo tee /etc/apt/sources.list.d/sury-php.list > /dev/null
+    echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $DISTRO_CODENAME main" | tee /etc/apt/sources.list.d/sury-php.list > /dev/null
 
-    sudo apt update
+    apt update
 fi
 
 # 3. Install Core PHP and Dependencies
 echo "--- Installing PHP $PHP_Ver and Core Dependencies ---"
-sudo apt-get install -y php$PHP_Ver php$PHP_Ver-dev php-pear libapache2-mod-php$PHP_Ver
+apt-get install -y php$PHP_Ver php$PHP_Ver-dev php-pear libapache2-mod-php$PHP_Ver
 
 # 4. Install Required Extensions
 # php-common is usually redundant/handled by dependencies, so we omit it for simplicity.
-sudo apt-get install -y \
+apt-get install -y \
     php$PHP_Ver-gd \
     php$PHP_Ver-curl \
     php$PHP_Ver-mbstring \
@@ -80,7 +80,7 @@ sudo apt-get install -y \
 
 # Install development headers for Mosquitto (required for extension compilation)
 echo "--- Installing libmosquitto-dev for Mosquitto-PHP ---"
-sudo apt-get install -y libmosquitto-dev
+apt-get install -y libmosquitto-dev
 
 # 5. Setup for Extension Compilation
 SCRIPT_DIR=$(pwd)
@@ -99,7 +99,7 @@ if [ -z "$ACTUAL_PHP_VER" ]; then
     exit 1
 fi
 echo "--- Installed PHP version directory detected as: $ACTUAL_PHP_VER ---"
-sudo pecl channel-update pecl.php.net
+pecl channel-update pecl.php.net
 
 # 6. Install PHPRedis Extension
 echo "-------------------------------------------------------------"
@@ -111,7 +111,7 @@ if git clone --depth 1 https://github.com/phpredis/phpredis.git phpredis_temp; t
     phpize
     ./configure
     make
-    sudo make install
+    make install
     cd .. # Go back to TEMP_BUILD_DIR
     rm -rf phpredis_temp
 else
@@ -123,8 +123,8 @@ fi
 REDIS_INI_PATH="/etc/php/$ACTUAL_PHP_VER/mods-available/redis.ini"
 if [ ! -f "$REDIS_INI_PATH" ]; then
     echo "Adding redis.ini configuration file..."
-    printf "extension=redis.so\n" | sudo tee "$REDIS_INI_PATH" > /dev/null
-    sudo phpenmod redis
+    printf "extension=redis.so\n" | tee "$REDIS_INI_PATH" > /dev/null
+    phpenmod redis
 else
     echo "Redis extension configuration already exists."
 fi
@@ -140,7 +140,7 @@ if git clone --depth 1 https://github.com/openenergymonitor/Mosquitto-PHP.git mo
     phpize
     ./configure
     make
-    sudo make install
+    make install
     cd .. # Go back to TEMP_BUILD_DIR
     rm -rf mosquitto_temp
 else
@@ -152,8 +152,8 @@ fi
 MOSQUITTO_INI_PATH="/etc/php/$ACTUAL_PHP_VER/mods-available/mosquitto.ini"
 if [ ! -f "$MOSQUITTO_INI_PATH" ]; then
     echo "Adding mosquitto.ini configuration file..."
-    printf "extension=mosquitto.so\n" | sudo tee "$MOSQUITTO_INI_PATH" > /dev/null
-    sudo phpenmod mosquitto
+    printf "extension=mosquitto.so\n" | tee "$MOSQUITTO_INI_PATH" > /dev/null
+    phpenmod mosquitto
 else
     echo "Mosquitto extension configuration already exists."
 fi
@@ -176,10 +176,10 @@ echo "Switching Apache to use PHP $ACTUAL_PHP_VER"
 echo "-------------------------------------------------------------"
 
 # Disable all existing PHP modules
-sudo a2dismod php* 2>/dev/null || true
+a2dismod php* 2>/dev/null || true
 
 # Enable the new PHP version module
-sudo a2enmod php$ACTUAL_PHP_VER
+a2enmod php$ACTUAL_PHP_VER
 
 # Verification: Check if Apache module was actually enabled
 if apache2ctl -M 2>/dev/null | grep -q "php${ACTUAL_PHP_VER}_module"; then
@@ -189,7 +189,7 @@ else
 fi
 
 echo "Restarting the web server"
-sudo systemctl restart apache2
+systemctl restart apache2
 
 # Final verification
 echo "Verifying installation..."
