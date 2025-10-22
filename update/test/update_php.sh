@@ -24,46 +24,39 @@ else
     # 2. Add Sury Repository for Latest PHP
     # This block is essential for getting the latest versions (like 8.3) on
     # standard Debian/Raspberry Pi OS releases where the default repos lag.
-    # The original script gated this behind emonSD_pi_env.
-    if [ "$emonSD_pi_env" = "1" ]; then
-        echo "--- Adding Sury repository for PHP $PHP_Ver (emonSD_pi_env is set) ---"
+    # Remove the conditional check to always add the repository when targeting latest PHP
+    echo "--- Adding Sury repository for PHP $PHP_Ver ---"
 
-        # Dynamically determine the Debian/Raspberry Pi OS codename
-        if command -v lsb_release &> /dev/null; then
-            DISTRO_CODENAME=$(lsb_release -cs)
-            echo "--- Detected OS codename: $DISTRO_CODENAME"
-        else
-            # Fallback if lsb_release is not installed (e.g., on very minimal systems)
-            DISTRO_CODENAME="bullseye"
-            echo "--- Warning: lsb_release not found. Using fallback codename: $DISTRO_CODENAME"
-        fi
-
-        # Add the key and repository
-        echo "Adding Sury GPG Key..."
-        curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /usr/share/keyrings/suryphp-archive-keyring.gpg
-        echo "Adding Sury repository source file..."
-        echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $DISTRO_CODENAME main" | sudo tee /etc/apt/sources.list.d/sury-php.list > /dev/null
-
-        sudo apt update
+    # Dynamically determine the Debian/Raspberry Pi OS codename
+    if command -v lsb_release &> /dev/null; then
+        DISTRO_CODENAME=$(lsb_release -cs)
+        echo "--- Detected OS codename: $DISTRO_CODENAME"
+    else
+        # Fallback if lsb_release is not installed (e.g., on very minimal systems)
+        DISTRO_CODENAME="bullseye"
+        echo "--- Warning: lsb_release not found. Using fallback codename: $DISTRO_CODENAME"
     fi
+
+    # Add the key and repository
+    echo "Adding Sury GPG Key..."
+    curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /usr/share/keyrings/suryphp-archive-keyring.gpg
+    echo "Adding Sury repository source file..."
+    echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $DISTRO_CODENAME main" | sudo tee /etc/apt/sources.list.d/sury-php.list > /dev/null
+
+    sudo apt update
 fi
 
 # 3. Install Core PHP and Dependencies
 echo "--- Installing PHP $PHP_Ver and Core Dependencies ---"
-sudo apt-get install -y php$PHP_Ver php$PHP_Ver-dev php-pear
+sudo apt-get install -y php$PHP_Ver php$PHP_Ver-dev php-pear libapache2-mod-php$PHP_Ver
 
 # 4. Install Required Extensions
 # php-common is usually redundant/handled by dependencies, so we omit it for simplicity.
 sudo apt-get install -y \
     php$PHP_Ver-gd \
     php$PHP_Ver-curl \
-    php$PHP_Ver-mbstring
-
-# Install optional MySQL/MariaDB driver if enabled in load_config.sh
-if [ "$install_mysql" = true ]; then
-    echo "--- Installing MySQL/MariaDB extension ---"
-    sudo apt-get install -y php$PHP_Ver-mysql
-fi
+    php$PHP_Ver-mbstring \
+    php$PHP_Ver-mysql
 
 # Install development headers for Mosquitto (required for extension compilation)
 echo "--- Installing libmosquitto-dev for Mosquitto-PHP ---"
