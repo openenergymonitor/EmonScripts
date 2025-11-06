@@ -4,33 +4,33 @@
     "hardware":"emonTx5",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"14 May 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_1phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx5 DB single phase, 6 channel firmware, pulse on analog"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_1phase_LPL_v2_1_1.ino.hex",
+    "description":"emonTx5 DB single phase, 6 channel firmware, pulse on analog (Energy value fix)"
   },
   
   "emonTx5_DB_6CT_3phase_LPL":{
     "hardware":"emonTx5",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"14 May 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_3phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx5 DB three phase, 6 channel firmware, pulse on analog"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_3phase_LPL_v2_1_1.ino.hex",
+    "description":"emonTx5 DB three phase, 6 channel firmware, pulse on analog (Energy value fix)"
   },
 
   "emonTx5_DB_6CT_N_American_split_phase_LPL":{
     "hardware":"emonTx5",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"21 Nov 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_N_American_split_phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx5 DB N.American split phase, 6 channel firmware, pulse on analog"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_N_American_split_phase_LPL_v2_1_1.ino.hex",
+    "description":"emonTx5 DB N.American split phase, 6 channel firmware, pulse on analog (Energy value fix)"
   },
   
   "emonTx5_DB_12CT_1phase_LPL":{
@@ -92,11 +92,11 @@
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"14 May 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_1phase_v2_1_0.ino.hex",
-    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_1phase_v2_1_1.ino.hex",
+    "description":"emonPi2 DB single phase, 6 channel firmware, pulse on analog (Energy value fix)",
     "autoreset":"-pi2"
   },
   
@@ -104,11 +104,11 @@
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"14 May 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_3phase_v2_1_0.ino.hex",
-    "description":"emonPi2 DB three phase, 6 channel firmware, pulse on analog",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_3phase_v2_1_1.ino.hex",
+    "description":"emonPi2 DB three phase, 6 channel firmware, pulse on analog (Energy value fix)",
     "autoreset":"-pi2"
   },
 
@@ -116,11 +116,11 @@
     "hardware":"emonPi2",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"21 Nov 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_N_American_split_phase_v2_1_0.ino.hex",
-    "description":"emonPi2 DB N.American split phase, 6 channel firmware, pulse on analog",
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_N_American_split_phase_v2_1_1.ino.hex",
+    "description":"emonPi2 DB N.American split phase, 6 channel firmware, pulse on analog (Energy value fix)",
     "autoreset":"-pi2"
   },
   
@@ -212,33 +212,33 @@
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"14 May 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_1phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on RJ45 digital"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_1phase_LPL_v2_1_1.ino.hex",
+    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on RJ45 digital (Energy value fix)"
   },
   
   "emonTx4_DB_6CT_3phase_LPL":{
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"14 May 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on RJ45 digital"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_LPL_v2_1_1.ino.hex",
+    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on RJ45 digital (Energy value fix)"
   },
 
   "emonTx4_DB_6CT_N_American_split_phase_LPL":{
     "hardware":"emonTx4",
     "core":"avr128db48",
     "radio_format":"lowpowerlabs",
-    "version":"2.1.0", 
-    "date":"21 Nov 2024",
+    "version":"2.1.1", 
+    "date":"06 Nov 2025",
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_N_American_split_phase_LPL_v2_1_0.ino.hex",
-    "description":"emonTx4 DB N.American split phase, 6 channel firmware, pulse on RJ45 digital"
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_N_American_split_phase_LPL_v2_1_1.ino.hex",
+    "description":"emonTx4 DB N.American split phase, 6 channel firmware, pulse on RJ45 digital (Energy value fix)"
   },
   
   "emonTx4_DB_12CT_1phase_LPL":{
