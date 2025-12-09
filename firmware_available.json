@@ -479,10 +479,10 @@
     "hardware":"emonTH2",
     "core":"ATMEGA328P",
     "radio_format":"lowpowerlabs",
-    "version":"4.2.0", 
+    "version":"4.2.1", 
     "date":"09 Dec 2025", 
     "baud":115200,
-    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonth2/refs/heads/master/firmware/emonth2_LPL_43392_4_2_0.hex", 
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/emonth2/refs/heads/master/firmware/emonth2_LPL_43392_4_2_1.hex", 
     "description":"emonTH2 LPL firmware (433.92 MHz)"
   },
   "emonTH2_LPL":{
