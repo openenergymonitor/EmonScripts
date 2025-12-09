@@ -1,5 +1,27 @@
 {
 
+  "emonTx5_DB_6CT_1phase_LPL_43392":{
+    "hardware":"emonTx5",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.2.0", 
+    "date":"09 Dec 2025",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_1phase_LPL_43392_v2_2_0.ino.hex",
+    "description":"emonTx5 DB single phase, 6 channel firmware, pulse on analog, 433.92 Mhz (Energy value fix)"
+  },
+  
+  "emonTx5_DB_6CT_3phase_LPL_43392":{
+    "hardware":"emonTx5",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.2.0", 
+    "date":"09 Dec 2025",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_3phase_LPL_43392_v2_2_0.ino.hex",
+    "description":"emonTx5 DB three phase, 6 channel firmware, pulse on analog, 433.92 Mhz (Energy value fix)"
+  },
+
   "emonTx5_DB_6CT_1phase_LPL":{
     "hardware":"emonTx5",
     "core":"avr128db48",
@@ -206,6 +228,28 @@
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonPi2/emonPi2_DB_6CT_3phase_analog_v2_1_0.ino.hex",
     "description":"emonPi2 DB three phase, 6 channel firmware, Analog input",
     "autoreset":"-pi2"
+  },
+  
+   "emonTx4_DB_6CT_1phase_LPL_43392":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.2.0", 
+    "date":"09 Dec 2025",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_1phase_LPL_43392_v2_2_0.ino.hex",
+    "description":"emonTx4 DB single phase, 6 channel firmware, pulse on RJ45 digital, 433.92 Mhz (Energy value fix)"
+  },
+  
+  "emonTx4_DB_6CT_3phase_LPL_43392":{
+    "hardware":"emonTx4",
+    "core":"avr128db48",
+    "radio_format":"lowpowerlabs",
+    "version":"2.2.0", 
+    "date":"09 Dec 2025",
+    "baud":115200,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx4/emonTx4_DB_6CT_3phase_LPL_43392_v2_2_0.ino.hex",
+    "description":"emonTx4 DB three phase, 6 channel firmware, pulse on RJ45 digital, 433.92 Mhz (Energy value fix)"
   },
   
   "emonTx4_DB_6CT_1phase_LPL":{
