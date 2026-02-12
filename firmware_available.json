@@ -1,4 +1,14 @@
 {
+  "emonPi3_main":{
+    "hardware":"emonPi3",
+    "core":"ATSAMD21J17",
+    "radio_format":"lowpowerlabs",
+    "version":"v1.0-develop", 
+    "date":"12 Feb 2026",
+    "baud":115200,
+    "download_url":"https://github.com/openenergymonitor/emon32-fw/raw/refs/heads/v1.0-develop/precompiled/emon32_v1_0_develop.bin",
+    "description":"emonPi3 firmware"
+  },
 
   "emonTx5_DB_6CT_1phase_LPL_43392":{
     "hardware":"emonTx5",
