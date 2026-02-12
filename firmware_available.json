@@ -6,7 +6,7 @@
     "version":"v1.0-develop", 
     "date":"12 Feb 2026",
     "baud":115200,
-    "download_url":"https://github.com/openenergymonitor/emon32-fw/raw/refs/heads/v1.0-develop/precompiled/emon32_v1_0_develop.bin",
+    "download_url":"https://github.com/openenergymonitor/emon32-fw/releases/download/v0.99.9-test/emon32-v0.99.9-test-f9995ea.bin",
     "description":"emonPi3 firmware"
   },
 
