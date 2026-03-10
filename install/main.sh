@@ -90,13 +90,13 @@ sudo apt-get install -y git build-essential python3-pip python3-dev sysstat
 
 # It's probably better to fix this by using python venv
 if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
-    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
+    sudo rm -rf /usr/lib/python3.13/EXTERNALLY-MANAGED
     echo "Removed pip3 external management warning."
 fi
 
 # Not 100% if this is needed (error with pip3 paho install on last build)
 if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED.orig ]; then
-    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED.orig
+    sudo rm -rf /usr/lib/python3.13/EXTERNALLY-MANAGED.orig
     echo "Removed pip3 external management warning."
 fi
 
