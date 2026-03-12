@@ -1,6 +1,24 @@
 #!/bin/bash
 
 # sudo apt-get install jq gh
+# Requires GitHub authentication: set GH_TOKEN environment variable
+#
+# Setup instructions:
+# 1. Go to GitHub -> Settings -> Developer settings -> Personal access tokens -> Tokens (classic)
+# 2. Click 'Generate new token (classic)'
+# 3. Give it a name, set expiry, and check the 'repo' scope
+# 4. Copy the token and add it to your shell profile:
+#      echo 'export GH_TOKEN=your_token_here' >> ~/.bashrc
+#      source ~/.bashrc
+
+# Check GitHub CLI authentication
+if ! gh auth status &>/dev/null; then
+    if [ -z "$GH_TOKEN" ]; then
+        echo "Error: GitHub CLI is not authenticated."
+        echo "Please run 'gh auth login' or set the GH_TOKEN environment variable."
+        exit 1
+    fi
+fi
 
 M=$(pwd)
 
