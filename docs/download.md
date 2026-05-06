@@ -3,6 +3,41 @@
 emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenEnergyMonitor emonPi / emonBase. The image is available for download below or if you need a new SD card we also offer industrial grade SD cards with the image pre-loaded [in the shop](https://shop.openenergymonitor.com/emonsd-industrial-pre-loaded-sd-card/).
 
 ---
+<details>
+
+<summary><b>emonSD-10Mar26</b></summary>
+
+
+
+**Download (2.2 GB):** [UK Server](https://openenergymonitor.org/files/10Mar26_EmonPi3.zip)
+
+(eligible for updates)
+
+- **Pre-configured for emonPi3**
+
+```
+(.zip) MD5: d51d6b6c7c319a7ed8bf14ece35ca4a1
+```
+
+**Credentials**
+
+- **Local Emoncms:** username `emonsd`, password `emonsd` 
+- **SSH:** username: `pi`, password: `emonsd` (default - please change)
+- **WiFi Access Point:** SSID: `emonpi`, Password: `emonpi2016`
+- **MQTT:** username: `emonpi`, password: `emonpimqtt2016`
+- **MySQL:** username: `emoncms`, password: `emonpiemoncmsmysql2016`
+
+*SSH access disabled by default. Long press emonPi LCD push button for 5s to enable. Or create file `/boot/ssh` in FAT partition.*
+
+**Build**
+
+- Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
+- Based on Raspberry Pi OS Lite (64-bit trixie), 21 Apr 2026
+- Compatible with Raspberry Pi 3, 3B+, 4, 5 & Pi Zero2 W
+- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
+</details>
+
 
 <details>
 <summary><b>emonSD-01Feb24</b></summary>
