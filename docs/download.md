@@ -20,8 +20,8 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 **Compatibility**
 
 - **This image is pre-configured for emonPi3, see comments in emonhub.conf to enable support for older hardware**
-- Compatible with all 64 bit Raspberry Pi hardware: 3B+, 4 and 5
-- This should include all emonPis shipped since mid 2018 
+- Compatible with all 64 bit Raspberry Pi hardware: Zero 2, Model 3B, 3B+, 4 and 5
+- This should include all emonPis shipped since mid 2016 
   
 **Credentials**
 
