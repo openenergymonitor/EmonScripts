@@ -13,12 +13,16 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 
 (eligible for updates)
 
-- **Pre-configured for emonPi3**
-
 ```
 (.zip) MD5: d51d6b6c7c319a7ed8bf14ece35ca4a1
 ```
 
+**Compatibility**
+
+- **This image is pre-configured for emonPi3, see comments in emonhub.conf to enable support for older hardware**
+- Compatible with all 64 bit Raspberry Pi hardware: 3B+, 4 and 5
+- This should include all emonPis shipped since mid 2018 
+  
 **Credentials**
 
 - **Local Emoncms:** username `emonsd`, password `emonsd` 
@@ -33,7 +37,7 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 
 - Built using EmonScripts emoncms installation script, see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
 - Based on Raspberry Pi OS Lite (64-bit trixie), 21 Apr 2026
-- Compatible with Raspberry Pi 4 and 5 
+- Compatible with Raspberry Pi 3, 4 and 5 
 - Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
 - Log partition `/var/log` mounted as tmpfs using log2ram, now persistent after reboot
 </details>
