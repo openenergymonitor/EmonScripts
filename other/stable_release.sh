@@ -8,7 +8,7 @@
 # 2. Click 'Generate new token (classic)'
 # 3. Give it a name, set expiry, and check the 'repo' scope
 # 4. Copy the token and add it to your shell profile:
-#      echo 'export GH_TOKEN=your_token_here' >> ~/.bashrc
+#      echo 'export GH_TOKEN=TOKEN_HERE' >> ~/.bashrc
 #      source ~/.bashrc
 
 # Check GitHub CLI authentication
@@ -33,6 +33,33 @@ if [ -d "$M/.git" ]; then
         exit 0
     fi
 
+    # Get repo info from git remote so we can verify GitHub access before making changes.
+    remote_url=$(git -C $M config --get remote.origin.url)
+    repo=$(echo "$remote_url" | sed -n 's#.*github.com[:/]\(.*\)\.git#\1#p')
+
+    if [ -z "$repo" ]; then
+        echo "Error: could not determine GitHub repository from remote origin URL."
+        exit 1
+    fi
+
+    repo_owner=$(echo "$repo" | cut -d/ -f1)
+    repo_name=$(echo "$repo" | cut -d/ -f2-)
+
+    release_permission=$(gh api graphql \
+        -f owner="$repo_owner" \
+        -f name="$repo_name" \
+        -f query='query($owner:String!, $name:String!){repository(owner:$owner, name:$name){viewerPermission}}' \
+        --jq '.data.repository.viewerPermission' 2>/dev/null) || {
+        echo "Error: GitHub credentials cannot create a release for $repo."
+        echo "Please run 'gh auth login' or update GH_TOKEN with a token that has write access."
+        exit 1
+    }
+
+    if [ "$release_permission" != "ADMIN" ] && [ "$release_permission" != "WRITE" ]; then
+        echo "Error: GitHub credentials do not have release permissions for $repo ($release_permission)."
+        exit 1
+    fi
+
     changes=$(git -C $M diff-index HEAD --)
     if [ "$changes" = "" ]; then
 
@@ -51,10 +78,6 @@ if [ -d "$M/.git" ]; then
         git -C $M tag -a $version -m $version
 
         git -C $M push origin $version
-
-        # Get repo info from git remote
-        remote_url=$(git -C $M config --get remote.origin.url)
-        repo=$(echo "$remote_url" | sed -n 's#.*github.com[:/]\(.*\)\.git#\1#p')
 
         # Get commit messages since last tag (no filtering)
         last_tag=$(git -C $M describe --tags --abbrev=0 HEAD^ 2>/dev/null)
@@ -76,7 +99,10 @@ if [ -d "$M/.git" ]; then
         fi
 
         # Create GitHub release with notes
-        gh release create "$version" --title "$version" --notes "$release_notes" --target stable
+        if ! gh release create "$version" --title "$version" --notes "$release_notes" --target stable; then
+            echo "Error: failed to create GitHub release for $version."
+            exit 1
+        fi
 
         git -C $M checkout master
 
