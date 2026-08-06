@@ -18,7 +18,7 @@
     "date":"09 Dec 2025",
     "baud":115200,
     "download_url":"https://raw.githubusercontent.com/openenergymonitor/avrdb_firmware/master/compiled/emonTx5/emonTx5_DB_6CT_1phase_LPL_43392_v2_2_0.ino.hex",
-    "description":"emonTx5 DB single phase, 6 channel firmware, pulse on analog, 433.92 Mhz (Energy value fix)"
+    "description":"emonTx5 DB single phase, 6 channel firmware, pulse on analog, 433.92 MHz (Energy value fix)"
   },
   
   "emonTx5_DB_6CT_3phase_LPL_43392":{
@@ -454,7 +454,17 @@
     "baud":115200,
     "download_url":"https://github.com/openenergymonitor/emontx3/releases/download/tx3-16-02-23/emonTx_3Phase_PLL_jeelib_classic_2_1.hex", 
     "description":"emonTx 3 phase continuous sampling firmware"
-  },
+  }, 
+  "emonBase_rfm69pi_LPL_43392":{
+    "hardware":"rfm69pi",
+    "core":"ATMEGA328P",
+    "radio_format":"lowpowerlabs",
+    "version":"1.2.0", 
+    "date":"6 Aug 2026",
+    "baud":38400,
+    "download_url":"https://raw.githubusercontent.com/openenergymonitor/RFM2Pi/refs/heads/master/firmware/emonBase_rfm69pi_V1.2.0/emonBase_rfm69pi_V1.2.0.hex", 
+    "description":"emonBase RFM69Pi firmware 433.92 MHz"
+  },  
   "emonBase_rfm69pi_LPL":{
     "hardware":"rfm69pi",
     "core":"ATMEGA328P",
