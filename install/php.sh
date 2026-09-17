@@ -15,9 +15,19 @@ else
     echo "-- not ARMv6 architecture OK to use PHP8.1"
 
     if [ "$emonSD_pi_env" = "1" ]; then
-        curl https://packages.sury.org/php/apt.gpg | sudo tee /usr/share/keyrings/suryphp-archive-keyring.gpg >/dev/null
-        echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
-        sudo apt update
+        source $openenergymonitor_dir/EmonScripts/common/sury_keyring.sh
+
+        # Validated download, an error page or a failed fetch would otherwise
+        # be written straight into the keyring and break every later apt run
+        if ! sury_install_keyring; then
+            echo "-- ERROR: could not install the sury signing key, aborting PHP install"
+            exit 1
+        fi
+
+        echo "deb [signed-by=$SURY_KEYRING] https://packages.sury.org/php/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+
+        # Re-fetches the key and retries if sury still fails to verify
+        sury_repair
     fi
 fi
 

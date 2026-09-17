@@ -57,7 +57,7 @@ sudo apt-get install -y python3-pip
 
 # Dashboard module needs the DOM extension, only present on older
 # installs as a dependency of php-pear
-sudo apt-get install -y php-xml
+$openenergymonitor_dir/EmonScripts/update/php_xml.sh
 
 if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
     sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
