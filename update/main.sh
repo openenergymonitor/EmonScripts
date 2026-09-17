@@ -55,6 +55,10 @@ echo "Hardware detected: $hardware"
 
 sudo apt-get install -y python3-pip
 
+# Dashboard module needs the DOM extension, only present on older
+# installs as a dependency of php-pear
+sudo apt-get install -y php-xml
+
 if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
     sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
     echo "Removed pip3 external management warning."

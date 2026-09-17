@@ -31,7 +31,7 @@ if [ "$install_mysql" = true ]; then
     sudo apt-get install -y php$PHP_Ver-mysql
 fi
 
-sudo apt-get install -y php$PHP_Ver-gd php$PHP_Ver-curl php-pear php$PHP_Ver-dev php$PHP_Ver-common php$PHP_Ver-mbstring
+sudo apt-get install -y php$PHP_Ver-gd php$PHP_Ver-curl php-pear php$PHP_Ver-dev php$PHP_Ver-common php$PHP_Ver-mbstring php$PHP_Ver-xml
 
 sudo pecl channel-update pecl.php.net
 
