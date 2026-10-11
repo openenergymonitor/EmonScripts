@@ -8,3 +8,5 @@ emonSD
    Build with EmonScripts <install.md>
    Raspberry Pi preparation <rpi-install.md>
    Digital Ocean VM preparation <digital-ocean-install.md>
+   Individual install scripts <install-scripts.md>
+   Developer notes <developer.md>
