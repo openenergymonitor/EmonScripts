@@ -1,6 +1,7 @@
 #!/bin/bash
 # Shared helpers for the third party sury PHP apt repository
-# (https://packages.sury.org/php), used by both install/ and update/.
+# (https://packages.sury.org/php). New builds no longer add sury, but every
+# image up to emonSD-10Mar26 has it configured, so update/ still needs these.
 #
 # Source this file, then call sury_repair before any apt-get install that may
 # need a package from sury. Nothing here changes the system unless sury is
