@@ -94,6 +94,7 @@ if [ "$(uname -m)" != "aarch64" ]; then
     # (7f454c46 02 01) for machine aarch64 (b7 00). qemu-aarch64_be also has
     # aarch64 in its name but is big-endian, and nothing in the image uses it.
     for f in /proc/sys/fs/binfmt_misc/*; do
+        case "$(basename "$f")" in register|status) continue ;; esac
         [ -f "$f" ] || continue
         if grep -q '^enabled' "$f" && grep -qE '^magic 7f454c460201.*0200b700$' "$f"; then
             binfmt=$f
@@ -132,6 +133,7 @@ APPARMOR_LOADED=0
 BINFMT_ORIG=""
 NETNS=""
 PASTA_PID=""
+PASTA_DIR=""
 
 cleanup() {
     set +e
@@ -141,7 +143,7 @@ cleanup() {
     if [ -n "$NETNS" ]; then
         ip netns delete "$NETNS" 2>/dev/null && echo "Build network namespace removed"
     fi
-    rm -f "$WORK/pasta.pid"
+    [ -n "$PASTA_DIR" ] && rm -rf "$PASTA_DIR"
     if mountpoint -q "$ROOT" 2>/dev/null; then
         umount -R "$ROOT"
     fi
@@ -469,11 +471,17 @@ set +e
 NETNS="emonsd-build-$$"
 ip netns add "$NETNS"
 ip -n "$NETNS" link set lo up
+# pasta drops from root to nobody before writing its PID file, so it needs a
+# directory nobody can write to
+PASTA_DIR=$(mktemp -d /run/emonsd-build-pasta.XXXXXX)
+chown nobody "$PASTA_DIR"
 pasta --config-net --netns "/run/netns/$NETNS" \
     -t none -u none -T none -U none \
     --map-host-loopback none --map-guest-addr none \
-    -q -P "$WORK/pasta.pid" || die "pasta could not set up networking for the build"
-PASTA_PID=$(cat "$WORK/pasta.pid")
+    -q -P "$PASTA_DIR/pasta.pid" || die "pasta could not set up networking for the build"
+PASTA_PID=$(cat "$PASTA_DIR/pasta.pid")
+[ -n "$PASTA_PID" ] || die "pasta did not write its PID"
+ip -n "$NETNS" -brief address | grep -v '^lo ' | grep -q . || die "pasta did not configure the build network"
 echo "Build network: namespace $NETNS, pasta pid $PASTA_PID"
 
 # The container cannot change the host: no network admin (firewall, WiFi), no
