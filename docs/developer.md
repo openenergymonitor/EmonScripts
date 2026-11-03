@@ -8,7 +8,14 @@ The SD Image is created primarily for user of the emonPi.
 
 1\. Flash Raspberry Pi OS Lite (64-bit) with Raspberry Pi Imager. In the Imager settings set the hostname to `emonpi`, the user to `pi` with password `emonsd`, and enable SSH for the build.
 
-2\. Partition the card for the low-write data partition, before running the build. Follow steps 2 to 12 of [SD Card Preparation for RaspberryPi](rpi-install.md): add a placeholder partition before the first boot so the root filesystem is not expanded to fill the card, then replace it with an ext2 data partition mounted at `/var/opt/emoncms` and install the emonSD `fstab`.
+2\. Partition the card into the emonSD layout: root shrunk to a fixed size (asked, default 5 GB) and an ext2 data partition at `/var/opt/emoncms` using the rest of the card. The script reboots once to do the partitioning before root is mounted; log in and run it again to finish.
+
+```shell
+wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/partition.sh
+chmod +x partition.sh && ./partition.sh
+# after the reboot
+./partition.sh
+```
 
 3\. Run the build with defaults. The image version file `/boot/emonSD-DDMMMYY` is created automatically from the build date.
 
