@@ -110,6 +110,8 @@ echo "Build log: $LOG"
 IMG="$WORK/emonsd.img"
 ROOT="$WORK/root"
 LOOP=""
+APPARMOR_PROFILE="$WORK/emonsd-build.apparmor"
+APPARMOR_LOADED=0
 
 cleanup() {
     set +e
@@ -117,6 +119,11 @@ cleanup() {
         umount -R "$ROOT"
     fi
     [ -n "$LOOP" ] && losetup -d "$LOOP" 2>/dev/null
+    if [ "$APPARMOR_LOADED" = "1" ]; then
+        apparmor_parser -R "$APPARMOR_PROFILE" 2>/dev/null
+        echo "AppArmor build profile unloaded"
+    fi
+    rm -f "$APPARMOR_PROFILE"
 }
 trap cleanup EXIT
 
@@ -241,7 +248,11 @@ for i in $(seq 60); do
     mariadb-admin ping >/dev/null 2>&1 && break
     sleep 2
 done
-mariadb-admin ping || { echo "ERROR: MariaDB did not start"; exit 1; }
+if ! mariadb-admin ping; then
+    echo "ERROR: MariaDB did not start"
+    tail -n 20 /var/lib/mysql/*.err 2>/dev/null
+    exit 1
+fi
 
 echo "=== install/main.sh"
 runuser -l pi -c 'cd /opt/openenergymonitor/EmonScripts/install && ./main.sh --yes'
@@ -273,13 +284,50 @@ printf '#!/bin/sh\nexit 101\n' > "$ROOT/usr/sbin/policy-rc.d"
 chmod +x "$ROOT/usr/sbin/policy-rc.d"
 
 # --------------------------------------------------------------------------------
+# AppArmor attaches the host's profiles by path, so on a host that has e.g.
+# MariaDB installed, the image's /usr/sbin/mariadbd is confined by the host's
+# mariadbd profile and cannot start. The build runs under its own profile
+# instead: it allows everything, and "file" makes every program the build
+# starts inherit it (ix), so no host profile attaches inside the container.
+# The profile has no path attachment, so it affects nothing else on the host,
+# and it is unloaded when the build ends.
+# --------------------------------------------------------------------------------
+run_prefix=()
+if [ "$(cat /sys/module/apparmor/parameters/enabled 2>/dev/null)" = "Y" ] && \
+        command -v apparmor_parser >/dev/null 2>&1 && command -v aa-exec >/dev/null 2>&1; then
+    cat > "$APPARMOR_PROFILE" <<'APPARMOR'
+abi <abi/4.0>,
+profile emonsd-build flags=(attach_disconnected,mediate_deleted) {
+  file,
+  capability,
+  network,
+  mount,
+  remount,
+  umount,
+  pivot_root,
+  ptrace,
+  signal,
+  unix,
+  dbus,
+  mqueue,
+  io_uring,
+  userns,
+}
+APPARMOR
+    apparmor_parser -r "$APPARMOR_PROFILE"
+    APPARMOR_LOADED=1
+    run_prefix=(aa-exec -p emonsd-build --)
+    echo "AppArmor: build runs under the emonsd-build profile"
+fi
+
+# --------------------------------------------------------------------------------
 step "Building inside the image (this is the long part)"
 # --------------------------------------------------------------------------------
 set +e
 # The container shares the host's network but cannot change it: no network
 # admin (firewall, WiFi), no kernel modules, no clock changes. It sees only
 # the image's files and no host disks.
-systemd-nspawn -q -D "$ROOT" --as-pid2 --machine=emonsd-build --register=no \
+"${run_prefix[@]}" systemd-nspawn -q -D "$ROOT" --as-pid2 --machine=emonsd-build --register=no \
     --console=pipe --resolv-conf=off --timezone=off \
     --drop-capability=CAP_NET_ADMIN,CAP_SYS_MODULE,CAP_SYS_TIME \
     /root/emonsd-build-inside.sh
