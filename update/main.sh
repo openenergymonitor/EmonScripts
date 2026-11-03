@@ -77,9 +77,6 @@ if [ "$emonSD_pi_env" = "1" ]; then
         # Stop emonPi LCD servcice
         echo "Stopping emonPiLCD service"
         sudo systemctl stop emonPiLCD
-        # Display update message on LCD
-        # echo "Display update message on LCD"
-        # $python_cmd $openenergymonitor_dir/emonpi/lcd/./emonPiLCD_update.py
     fi
     
     # Ensure logrotate configuration has correct permissions
@@ -127,7 +124,7 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ] && [ "$emonSD_pi_env" = "1" ]; then  
-    $openenergymonitor_dir/EmonScripts/update/emonsd.sh $python_cmd
+    $openenergymonitor_dir/EmonScripts/update/emonsd.sh
 fi
 
 # -----------------------------------------------------------------

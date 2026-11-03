@@ -4,57 +4,43 @@ Current directory is EmonScripts/update
 
 ### Update Emoncms
 
-    ./emoncms.sh IS_EMONSD
-    ./emoncms.sh 0
-    
+    ./emoncms.sh
+
 ### Update EmonHub
 
     ./emonhub.sh
-    
-### Update Firmware: EmonPi
 
-    ./emonpi.sh
-    
-### Update Firmware: rfm69pi
-
-    ./rfm69pi.sh
-    
 ### Via main.sh
 
-    ./main.sh UPDATE_TYPE FIRMWARE IMAGE_NAME
-    ./main.sh all emonpi emonSD-30Oct18
-    ./main.sh emoncms emonSD-30Oct18
-    ./main.sh emonhub emonSD-30Oct18
-    ./main.sh firmware emonpi emonSD-30Oct18
-    
+    ./main.sh UPDATE_TYPE FIRMWARE_KEY SERIAL_PORT
+    ./main.sh all
+    ./main.sh emoncms
+    ./main.sh emonhub
+    ./main.sh firmware emonPi_discrete_jeelib ttyAMA0
+
 ### Via service-runner-update.sh
 
-Current directory is EmonScripts.
+This script is triggered from emoncms via service-runner. Arguments are the same as main.sh and default to `all emonPi_discrete_jeelib ttyAMA0`.
 
-This script is triggered from emoncms via service-runner.
+    ./service-runner-update.sh all
 
-    ./service-runner-update.sh UPDATE_TYPE FIRMWARE
-    ./service-runner-update.sh all emonpi
+# How does the update process work in practice?
 
-# How do the automatic update process work in practise ? 
-
-The automatic update process is managed from the admin module of emoncms. 
-It consists of 2 main steps, launched by two different shell scripts located in the `/opt/openenergymonitor/EmonScripts` folder :
+The update process is started from the admin module of emoncms.
+It consists of 2 main steps, launched by two different shell scripts located in the `/opt/openenergymonitor/EmonScripts` folder:
 
 1) [update/service-runner-update.sh](service-runner-update.sh)
 2) [update/main.sh](main.sh)
 
 ## step 1 : update/service-runner-update.sh
 
-- version check and comparison to labels stored in the safe-update file of the EmonScripts repository
+- check the emonSD version file in `/boot` against the safe-update list on the master branch of the EmonScripts repository
 - pull the latest version of the EmonScripts repository
-- if version check is successful, goto step 2
+- if the version check is successful, go to step 2
 
 ## step 2 : update/main.sh
 
-### emonPiLCD & al example
-
-- stop the emonPiLCD service
-- launch lcd/emonPiLCD_update.py from the emonpi repo (to display the "UPDATING..." message on the LCD)
-- pull the emonpi repo
-- run the update/emonpi.sh script of the EmonScripts repo, which runs the lcd/install.sh from the emonpi repo
+- stop the emonPiLCD service (emonPi hardware)
+- pull the emonpi, RFM2Pi, huawei-hilink-status and emonPiLCD repositories if present
+- update emonhub (update/emonhub.sh), emoncms core and modules (update/emoncms.sh), and on emonSD the logrotate and LCD configuration (update/emonsd.sh)
+- restart the emonPiLCD service and, last, service-runner

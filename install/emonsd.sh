@@ -66,13 +66,6 @@ if [ -f /boot/firmware/config.txt ]; then
 fi
 echo "-- boot config directory: $boot_config"
 
-# Underclock and memory tweak
-# change arm_freq to 1200 and gpu_mem to 16
-# more ram for general purpose, less for GPU
-# Removed see: https://github.com/openenergymonitor/EmonScripts/issues/83
-# sudo sed -i "s/^#arm_freq=800/arm_freq=1200\ngpu_mem=16/" /boot/config.txt
-
-
 # One wire temperature sensing support for emonPi v2 
 # IMPORTANT: This will likely interfere with shutdown button on emonPi v1
 # It's best to disable onewire if using this image with an emonPi v1
@@ -88,16 +81,11 @@ else
     echo "-- Disabling 1-Wire - will take effect on next reboot"
     sudo sed -i 's/dtoverlay=w1-gpio/#dtoverlay=w1-gpio/' $boot_config
 fi
-# 6 Sep 2019 decision to leave elevator setting as default
-# option to review in future: elevator=noop
 
 # Setup user group to enable reading GPU temperature (pi only)
 sudo usermod -a -G video www-data
 
-# Review automated install: Emoncms Language Support
-# sudo dpkg-reconfigure locales
-
-# emonSD rc.local includes wifiAP start and first boot update
+# emonSD rc.local runs the network module wifi-check at boot
 echo "-- Installing /etc/rc.local"
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 

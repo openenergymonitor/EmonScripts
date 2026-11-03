@@ -11,8 +11,6 @@ if [ -d "$M/.git" ]; then
     
     branch=$(git -C $M branch | grep \* | cut -d ' ' -f2)
     echo "- current branch: $branch"
-    #tags=$(git -C $M describe --tags)
-    #echo "- git tags: $tags"
     
     if [ ! $switch_branch ]; then
         switch_branch=$branch
@@ -48,6 +46,4 @@ if [ -d "$M/.git" ]; then
         result=$(git -C $M status)
         echo "- git status: $result"
     fi
-    # else
-    # echo "ERROR: not a git repository"
 fi

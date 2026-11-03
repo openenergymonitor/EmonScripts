@@ -1,18 +1,11 @@
 #!/bin/bash
 # --------------------------------------------------------------------------------
-# RaspberryPi Strech Build Script
+# emonSD / emoncms build script
 # Emoncms, Emoncms Modules, EmonHub & dependencies
 #
-# Tested with: Raspbian Strech
-# Date: 19 March 2019
-#
-# Status: Work in Progress
+# Runs the component scripts enabled in config.ini. For an emonSD image,
+# follow docs/developer.md (then verify.sh and prepare_image.sh).
 # --------------------------------------------------------------------------------
-
-# Review splitting this up into seperate scripts
-# - emoncms installer
-# - emonhub installer
-# Format as documentation
 
 # Copy stdout and stderr to a log file in addition to the console
 # tee -a used in case script is run multiple times
@@ -67,8 +60,7 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     echo "apt-get clean"
     sudo apt-get clean
 
-    # Needed on stock raspbian lite 19th March 2019
-    sudo apt --fix-broken install
+    sudo apt-get install -y --fix-broken
     
     echo ""
     echo "Important: Did you get a request to reboot your machine, if so we recommend you do this now."
@@ -119,7 +111,6 @@ if [ "$emonSD_pi_env" = "1" ]; then
     if [ "$install_emonsd" = true ]; then $openenergymonitor_dir/EmonScripts/install/emonsd.sh; fi
     # Network must be run last
     if [ "$install_network" = true ]; then $openenergymonitor_dir/EmonScripts/install/network.sh; fi
-    # Enable service-runner update
 else
     $openenergymonitor_dir/EmonScripts/install/non_emonsd.sh;
 fi
