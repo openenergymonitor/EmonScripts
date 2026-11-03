@@ -487,7 +487,10 @@ ip -n "$NETNS" link set lo up
 NETNS_TMP="/tmp/emonsd-build-netns-$$"
 touch "$NETNS_TMP"
 mount --bind "/run/netns/$NETNS" "$NETNS_TMP"
-pasta -f --runas 0 --config-net --netns "$NETNS_TMP" \
+# --no-netns-quit: pasta would otherwise watch the namespace's directory
+# (/tmp) to exit when it is removed, and the profile does not allow reading
+# /tmp itself. The build stops pasta itself.
+pasta -f --runas 0 --no-netns-quit --config-net --netns "$NETNS_TMP" \
     -t none -u none -T none -U none \
     --map-host-loopback none --map-guest-addr none \
     -q &
