@@ -270,6 +270,9 @@ if [ "$emonSD_pi_env" = "1" ]; then
             else
                 fail "firewall not enabled"
             fi
+            if systemctl is-enabled --quiet emonsd-firewall.service 2>/dev/null; then
+                fail "emonsd-firewall.service has not applied the firewall yet, see: journalctl -u emonsd-firewall"
+            fi
             for rule in 80/tcp 22/tcp 1883/tcp 5353/udp '67/udp on ap0' '53 on ap0'; do
                 if printf '%s\n' "$ufw_status" | grep -q "^$rule "; then
                     pass "firewall allows $rule"

@@ -15,7 +15,10 @@ else
 fi
 
 if [ -f $openenergymonitor_dir/emonhub/install.sh ]; then
-    $openenergymonitor_dir/emonhub/install.sh $emonSD_pi_env $user
+    # emonhub's install.sh takes the openenergymonitor directory (it reads
+    # emonSD_pi_env from EmonScripts' config itself) and the user, the same
+    # arguments update/update_component.sh passes
+    $openenergymonitor_dir/emonhub/install.sh $openenergymonitor_dir $user
 else
     echo "-- ERROR: $openenergymonitor_dir/emonhub/install.sh script does not exist"
 fi

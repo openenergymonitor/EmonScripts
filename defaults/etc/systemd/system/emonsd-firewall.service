@@ -1,0 +1,15 @@
+# Apply the emonSD firewall at boot when install/emonsd.sh could not apply it
+# during the build. Disables itself once the rules are in place; if applying
+# fails, ufw stays off and this runs again on the next boot.
+[Unit]
+Description=Configure the emonSD firewall
+After=ufw.service
+Before=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/openenergymonitor/EmonScripts/install/firewall.sh
+ExecStartPost=/usr/bin/systemctl disable emonsd-firewall.service
+
+[Install]
+WantedBy=multi-user.target

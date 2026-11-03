@@ -22,6 +22,9 @@ if [ "$install_mosquitto_server" = true ]; then
     # Create mosquitto password file
     sudo touch /etc/mosquitto/passwd
     sudo mosquitto_passwd -b /etc/mosquitto/passwd $mqtt_user $mqtt_password
+    # Mosquitto warns that a world readable password file will be refused
+    sudo chown mosquitto:mosquitto /etc/mosquitto/passwd
+    sudo chmod 0600 /etc/mosquitto/passwd
 fi
 
 if [ "$install_mosquitto_client" = true ]; then
