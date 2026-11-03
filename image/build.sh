@@ -90,8 +90,14 @@ done
 
 if [ "$(uname -m)" != "aarch64" ]; then
     binfmt=""
+    # Match on what the entry handles, not its name: little-endian 64-bit ELF
+    # (7f454c46 02 01) for machine aarch64 (b7 00). qemu-aarch64_be also has
+    # aarch64 in its name but is big-endian, and nothing in the image uses it.
     for f in /proc/sys/fs/binfmt_misc/*; do
-        if grep -q 'aarch64' "$f" 2>/dev/null && grep -q '^enabled' "$f"; then binfmt=$f; fi
+        [ -f "$f" ] || continue
+        if grep -q '^enabled' "$f" && grep -qE '^magic 7f454c460201.*0200b700$' "$f"; then
+            binfmt=$f
+        fi
     done
     [ -n "$binfmt" ] || die "no arm64 emulation registered (sudo apt install qemu-user-binfmt)"
     # F (fix binary) lets the emulator run inside the container's filesystem
