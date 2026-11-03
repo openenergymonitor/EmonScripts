@@ -1,79 +1,133 @@
 #!/bin/bash
+# --------------------------------------------------------------------------------
+# emonSD factory reset
+#
+# Deletes all emoncms data (feeds, inputs, users, dashboards), saved WiFi
+# networks, SSH keys and history, and restores the default emonhub.conf.
+# Software and updates are not changed.
+#
+#     sudo /opt/openenergymonitor/EmonScripts/other/factoryreset
+# --------------------------------------------------------------------------------
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root: sudo su"
+   echo "This script must be run as root: sudo $0"
    exit 1
 fi
 
-echo "emonPi Factory reset script"
+echo "emonSD factory reset"
 
-image_version=$(ls /boot | grep emonSD)
-
-if [[ "${image_version:0:6}" == "emonSD" ]]
-then
+image_version=$(ls /boot | grep emonSD | head -n1)
+if [[ "${image_version:0:6}" == "emonSD" ]]; then
     echo "Image version: $image_version"
 else
-    echo "Non OpenEnergyMonitor offical emonSD image, no gurantees this script will work :-/"
-    read -p "Press any key to continue...or CTRL+C to exit " -n1 -s
+    echo "Non OpenEnergyMonitor official emonSD image, no guarantees this script will work :-/"
 fi
 
+# Settings from the build config, with the emonSD defaults for older images
+config=/opt/openenergymonitor/EmonScripts/install/config.ini
+user=pi
+openenergymonitor_dir=/opt/openenergymonitor
 emoncms_datadir=/var/opt/emoncms
-
-sudo systemctl stop emonhub
-sudo systemctl stop emoncms_mqtt
-sudo systemctl stop feedwriter
-sudo systemctl stop service-runner
-# sudo systemctl stop redis-server
-# sudo systemctl stop mosquitto
-
-echo "deleting phpfina and phptimeseries data"
-sudo rm -rf /var/opt/emoncms/phpfina/*
-sudo rm -rf /var/opt/emoncms/phpfiwa/*
-sudo rm -rf /var/opt/emoncms/phptimeseries/*
-
-# Mysql
-echo "deleting mysql emoncms database"
-mysql -u emoncms -e "drop database emoncms" -pemonpiemoncmsmysql2016
-echo "creating new mysql emoncms database"
-mysql -u emoncms -e "create database emoncms" -pemonpiemoncmsmysql2016
-
-# Clear logs
-sudo rm -rf /var/log/emoncms/*
-
-sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
-echo "clear WiFi config /etc/wpa_supplicant/wpa_supplicant.conf"
-echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" > /etc/wpa_supplicant/wpa_supplicant.conf
-echo "update_config=1" >> /etc/wpa_supplicant/wpa_supplicant.conf
-echo "country=GB" >> /etc/wpa_supplicant/wpa_supplicant.conf
-
-echo "remove git user credentials"
-sudo rm /home/pi/.gitconfig
-
-echo "Set default emonpi default git credentials" 
-git config --global user.email "pi@emonpi.com"
-git config --global user.name "emonpi"
-
-echo "restore emonhub settings"
-cp /opt/openenergymonitor/emonhub/conf/emonpi.default.emonhub.conf /etc/emonhub/emonhub.conf
-sudo chmod 666 /etc/emonhub/emonhub.conf
-sed -i "s/loglevel = DEBUG/loglevel = WARNING/" /etc/emonhub/emonhub.conf
-
-echo "Clear bash history"
-history -c
->~/.bash_history
-rm /home/pi/.bash_history
-
-echo "Clear and re-generate SSH keys"
-sudo rm /home/pi/.ssh/*
-sudo rm /etc/ssh/ssh_host_*
-sudo dpkg-reconfigure openssh-server
-
-echo "Clean up packages"
-sudo apt-get clean
-
-if [ "$VERSION" = "stretch" ]; then
-   echo "Disabling SSH"
-   sudo update-rc.d ssh disable
-   sudo invoke-rc.d ssh stop
-   sudo rm /boot/ssh
+emoncms_log_location=/var/log/emoncms
+mysql_user=emoncms
+mysql_password=emonpiemoncmsmysql2016
+mysql_database=emoncms
+if [ -f "$config" ]; then
+    source "$config"
 fi
+user_home=$(getent passwd "$user" | cut -d: -f6)
+
+echo
+echo "This deletes ALL emoncms data on this device: feeds, inputs, users and"
+echo "dashboards, saved WiFi networks, SSH keys and shell history."
+echo "It cannot be undone. Take a backup first if you need the data."
+echo
+read -p "Type 'reset' to continue: " confirm
+if [ "$confirm" != "reset" ]; then
+    echo "Nothing changed."
+    exit 1
+fi
+
+echo "-- Stopping services"
+for service in emonhub emoncms_mqtt feedwriter service-runner; do
+    systemctl stop $service 2>/dev/null
+done
+
+echo "-- Deleting feed data"
+for engine in phpfina phpfiwa phptimeseries; do
+    [ -d "$emoncms_datadir/$engine" ] && rm -rf "${emoncms_datadir:?}/$engine/"*
+done
+
+echo "-- Recreating the emoncms database"
+MYSQL_PWD="$mysql_password" mysql -u "$mysql_user" -e "DROP DATABASE IF EXISTS $mysql_database"
+MYSQL_PWD="$mysql_password" mysql -u "$mysql_user" -e "CREATE DATABASE $mysql_database DEFAULT CHARACTER SET utf8"
+php "$openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php" >/dev/null
+
+# emoncms caches feeds and inputs in redis, which would otherwise outlive the database
+echo "-- Clearing redis"
+redis-cli flushall >/dev/null
+
+echo "-- Clearing emoncms logs"
+find "$emoncms_log_location" -type f -exec truncate -s 0 {} + 2>/dev/null
+
+echo "-- Clearing saved WiFi networks"
+if [ -d /etc/NetworkManager/system-connections ]; then
+    # Client networks only, the access point profile is kept
+    for file in /etc/NetworkManager/system-connections/*; do
+        [ -f "$file" ] || continue
+        if grep -q '^type=wifi' "$file" && ! grep -q '^mode=ap' "$file"; then
+            echo "   $file"
+            rm -f "$file"
+        fi
+    done
+fi
+if [ -f /etc/wpa_supplicant/wpa_supplicant.conf ]; then
+    # Images before NetworkManager (bullseye and older)
+    cat > /etc/wpa_supplicant/wpa_supplicant.conf <<EOF
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=GB
+EOF
+    chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
+fi
+
+echo "-- Resetting git credentials"
+rm -f "$user_home/.gitconfig"
+sudo -u "$user" git config --global user.email "pi@emonpi.com"
+sudo -u "$user" git config --global user.name "emonpi"
+
+echo "-- Restoring emonhub.conf"
+if [ -f /etc/emonhub/emonhub.conf.factory ]; then
+    # Saved by install/prepare_image.sh when the image was made
+    cp /etc/emonhub/emonhub.conf.factory /etc/emonhub/emonhub.conf
+else
+    # Images made before prepare_image.sh
+    cp "$openenergymonitor_dir/emonhub/conf/emonpi.default.emonhub.conf" /etc/emonhub/emonhub.conf
+    sed -i "s/loglevel = DEBUG/loglevel = WARNING/" /etc/emonhub/emonhub.conf
+fi
+chmod 666 /etc/emonhub/emonhub.conf
+
+echo "-- Clearing shell history"
+rm -f "$user_home/.bash_history" /root/.bash_history
+
+echo "-- Removing SSH keys and generating new host keys"
+rm -f "$user_home/.ssh/"*
+rm -f /etc/ssh/ssh_host_*
+ssh-keygen -A
+
+echo "-- Disabling SSH, as shipped (the current session stays open)"
+echo "   Re-enable: long press the emonPi LCD button, or create a file named ssh on the boot partition"
+systemctl disable ssh.service 2>/dev/null
+systemctl disable ssh.socket 2>/dev/null
+rm -f /boot/ssh /boot/firmware/ssh
+
+echo "-- Cleaning up packages"
+apt-get clean
+
+echo "-- Starting services"
+for service in feedwriter service-runner emoncms_mqtt emonhub; do
+    systemctl start $service 2>/dev/null
+done
+
+echo
+echo "Factory reset complete. A reboot is recommended: sudo reboot"

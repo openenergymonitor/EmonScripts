@@ -77,6 +77,7 @@ echo "Prepare $image_version for imaging"
 echo "-------------------------------------------------------------"
 echo "This will:"
 echo "  - set the WiFi country to $wifi_country"
+echo "  - save /etc/emonhub/emonhub.conf as the factory default for other/factoryreset"
 echo "  - disable SSH and remove this card's SSH host keys and authorized_keys"
 echo "  - remove saved WiFi client networks (this disconnects WiFi)"
 echo "  - clear logs, build logs (~/init.sh.log, ~/main.sh.log), shell history and caches"
@@ -102,6 +103,13 @@ if command -v raspi-config >/dev/null 2>&1; then
     sudo raspi-config nonint do_wifi_country "$wifi_country"
 else
     echo "   raspi-config not found, WiFi country not set"
+fi
+
+# --------------------------------------------------------------------------------
+# other/factoryreset restores the emonhub.conf the image shipped with
+if [ -f /etc/emonhub/emonhub.conf ]; then
+    echo "-- Saving factory emonhub.conf"
+    sudo cp /etc/emonhub/emonhub.conf /etc/emonhub/emonhub.conf.factory
 fi
 
 # --------------------------------------------------------------------------------

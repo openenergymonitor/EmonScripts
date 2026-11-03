@@ -8,14 +8,16 @@ The SD Image is created primarily for user of the emonPi.
 
 1\. Flash Raspberry Pi OS Lite (64-bit) with Raspberry Pi Imager. In the Imager settings set the hostname to `emonpi`, the user to `pi` with password `emonsd`, and enable SSH for the build.
 
-2\. Boot the Pi and run the build with defaults. The image version file `/boot/emonSD-DDMMMYY` is created automatically from the build date.
+2\. Partition the card for the low-write data partition, before running the build. Follow steps 2 to 12 of [SD Card Preparation for RaspberryPi](rpi-install.md): add a placeholder partition before the first boot so the root filesystem is not expanded to fill the card, then replace it with an ext2 data partition mounted at `/var/opt/emoncms` and install the emonSD `fstab`.
+
+3\. Run the build with defaults. The image version file `/boot/emonSD-DDMMMYY` is created automatically from the build date.
 
 ```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/init.sh
 chmod +x init.sh && ./init.sh
 ```
 
-3\. Reboot, then check the build. `verify.sh` is read only; fix anything it reports as `FAIL`.
+4\. Reboot, then check the build. `verify.sh` is read only; fix anything it reports as `FAIL`.
 
 ```shell
 sudo reboot
@@ -23,9 +25,9 @@ cd /opt/openenergymonitor/EmonScripts/install
 ./verify.sh
 ```
 
-4\. Add the image name, e.g. `emonSD-03Nov26`, to the `safe-update` list on the **master** branch. Without it, devices made from the image cannot update.
+5\. Add the image name, e.g. `emonSD-03Nov26`, to the `safe-update` list on the **master** branch. Without it, devices made from the image cannot update.
 
-5\. Prepare the card for imaging. This runs `verify.sh` again, then sets the WiFi country (`wifi_country` in `config.ini`, default `GB`), disables SSH, removes this card's SSH host keys, authorized_keys and saved WiFi networks, clears logs, build logs and shell history, resets the machine-id and shuts down. Copy off `~/main.sh.log` first if you want to keep it.
+6\. Prepare the card for imaging. This runs `verify.sh` again, then sets the WiFi country (`wifi_country` in `config.ini`, default `GB`), saves the current `emonhub.conf` as the factory default used by `other/factoryreset`, disables SSH, removes this card's SSH host keys, authorized_keys and saved WiFi networks, clears logs, build logs and shell history, resets the machine-id and shuts down. Copy off `~/main.sh.log` first if you want to keep it.
 
 ```shell
 cd /opt/openenergymonitor/EmonScripts/install
@@ -34,7 +36,7 @@ cd /opt/openenergymonitor/EmonScripts/install
 
 **Do not boot the card again before imaging it.** Each device generates its own SSH host keys and machine-id on first boot; booting the build card would bake one set into every device. If it does get booted, run `prepare_image.sh` again.
 
-6\. Create the image on another machine
+7\. Create the image on another machine
 
 ```shell
 sudo dd if=/dev/sdb of=emonSD-03Nov26.img bs=4M
