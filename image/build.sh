@@ -58,6 +58,15 @@ die() { echo "ERROR: $*" >&2; exit 1; }
 step() { echo; echo "=== $* ($(date +%H:%M:%S))"; }
 
 [ "$EUID" = "0" ] || die "run with sudo"
+# The work directory is written to as root: only allow a dedicated directory
+WORK=${WORK%/}
+[[ "$WORK" == /* ]] || die "--work must be an absolute path"
+[[ "$WORK" != *..* ]] || die "--work must not contain '..'"
+case "$WORK" in
+    /|/root|/home|/usr|/usr/*|/etc|/etc/*|/var|/opt|/boot|/boot/*|/tmp|/dev*|/proc*|/sys*)
+        die "--work $WORK is not safe, use a dedicated directory" ;;
+esac
+[ "$WORK" != "$(getent passwd "$BUILD_USER" | cut -d: -f6)" ] || die "--work must not be your home directory itself"
 [[ "$ROOT_GB" =~ ^[0-9]+$ ]] && [ "$ROOT_GB" -ge 4 ] || die "--root-size must be at least 4"
 [[ "$DATA_GB" =~ ^[0-9]+$ ]] && [ "$DATA_GB" -ge 1 ] || die "--data-size must be at least 1"
 
@@ -79,7 +88,10 @@ if [ "$(uname -m)" != "aarch64" ]; then
     echo "arm64 emulation: $binfmt"
 fi
 
-# Running as root on the build user's checkout: tell git that is expected
+# Running as root on the build user's checkout: tell git that is expected,
+# and never write to it (GIT_OPTIONAL_LOCKS=0 stops git status refreshing
+# .git/index, which would leave it owned by root)
+export GIT_OPTIONAL_LOCKS=0
 git() { command git -c safe.directory='*' "$@"; }
 
 branch=$(git -C "$REPO" rev-parse --abbrev-ref HEAD)
@@ -150,6 +162,10 @@ sfdisk -l "$IMG"
 
 LOOP=$(losetup -Pf --show "$IMG")
 udevadm settle 2>/dev/null || sleep 2
+case "$LOOP" in /dev/loop[0-9]*) ;; *) die "unexpected loop device '$LOOP'" ;; esac
+for n in 1 2 3; do
+    [ -b "${LOOP}p$n" ] || die "${LOOP}p$n does not exist"
+done
 e2fsck -fy "${LOOP}p2" || [ $? -le 1 ]
 resize2fs "${LOOP}p2"
 mkfs.ext2 -F -q -b 1024 -L emondata "${LOOP}p3"
@@ -173,7 +189,7 @@ install -m 0644 "$REPO/defaults/etc/fstab" "$ROOT/etc/fstab"
 
 # EmonScripts from this checkout, pointing at GitHub for later updates
 mkdir -p "$ROOT/opt/openenergymonitor" "$ROOT/opt/emoncms"
-git clone -q --branch "$branch" "$REPO" "$ROOT/opt/openenergymonitor/EmonScripts"
+git clone -q --no-hardlinks --branch "$branch" "$REPO" "$ROOT/opt/openenergymonitor/EmonScripts"
 git -C "$ROOT/opt/openenergymonitor/EmonScripts" remote set-url origin "$GITHUB_URL"
 
 # --------------------------------------------------------------------------------
@@ -219,7 +235,8 @@ echo "=== Starting MariaDB for the build"
 apt-get update
 apt-get install -y mariadb-server
 mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld
-mariadbd-safe --skip-syslog >/dev/null 2>&1 &
+# Socket only: the container shares the host's network, which may run its own MariaDB
+mariadbd-safe --skip-syslog --skip-networking >/dev/null 2>&1 &
 for i in $(seq 60); do
     mariadb-admin ping >/dev/null 2>&1 && break
     sleep 2
@@ -242,6 +259,15 @@ exit $build_result
 INSIDE
 chmod +x "$ROOT/root/emonsd-build-inside.sh"
 
+# DNS for the build: a copy of the host's settings in the image, restored
+# afterwards. Nothing in the container can write to the host's resolv.conf.
+mv "$ROOT/etc/resolv.conf" "$ROOT/etc/resolv.conf.emonsd-build"
+cat /etc/resolv.conf > "$ROOT/etc/resolv.conf"
+if grep -q '^nameserver 127\.' "$ROOT/etc/resolv.conf"; then
+    # systemd-resolved stub: use the real upstream servers
+    [ -f /run/systemd/resolve/resolv.conf ] && cat /run/systemd/resolve/resolv.conf > "$ROOT/etc/resolv.conf"
+fi
+
 # Stop package installs from starting services through init.d fallbacks
 printf '#!/bin/sh\nexit 101\n' > "$ROOT/usr/sbin/policy-rc.d"
 chmod +x "$ROOT/usr/sbin/policy-rc.d"
@@ -250,14 +276,19 @@ chmod +x "$ROOT/usr/sbin/policy-rc.d"
 step "Building inside the image (this is the long part)"
 # --------------------------------------------------------------------------------
 set +e
+# The container shares the host's network but cannot change it: no network
+# admin (firewall, WiFi), no kernel modules, no clock changes. It sees only
+# the image's files and no host disks.
 systemd-nspawn -q -D "$ROOT" --as-pid2 --machine=emonsd-build --register=no \
-    --console=pipe --resolv-conf=bind-host --timezone=off \
+    --console=pipe --resolv-conf=off --timezone=off \
+    --drop-capability=CAP_NET_ADMIN,CAP_SYS_MODULE,CAP_SYS_TIME \
     /root/emonsd-build-inside.sh
 inside_result=$?
 set -e
 
 mv "$ROOT/root/emonsd-main.sh.log" "$WORK/main.sh.log" 2>/dev/null || true
-rm -f "$ROOT/root/emonsd-build-inside.sh" "$ROOT/usr/sbin/policy-rc.d"
+rm -f "$ROOT/root/emonsd-build-inside.sh" "$ROOT/usr/sbin/policy-rc.d" "$ROOT/etc/resolv.conf"
+mv "$ROOT/etc/resolv.conf.emonsd-build" "$ROOT/etc/resolv.conf"
 echo "main.sh log: $WORK/main.sh.log"
 [ "$inside_result" = "0" ] || die "build inside the image failed ($inside_result), see $LOG and $WORK/main.sh.log"
 
@@ -266,6 +297,7 @@ step "Final clean up"
 # --------------------------------------------------------------------------------
 # Done here as well as in prepare_image.sh: inside the container these can be
 # masked by files systemd-nspawn mounts over them
+mountpoint -q "$ROOT" || die "$ROOT is not mounted, not cleaning up"
 truncate -s 0 "$ROOT/etc/machine-id"
 [ -f "$ROOT/var/lib/dbus/machine-id" ] && [ ! -L "$ROOT/var/lib/dbus/machine-id" ] && rm -f "$ROOT/var/lib/dbus/machine-id"
 rm -f "$ROOT"/etc/ssh/ssh_host_* "$ROOT/root/.bash_history"
@@ -289,7 +321,9 @@ if [ "$COMPRESS" = "1" ]; then
     out="$out.xz"
 fi
 (cd "$WORK" && sha256sum "$(basename "$out")" > "$(basename "$out").sha256")
-chown -R "$BUILD_USER" "$WORK" 2>/dev/null || true
+rmdir "$ROOT" 2>/dev/null || true
+chown -R "$BUILD_USER" "$WORK/download" 2>/dev/null || true
+chown "$BUILD_USER" "$WORK" "$out" "$out.sha256" "$LOG" "$WORK/main.sh.log" 2>/dev/null || true
 
 step "Done"
 ls -lh "$out"
