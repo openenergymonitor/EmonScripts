@@ -111,7 +111,7 @@ if [ "$install_redis" = true ]; then
 
     if [ "$install_mosquitto_client" = true ]; then
         servicepath=$emoncms_www/scripts/services/emoncms_mqtt/emoncms_mqtt.service
-        echo "-- installing $service to $servicepath"
+        echo "-- installing emoncms_mqtt to $servicepath"
         $openenergymonitor_dir/EmonScripts/common/install_emoncms_service.sh $servicepath emoncms_mqtt
 
         if [ "$user" != "pi" ]; then

@@ -7,7 +7,7 @@ echo "-------------------------------------------------------------"
 cd $openenergymonitor_dir
 
 if [ ! -d $openenergymonitor_dir/emonPiLCD ]; then
-    git clone -b $emonhub_branch ${git_repo[emonPiLCD]}
+    git clone -b ${emonpilcd_branch:-stable} ${git_repo[emonPiLCD]}
 else 
     echo "-- emonPiLCD repository already installed"
     echo "-- emonPiLCD running git pull:"

@@ -95,8 +95,6 @@ fi
 # -----------------------------------------------------------------
 
 if [ "$type" == "all" ]; then
-    sudo rm -rf hardware/emonpi/emonpi2c/
-
     for repo in "emonpi" "RFM2Pi" "huawei-hilink-status" "emonPiLCD"; do
         if [ -d $openenergymonitor_dir/$repo ]; then
             echo "git pull $openenergymonitor_dir/$repo"

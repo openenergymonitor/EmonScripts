@@ -36,6 +36,10 @@ The installation process is broken out into separate scripts that can be run ind
 
 **[emonpilcd.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonpilcd.sh)** Support for emonPi LCD.
 
-**[wifiap.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/wifiap.sh)** RaspberryPi 3B+ WIFI Access Point support.
+**[docker.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/docker.sh)** Installs Docker Engine and the compose plugin from Docker's apt repository. The service is left disabled.
 
-**[emonsd.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.sh)** RaspberryPi specific configuration e.g: logging, default SSH password and hostname.
+**[emonsd.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/emonsd.sh)** RaspberryPi specific configuration e.g: log2ram, logrotate, one-wire, rc.local and the emonSD version file.
+
+**[network.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/network.sh)** Runs the emoncms network module installer: NetworkManager configuration, WiFi access point and the wifi-check cron task. Run last.
+
+**[non_emonsd.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/non_emonsd.sh)** Logrotate configuration for installs that are not an emonSD image.
