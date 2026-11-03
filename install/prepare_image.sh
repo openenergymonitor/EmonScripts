@@ -17,6 +17,7 @@
 # Options:
 #   --yes          do not ask for confirmation
 #   --force        continue even if verify.sh reports failures
+#   --skip-verify  do not run verify.sh (image/build.sh, services are not running)
 #   --no-shutdown  leave the system running at the end
 # --------------------------------------------------------------------------------
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -25,11 +26,13 @@ source load_config.sh
 
 assume_yes=0
 force=0
+skip_verify=0
 shutdown_at_end=1
 for arg in "$@"; do
     case "$arg" in
         --yes) assume_yes=1 ;;
         --force) force=1 ;;
+        --skip-verify) skip_verify=1 ;;
         --no-shutdown) shutdown_at_end=0 ;;
         *) echo "Unknown option: $arg"; exit 1 ;;
     esac
@@ -58,7 +61,9 @@ fi
 # --------------------------------------------------------------------------------
 # Verify the build first
 # --------------------------------------------------------------------------------
-if ! ./verify.sh; then
+if [ "$skip_verify" = "1" ]; then
+    echo "Skipping verify.sh"
+elif ! ./verify.sh; then
     if [ "$force" = "1" ]; then
         echo
         echo "verify.sh reported failures, continuing because of --force"

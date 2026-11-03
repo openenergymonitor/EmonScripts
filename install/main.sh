@@ -10,6 +10,12 @@
 # Copy stdout and stderr to a log file in addition to the console
 # tee -a used in case script is run multiple times
 
+# --yes: run without questions (automated image builds, see image/build.sh)
+assume_yes=0
+if [ "$1" = "--yes" ]; then
+    assume_yes=1
+fi
+
 LOG_FILE=~/$(basename "$0").log
 exec > >(tee -a "${LOG_FILE}") 2>&1
 
@@ -33,7 +39,11 @@ echo "-------------------------------------------------------------"
 echo "Warning: The default configuration of this script applies"
 echo "significant modification to the underlying system!"
 echo ""
-read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
+if [ "$assume_yes" = "1" ]; then
+    start_confirm=n
+else
+    read -p "Would you like to review the build script config before starting? (y/n) " start_confirm
+fi
 
 if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
     echo ""
@@ -64,7 +74,11 @@ if [ "$apt_get_upgrade_and_clean" = true ]; then
     
     echo ""
     echo "Important: Did you get a request to reboot your machine, if so we recommend you do this now."
-    read -p "Would you like to exit installation to reboot your machine? (y/n) " reboot_confirm
+    if [ "$assume_yes" = "1" ]; then
+        reboot_confirm=n
+    else
+        read -p "Would you like to exit installation to reboot your machine? (y/n) " reboot_confirm
+    fi
     if [ "$reboot_confirm" != "n" ] && [ "$reboot_confirm" != "N" ]; then
         exit 0
     fi

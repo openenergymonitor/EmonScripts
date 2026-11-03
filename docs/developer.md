@@ -49,6 +49,22 @@ cd /opt/openenergymonitor/EmonScripts/install
 sudo dd if=/dev/sdb of=emonSD-03Nov26.img bs=4M
 ```
 
+## Building the image without a Raspberry Pi (experimental)
+
+`image/build.sh` builds the image on any Linux machine. It downloads Raspberry Pi OS Lite (64-bit), creates the emonSD partitions directly in the image file, and runs `install/main.sh` and `install/prepare_image.sh` inside it with `systemd-nspawn`. On a non-arm64 machine the arm64 programs run under qemu emulation, so a build takes one to two hours.
+
+EmonScripts is copied into the image from the local checkout at its current commit, so a branch can be built before it is pushed.
+
+```shell
+sudo apt install systemd-container qemu-user-binfmt
+sudo image/build.sh                  # root 5 GB, data 2 GB
+sudo image/build.sh --root-size 6    # if the root partition runs out of space
+```
+
+The result is `~/emonsd-build/emonSD-DDMMMYY.img.xz`, with its sha256 and the build logs. Flash it with Raspberry Pi Imager (Choose OS, Use custom) and do not apply OS customisation: the image already has the `pi` user, hostname and settings. SSH is disabled as shipped; to log in, create an empty file named `ssh` on the boot partition after flashing.
+
+Not done yet: the data partition stays at the size it was built with (use `emonSDexpand` to grow it), and services are installed but never started during the build, so run `verify.sh` on the Pi after the first boot.
+
 ## Logs, `journald` and `logrotate`
 
 ### Why is it important
