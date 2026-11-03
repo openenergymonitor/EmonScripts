@@ -59,14 +59,15 @@ sudo apt-get install -y python3-pip
 # installs as a dependency of php-pear
 $openenergymonitor_dir/EmonScripts/update/php_xml.sh
 
-if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
-    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED
-    echo "Removed pip3 external management warning."
-fi
-if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED.orig ]; then
-    sudo rm -rf /usr/lib/python3.11/EXTERNALLY-MANAGED.orig
-    echo "Removed pip3 external management warning."
-fi
+# Remove the pip external management marker for the python version in use
+# (python3.11 on bookworm, python3.13 on trixie)
+python_lib_dir=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["stdlib"])' 2>/dev/null)
+for marker in "$python_lib_dir/EXTERNALLY-MANAGED" "$python_lib_dir/EXTERNALLY-MANAGED.orig"; do
+    if [ -n "$python_lib_dir" ] && [ -e "$marker" ]; then
+        sudo rm -f "$marker"
+        echo "Removed pip3 external management warning: $marker"
+    fi
+done
 
 pip3 install redis
 

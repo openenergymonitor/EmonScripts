@@ -88,17 +88,16 @@ if [ ! -d $openenergymonitor_dir/data ]; then mkdir $openenergymonitor_dir/data;
 echo "-------------------------------------------------------------"
 sudo apt-get install -y git build-essential python3-pip python3-dev sysstat
 
-# It's probably better to fix this by using python venv
-if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED ]; then
-    sudo rm -rf /usr/lib/python3.13/EXTERNALLY-MANAGED
-    echo "Removed pip3 external management warning."
-fi
-
-# Not 100% if this is needed (error with pip3 paho install on last build)
-if [ -e /usr/lib/python3.11/EXTERNALLY-MANAGED.orig ]; then
-    sudo rm -rf /usr/lib/python3.13/EXTERNALLY-MANAGED.orig
-    echo "Removed pip3 external management warning."
-fi
+# Remove the pip external management marker for the python version in use,
+# so later pip3 installs (emonhub dependencies) work. Same approach as
+# emonhub/install.sh. It's probably better to fix this by using python venv
+python_lib_dir=$(python3 -c 'import sysconfig; print(sysconfig.get_paths()["stdlib"])' 2>/dev/null)
+for marker in "$python_lib_dir/EXTERNALLY-MANAGED" "$python_lib_dir/EXTERNALLY-MANAGED.orig"; do
+    if [ -n "$python_lib_dir" ] && [ -e "$marker" ]; then
+        sudo rm -f "$marker"
+        echo "Removed pip3 external management warning: $marker"
+    fi
+done
 
 
 echo "-------------------------------------------------------------"
