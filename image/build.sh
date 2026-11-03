@@ -477,12 +477,17 @@ ip -n "$NETNS" link set lo up
 # Ubuntu's AppArmor profile for pasta (usr.bin.pasta) does not allow it to
 # open /run/netns/*, but does allow /tmp/**: give it the same namespace bind
 # mounted under /tmp. Run it in the foreground as a background job, so its
-# PID is known without a PID file (it runs as nobody, and the profile only
-# allows writes in a few places). Wait for it to configure the namespace.
+# PID is known without a PID file (the profile only allows writes in a few
+# places). Wait for it to configure the namespace.
+# --runas 0: by default pasta started as root switches to nobody before
+# joining the namespace, and nobody cannot join one created by root
+# ("Couldn't switch to pasta namespaces: Operation not permitted"). It stays
+# confined by its AppArmor profile and its own sandbox, and only runs for the
+# build.
 NETNS_TMP="/tmp/emonsd-build-netns-$$"
 touch "$NETNS_TMP"
 mount --bind "/run/netns/$NETNS" "$NETNS_TMP"
-pasta -f --config-net --netns "$NETNS_TMP" \
+pasta -f --runas 0 --config-net --netns "$NETNS_TMP" \
     -t none -u none -T none -U none \
     --map-host-loopback none --map-guest-addr none \
     -q &
