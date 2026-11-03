@@ -132,12 +132,17 @@ APPARMOR_PROFILE="$WORK/emonsd-build.apparmor"
 APPARMOR_LOADED=0
 BINFMT_ORIG=""
 NETNS=""
+NETNS_TMP=""
 PASTA_PID=""
 
 cleanup() {
     set +e
     if [ -n "$PASTA_PID" ]; then
         kill "$PASTA_PID" 2>/dev/null
+    fi
+    if [ -n "$NETNS_TMP" ]; then
+        umount "$NETNS_TMP" 2>/dev/null
+        rm -f "$NETNS_TMP"
     fi
     if [ -n "$NETNS" ]; then
         ip netns delete "$NETNS" 2>/dev/null && echo "Build network namespace removed"
@@ -469,10 +474,15 @@ set +e
 NETNS="emonsd-build-$$"
 ip netns add "$NETNS"
 ip -n "$NETNS" link set lo up
-# Run in the foreground as a background job, so its PID is known without a
-# PID file (pasta runs as nobody, and Ubuntu's AppArmor profile for it only
-# allows writing to a few places). Wait for it to configure the namespace.
-pasta -f --config-net --netns "/run/netns/$NETNS" \
+# Ubuntu's AppArmor profile for pasta (usr.bin.pasta) does not allow it to
+# open /run/netns/*, but does allow /tmp/**: give it the same namespace bind
+# mounted under /tmp. Run it in the foreground as a background job, so its
+# PID is known without a PID file (it runs as nobody, and the profile only
+# allows writes in a few places). Wait for it to configure the namespace.
+NETNS_TMP="/tmp/emonsd-build-netns-$$"
+touch "$NETNS_TMP"
+mount --bind "/run/netns/$NETNS" "$NETNS_TMP"
+pasta -f --config-net --netns "$NETNS_TMP" \
     -t none -u none -T none -U none \
     --map-host-loopback none --map-guest-addr none \
     -q &
