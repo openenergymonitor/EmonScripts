@@ -1,0 +1,16 @@
+# Generate SSH host keys if there are none.
+#
+# install/prepare_image.sh removes the build card's host keys so that every
+# device made from the image gets its own. This creates them on the first
+# boot of each device, and is a no-op on every boot after that.
+[Unit]
+Description=Generate SSH host keys if missing
+ConditionPathExistsGlob=!/etc/ssh/ssh_host_*_key
+Before=ssh.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ssh-keygen -A
+
+[Install]
+WantedBy=multi-user.target

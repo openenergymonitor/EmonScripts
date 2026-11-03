@@ -8,6 +8,10 @@ The installation process is broken out into separate scripts that can be run ind
 
 **[main.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/main.sh)** Loads the configuration file and runs the individual installation scripts as applicable. All output sent to screen also stored in the user's home directory `~/main.sh.log`.
 
+**[verify.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/verify.sh)** Read only check of a completed build: services, PHP and Python dependencies, database, MQTT, emoncms, repositories and the emonSD version file.
+
+**[prepare_image.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/prepare_image.sh)** emonSD image builds only. Final step before imaging: removes the build card's SSH host keys, machine-id, saved WiFi networks, logs and history, then shuts down. See [developer notes](developer.md).
+
 ---
 
 **[apache.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/apache.sh)** Apache configuration, mod rewrite and apache logging.
