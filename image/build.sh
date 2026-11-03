@@ -12,7 +12,7 @@
 # built. Everything else (emoncms, modules, emonhub) is cloned from GitHub.
 #
 # Requirements (Debian/Ubuntu):
-#     sudo apt install systemd-container qemu-user-binfmt
+#     sudo apt install systemd-container qemu-user-binfmt passt
 #     (older releases: qemu-user-static instead of qemu-user-binfmt)
 #
 # Usage:
@@ -84,8 +84,8 @@ esac
 # --------------------------------------------------------------------------------
 step "Checking requirements"
 # --------------------------------------------------------------------------------
-for tool in systemd-nspawn losetup sfdisk e2fsck resize2fs mkfs.ext2 xz curl sha256sum git mountpoint; do
-    command -v "$tool" >/dev/null 2>&1 || die "$tool not found (sudo apt install systemd-container qemu-user-binfmt)"
+for tool in systemd-nspawn pasta ip losetup sfdisk e2fsck resize2fs mkfs.ext2 xz curl sha256sum git mountpoint; do
+    command -v "$tool" >/dev/null 2>&1 || die "$tool not found (sudo apt install systemd-container qemu-user-binfmt passt)"
 done
 
 if [ "$(uname -m)" != "aarch64" ]; then
@@ -130,9 +130,18 @@ LOOP=""
 APPARMOR_PROFILE="$WORK/emonsd-build.apparmor"
 APPARMOR_LOADED=0
 BINFMT_ORIG=""
+NETNS=""
+PASTA_PID=""
 
 cleanup() {
     set +e
+    if [ -n "$PASTA_PID" ]; then
+        kill "$PASTA_PID" 2>/dev/null
+    fi
+    if [ -n "$NETNS" ]; then
+        ip netns delete "$NETNS" 2>/dev/null && echo "Build network namespace removed"
+    fi
+    rm -f "$WORK/pasta.pid"
     if mountpoint -q "$ROOT" 2>/dev/null; then
         umount -R "$ROOT"
     fi
@@ -227,19 +236,29 @@ git clone -q --no-hardlinks --branch "$branch" "$REPO" "$ROOT/opt/openenergymoni
 git -C "$ROOT/opt/openenergymonitor/EmonScripts" remote set-url origin "$GITHUB_URL"
 
 # --------------------------------------------------------------------------------
-# Runs inside the image. No systemd is running, so services are installed and
-# enabled but not started; MariaDB is started by hand because the build needs
-# the database.
+# Runs inside the image, in its own network namespace (see pasta below). No
+# systemd is running: SYSTEMD_OFFLINE=1 makes systemctl enable/disable edit
+# unit files directly and skip start/restart. MariaDB is started by hand
+# because the build needs the database.
 # --------------------------------------------------------------------------------
 cat > "$ROOT/root/emonsd-build-inside.sh" <<'INSIDE'
 #!/bin/bash
 set -uo pipefail
 export LANG=C.UTF-8
 export DEBIAN_FRONTEND=noninteractive
+export SYSTEMD_OFFLINE=1
+
+fail() { echo "ERROR: $*"; exit 1; }
 
 for dir in /boot/firmware /var/opt/emoncms; do
-    mountpoint -q "$dir" || { echo "ERROR: $dir is not mounted inside the container"; exit 1; }
+    mountpoint -q "$dir" || fail "$dir is not mounted inside the container"
 done
+# /var/lock points into /run, which starts empty in the container
+mkdir -p /run/lock
+
+echo "=== Network"
+getent hosts github.com >/dev/null || fail "no DNS inside the container"
+echo "ok"
 
 echo "=== User pi"
 first_user=$(getent passwd 1000 | cut -d: -f1 || true)
@@ -249,72 +268,125 @@ if [ -n "$first_user" ] && [ -x /usr/lib/userconf-pi/userconf ]; then
 elif [ -z "$first_user" ]; then
     useradd -m -s /bin/bash pi
 fi
-getent passwd pi >/dev/null || { echo "ERROR: user pi was not created"; exit 1; }
+getent passwd pi >/dev/null || fail "user pi was not created"
 echo "pi:emonsd" | chpasswd
 for group in sudo adm dialout cdrom audio video plugdev games users input render netdev gpio i2c spi; do
     getent group "$group" >/dev/null && usermod -aG "$group" pi
 done
 echo "pi ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/010_pi-nopasswd
 chmod 0440 /etc/sudoers.d/010_pi-nopasswd
+# Build only: keep SYSTEMD_OFFLINE through sudo (removed after the build)
+echo 'Defaults env_keep += "SYSTEMD_OFFLINE"' > /etc/sudoers.d/zz-emonsd-build
+chmod 0440 /etc/sudoers.d/zz-emonsd-build
 # No first boot username wizard: pi is already set up
 systemctl disable userconfig.service 2>/dev/null || true
 
 echo "=== Checking pi can use sudo"
 if ! runuser -l pi -c 'sudo -n true'; then
-    echo "ERROR: sudo does not work for pi inside the image, stopping"
     echo "--- diagnostics: root"
     grep -E '^(NoNewPrivs|Seccomp|CapEff|CapBnd):' /proc/self/status
     echo "apparmor: $(cat /proc/self/attr/current 2>/dev/null)"
     findmnt -no TARGET,FSTYPE,OPTIONS -T /usr/bin/sudo
-    ls -l /usr/bin/sudo
     echo "--- diagnostics: pi"
     runuser -u pi -- grep -E '^(Uid|NoNewPrivs|Seccomp|CapBnd):' /proc/self/status
     runuser -u pi -- /usr/bin/sudo -n id 2>&1
-    echo "--- diagnostics: setuid under emulation"
-    # A setuid copy of id on the image's root filesystem: euid=0 means setuid works
-    cp /usr/bin/id /usr/local/bin/emonsd-id-suid && chmod 4755 /usr/local/bin/emonsd-id-suid
-    runuser -u pi -- /usr/local/bin/emonsd-id-suid 2>&1
-    rm -f /usr/local/bin/emonsd-id-suid
-    exit 1
+    fail "sudo does not work for pi inside the image"
 fi
+echo "ok"
 
 echo "=== Hostname emonpi"
 echo emonpi > /etc/hostname
 sed -i 's/\braspberrypi\b/emonpi/g' /etc/hosts
+grep -qw emonpi /etc/hosts || echo "127.0.1.1	emonpi" >> /etc/hosts
 
 chown -R pi:pi /opt/openenergymonitor /opt/emoncms
 
+# mkinitramfs cannot find the root device in a container with MODULES=dep
+# (Raspberry Pi OS's setting). Build with MODULES=most; the override is
+# removed at the end so kernel updates on the device use the normal setting.
+echo "MODULES=most" > /etc/initramfs-tools/conf.d/emonsd-build
+
+echo "=== Packages init.sh installs on a Pi"
+apt-get update || fail "apt-get update failed"
+apt-get install -y git mariadb-server || fail "could not install git and mariadb-server"
+
 echo "=== Starting MariaDB for the build"
-apt-get update
-apt-get install -y mariadb-server
 mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld
-# Socket only: the container shares the host's network, which may run its own MariaDB
-mariadbd-safe --skip-syslog --skip-networking >/dev/null 2>&1 &
+# Own network namespace: emoncms connects to 127.0.0.1:3306, which is this
+# MariaDB and not the host's
+mariadbd-safe --skip-syslog >/dev/null 2>&1 &
 for i in $(seq 60); do
     mariadb-admin ping >/dev/null 2>&1 && break
     sleep 2
 done
 if ! mariadb-admin ping; then
-    echo "ERROR: MariaDB did not start"
     tail -n 20 /var/lib/mysql/*.err 2>/dev/null
-    exit 1
+    fail "MariaDB did not start"
 fi
 
 echo "=== install/main.sh"
-runuser -l pi -c 'cd /opt/openenergymonitor/EmonScripts/install && ./main.sh --yes'
-build_result=$?
+runuser -l pi -c 'export SYSTEMD_OFFLINE=1; cd /opt/openenergymonitor/EmonScripts/install && ./main.sh --yes'
 cp /home/pi/main.sh.log /root/emonsd-main.sh.log 2>/dev/null
+
+echo "=== Finishing packages and initramfs"
+dpkg --configure -a
+update-initramfs -u -k all || fail "update-initramfs failed"
+rm -f /etc/initramfs-tools/conf.d/emonsd-build
+[ -z "$(dpkg --audit)" ] || { dpkg --audit; fail "packages left half installed"; }
+
+echo "=== Checking the build"
+problems=0
+problem() { echo "  PROBLEM: $*"; problems=$((problems+1)); }
+
+for kernel in $(ls /lib/modules); do
+    [ -s "/boot/initrd.img-$kernel" ] || problem "no initramfs for kernel $kernel"
+    case "$kernel" in
+        *-2712) fw=/boot/firmware/initramfs_2712 ;;
+        *-v8)   fw=/boot/firmware/initramfs8 ;;
+        *)      fw="" ;;
+    esac
+    if [ -n "$fw" ] && ! cmp -s "/boot/initrd.img-$kernel" "$fw"; then
+        problem "$fw does not match /boot/initrd.img-$kernel"
+    fi
+done
+
+for unit in apache2 mariadb redis-server mosquitto feedwriter service-runner emoncms_mqtt emonhub emonsd-ssh-keygen; do
+    state=$(systemctl is-enabled "$unit.service" 2>/dev/null)
+    [ "$state" = "enabled" ] || problem "$unit.service is ${state:-missing}, expected enabled"
+done
+state=$(systemctl is-enabled docker.service 2>/dev/null)
+[ "$state" = "disabled" ] || problem "docker.service is ${state:-missing}, expected disabled"
+
+tables=$(mariadb -N -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='emoncms'" 2>/dev/null)
+[ "${tables:-0}" -gt 0 ] || problem "emoncms database has no tables"
+echo "  emoncms tables: ${tables:-0}"
+
+if grep -q '^ENABLED=yes' /etc/ufw/ufw.conf; then
+    rules=$(grep -c '^-A ufw-user-input' /etc/ufw/user.rules 2>/dev/null)
+    [ "${rules:-0}" -gt 0 ] || problem "ufw is enabled with no allow rules"
+elif [ "$(systemctl is-enabled emonsd-firewall.service 2>/dev/null)" != "enabled" ]; then
+    problem "firewall is neither configured nor set up for first boot"
+else
+    echo "  firewall: applied on first boot by emonsd-firewall.service"
+fi
+
+php -m | grep -qx redis || problem "php redis extension missing"
+php -m | grep -qx mosquitto || problem "php mosquitto extension missing"
+[ -n "$(ls /boot | grep '^emonSD-')" ] || problem "no /boot/emonSD-* version file"
 
 echo "=== Stopping MariaDB"
 mariadb-admin shutdown
 sleep 3
 
-echo "=== install/prepare_image.sh"
-runuser -l pi -c 'cd /opt/openenergymonitor/EmonScripts/install && ./prepare_image.sh --yes --skip-verify --no-shutdown'
-prepare_result=$?
+[ "$problems" = "0" ] || fail "$problems problems in the build, see above"
+echo "  all checks passed"
 
-[ "$build_result" = "0" ] || exit "$build_result"
-exit "$prepare_result"
+echo "=== install/prepare_image.sh"
+runuser -l pi -c 'export SYSTEMD_OFFLINE=1; cd /opt/openenergymonitor/EmonScripts/install && ./prepare_image.sh --yes --skip-verify --no-shutdown' \
+    || fail "prepare_image.sh failed"
+
+rm -f /etc/sudoers.d/zz-emonsd-build
+exit 0
 INSIDE
 chmod +x "$ROOT/root/emonsd-build-inside.sh"
 
@@ -388,10 +460,27 @@ fi
 step "Building inside the image (this is the long part)"
 # --------------------------------------------------------------------------------
 set +e
-# The container shares the host's network but cannot change it: no network
-# admin (firewall, WiFi), no kernel modules, no clock changes. It sees only
-# the image's files and no host disks.
+# Private network: the container gets its own network namespace, with its
+# own loopback, and internet access through pasta (user mode networking, no
+# changes to the host's network or firewall). Without this the container
+# shares the host's network, and emoncms' connections to 127.0.0.1:3306
+# reach the host's MariaDB instead of the image's. No port forwarding in
+# either direction, and no route from the container to the host's loopback.
+NETNS="emonsd-build-$$"
+ip netns add "$NETNS"
+ip -n "$NETNS" link set lo up
+pasta --config-net --netns "/run/netns/$NETNS" \
+    -t none -u none -T none -U none \
+    --map-host-loopback none --map-guest-addr none \
+    -q -P "$WORK/pasta.pid" || die "pasta could not set up networking for the build"
+PASTA_PID=$(cat "$WORK/pasta.pid")
+echo "Build network: namespace $NETNS, pasta pid $PASTA_PID"
+
+# The container cannot change the host: no network admin (firewall, WiFi), no
+# kernel modules, no clock changes. It sees only the image's files and no
+# host disks.
 "${run_prefix[@]}" systemd-nspawn -q -D "$ROOT" --as-pid2 --machine=emonsd-build --register=no \
+    --hostname=emonpi --network-namespace-path="/run/netns/$NETNS" \
     --console=pipe --resolv-conf=off --timezone=off \
     --drop-capability=CAP_NET_ADMIN,CAP_SYS_MODULE,CAP_SYS_TIME \
     /root/emonsd-build-inside.sh

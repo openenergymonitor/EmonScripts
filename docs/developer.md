@@ -56,7 +56,7 @@ sudo dd if=/dev/sdb of=emonSD-03Nov26.img bs=4M
 EmonScripts is copied into the image from the local checkout at its current commit, so a branch can be built before it is pushed.
 
 ```shell
-sudo apt install systemd-container qemu-user-binfmt
+sudo apt install systemd-container qemu-user-binfmt passt
 sudo image/build.sh                  # root 5 GB, data 2 GB
 sudo image/build.sh --root-size 6    # if the root partition runs out of space
 ```
