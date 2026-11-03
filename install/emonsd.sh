@@ -51,14 +51,31 @@ fi
 # --------------------------------------------------------------------------------
 # UFW firewall
 # --------------------------------------------------------------------------------
-# Review: reboot required before running:
+# Incoming connections are denied except for the services below. Outgoing
+# connections (updates, remote emoncms, sync) are not restricted.
 echo "-- Installing firewall"
 sudo apt-get install -y ufw
-# sudo ufw allow 80/tcp
-# sudo ufw allow 443/tcp (optional, HTTPS not present)
-# sudo ufw allow 22/tcp
-# sudo ufw allow 1883/tcp #(optional, Mosquitto)
-# sudo ufw enable
+
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 80/tcp comment 'emoncms web'
+sudo ufw allow 22/tcp comment 'ssh'
+sudo ufw allow 1883/tcp comment 'mqtt'
+# emonpi.local name lookup (avahi)
+sudo ufw allow 5353/udp comment 'mdns'
+# WiFi access point: NetworkManager's dnsmasq gives out addresses and answers
+# DNS for the captive portal on ap0. Without these, setting up WiFi through
+# the access point fails.
+sudo ufw allow in on ap0 to any port 67 proto udp comment 'access point dhcp'
+sudo ufw allow in on ap0 to any port 53 comment 'access point dns'
+
+# Enabling needs the running kernel's netfilter modules. If the kernel was
+# upgraded during this build and the Pi has not been rebooted yet, enabling
+# can fail; mark ufw enabled so it starts on the next boot either way.
+if ! sudo ufw --force enable; then
+    echo "-- ufw could not start now, it will start on next boot"
+    sudo sed -i 's/^ENABLED=.*/ENABLED=yes/' /etc/ufw/ufw.conf
+fi
 
 boot_config=/boot/config.txt
 if [ -f /boot/firmware/config.txt ]; then

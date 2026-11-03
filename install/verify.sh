@@ -256,6 +256,30 @@ if [ "$emonSD_pi_env" = "1" ]; then
         warn "sudoers not checked, needs passwordless sudo"
     fi
 
+    if [ "$install_emonsd" = true ]; then
+        if ! command -v ufw >/dev/null 2>&1; then
+            fail "ufw not installed"
+        elif ! sudo -n true 2>/dev/null; then
+            warn "firewall not checked, needs passwordless sudo"
+        else
+            ufw_status=$(sudo -n ufw status 2>/dev/null)
+            if printf '%s\n' "$ufw_status" | grep -q '^Status: active'; then
+                pass "firewall active"
+            elif grep -q '^ENABLED=yes' /etc/ufw/ufw.conf 2>/dev/null; then
+                fail "firewall enabled in ufw.conf but not running, reboot and check again"
+            else
+                fail "firewall not enabled"
+            fi
+            for rule in 80/tcp 22/tcp 1883/tcp 5353/udp '67/udp on ap0' '53 on ap0'; do
+                if printf '%s\n' "$ufw_status" | grep -q "^$rule "; then
+                    pass "firewall allows $rule"
+                else
+                    fail "firewall rule missing: $rule"
+                fi
+            done
+        fi
+    fi
+
     if [ "$install_docker" = true ]; then
         if command -v docker >/dev/null 2>&1; then
             pass "docker installed ($(systemctl is-enabled docker 2>/dev/null))"
