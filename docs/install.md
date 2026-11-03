@@ -16,7 +16,7 @@ It is **strongly recommended** that you dedicate a single device (NUC/VM/Pi) to 
 
 ### RaspberryPi
 
-To install on a RaspberryPi, a number of tasks are first required. Please follow [these instructions first](rpi-install.md).
+To install on a RaspberryPi, first flash Raspberry Pi OS Lite (64-bit) and partition the SD card for the emonSD data partition with `partition.sh`. Please follow [these instructions first](rpi-install.md).
 
 ### Ubuntu
 
