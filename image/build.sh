@@ -55,6 +55,17 @@ while [ $# -gt 0 ]; do
 done
 
 die() { echo "ERROR: $*" >&2; exit 1; }
+
+# Rebuild the register line for a binfmt_misc entry from its /proc file
+binfmt_line() {
+    local f=$1
+    printf ':%s:M:%s:%s:%s:%s:%s' "$(basename "$f")" \
+        "$(sed -n 's/^offset //p' "$f")" \
+        "$(sed -n 's/^magic //p' "$f" | sed 's/../\\x&/g')" \
+        "$(sed -n 's/^mask //p' "$f" | sed 's/../\\x&/g')" \
+        "$(sed -n 's/^interpreter //p' "$f")" \
+        "$(sed -n 's/^flags: *//p' "$f")"
+}
 step() { echo; echo "=== $* ($(date +%H:%M:%S))"; }
 
 [ "$EUID" = "0" ] || die "run with sudo"
@@ -112,6 +123,7 @@ ROOT="$WORK/root"
 LOOP=""
 APPARMOR_PROFILE="$WORK/emonsd-build.apparmor"
 APPARMOR_LOADED=0
+BINFMT_ORIG=""
 
 cleanup() {
     set +e
@@ -124,6 +136,15 @@ cleanup() {
         echo "AppArmor build profile unloaded"
     fi
     rm -f "$APPARMOR_PROFILE"
+    if [ -n "$BINFMT_ORIG" ]; then
+        name=$(echo "$BINFMT_ORIG" | cut -d: -f2)
+        echo -1 > "/proc/sys/fs/binfmt_misc/$name" 2>/dev/null
+        if printf '%s' "$BINFMT_ORIG" > /proc/sys/fs/binfmt_misc/register; then
+            echo "arm64 emulation registration restored"
+        else
+            echo "WARNING: could not restore arm64 emulation, run: sudo systemctl restart systemd-binfmt"
+        fi
+    fi
 }
 trap cleanup EXIT
 
@@ -254,6 +275,12 @@ if ! mariadb-admin ping; then
     exit 1
 fi
 
+echo "=== Checking pi can use sudo"
+if ! runuser -l pi -c 'sudo -n true'; then
+    echo "ERROR: sudo does not work for pi inside the image, stopping before main.sh"
+    exit 1
+fi
+
 echo "=== install/main.sh"
 runuser -l pi -c 'cd /opt/openenergymonitor/EmonScripts/install && ./main.sh --yes'
 build_result=$?
@@ -265,8 +292,10 @@ sleep 3
 
 echo "=== install/prepare_image.sh"
 runuser -l pi -c 'cd /opt/openenergymonitor/EmonScripts/install && ./prepare_image.sh --yes --skip-verify --no-shutdown'
+prepare_result=$?
 
-exit $build_result
+[ "$build_result" = "0" ] || exit "$build_result"
+exit "$prepare_result"
 INSIDE
 chmod +x "$ROOT/root/emonsd-build-inside.sh"
 
@@ -318,6 +347,22 @@ APPARMOR
     APPARMOR_LOADED=1
     run_prefix=(aa-exec -p emonsd-build --)
     echo "AppArmor: build runs under the emonsd-build profile"
+fi
+
+# --------------------------------------------------------------------------------
+# setuid programs (sudo) only work under emulation if qemu is registered with
+# the C (credentials) flag: without it the kernel takes the privileges from
+# qemu itself, which is not setuid, and sudo fails with "effective uid is not
+# 0". Add C for the duration of the build; the original registration is
+# restored on exit.
+# --------------------------------------------------------------------------------
+if [ -n "${binfmt:-}" ] && ! grep -q '^flags:.*C' "$binfmt"; then
+    original=$(binfmt_line "$binfmt")
+    echo -1 > "$binfmt"
+    BINFMT_ORIG=$original
+    printf '%sC' "$original" > /proc/sys/fs/binfmt_misc/register
+    grep -q '^flags:.*C' "$binfmt" || die "could not add the C flag to $binfmt"
+    echo "arm64 emulation: added C flag for the build ($(sed -n 's/^flags: *//p' "$binfmt"))"
 fi
 
 # --------------------------------------------------------------------------------
