@@ -253,6 +253,25 @@ chmod 0440 /etc/sudoers.d/010_pi-nopasswd
 # No first boot username wizard: pi is already set up
 systemctl disable userconfig.service 2>/dev/null || true
 
+echo "=== Checking pi can use sudo"
+if ! runuser -l pi -c 'sudo -n true'; then
+    echo "ERROR: sudo does not work for pi inside the image, stopping"
+    echo "--- diagnostics: root"
+    grep -E '^(NoNewPrivs|Seccomp|CapEff|CapBnd):' /proc/self/status
+    echo "apparmor: $(cat /proc/self/attr/current 2>/dev/null)"
+    findmnt -no TARGET,FSTYPE,OPTIONS -T /usr/bin/sudo
+    ls -l /usr/bin/sudo
+    echo "--- diagnostics: pi"
+    runuser -u pi -- grep -E '^(Uid|NoNewPrivs|Seccomp|CapBnd):' /proc/self/status
+    runuser -u pi -- /usr/bin/sudo -n id 2>&1
+    echo "--- diagnostics: setuid under emulation"
+    # A setuid copy of id on the image's root filesystem: euid=0 means setuid works
+    cp /usr/bin/id /usr/local/bin/emonsd-id-suid && chmod 4755 /usr/local/bin/emonsd-id-suid
+    runuser -u pi -- /usr/local/bin/emonsd-id-suid 2>&1
+    rm -f /usr/local/bin/emonsd-id-suid
+    exit 1
+fi
+
 echo "=== Hostname emonpi"
 echo emonpi > /etc/hostname
 sed -i 's/\braspberrypi\b/emonpi/g' /etc/hosts
@@ -272,12 +291,6 @@ done
 if ! mariadb-admin ping; then
     echo "ERROR: MariaDB did not start"
     tail -n 20 /var/lib/mysql/*.err 2>/dev/null
-    exit 1
-fi
-
-echo "=== Checking pi can use sudo"
-if ! runuser -l pi -c 'sudo -n true'; then
-    echo "ERROR: sudo does not work for pi inside the image, stopping before main.sh"
     exit 1
 fi
 
