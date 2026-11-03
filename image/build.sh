@@ -133,7 +133,6 @@ APPARMOR_LOADED=0
 BINFMT_ORIG=""
 NETNS=""
 PASTA_PID=""
-PASTA_DIR=""
 
 cleanup() {
     set +e
@@ -143,7 +142,6 @@ cleanup() {
     if [ -n "$NETNS" ]; then
         ip netns delete "$NETNS" 2>/dev/null && echo "Build network namespace removed"
     fi
-    [ -n "$PASTA_DIR" ] && rm -rf "$PASTA_DIR"
     if mountpoint -q "$ROOT" 2>/dev/null; then
         umount -R "$ROOT"
     fi
@@ -471,17 +469,22 @@ set +e
 NETNS="emonsd-build-$$"
 ip netns add "$NETNS"
 ip -n "$NETNS" link set lo up
-# pasta drops from root to nobody before writing its PID file, so it needs a
-# directory nobody can write to
-PASTA_DIR=$(mktemp -d /run/emonsd-build-pasta.XXXXXX)
-chown nobody "$PASTA_DIR"
-pasta --config-net --netns "/run/netns/$NETNS" \
+# Run in the foreground as a background job, so its PID is known without a
+# PID file (pasta runs as nobody, and Ubuntu's AppArmor profile for it only
+# allows writing to a few places). Wait for it to configure the namespace.
+pasta -f --config-net --netns "/run/netns/$NETNS" \
     -t none -u none -T none -U none \
     --map-host-loopback none --map-guest-addr none \
-    -q -P "$PASTA_DIR/pasta.pid" || die "pasta could not set up networking for the build"
-PASTA_PID=$(cat "$PASTA_DIR/pasta.pid")
-[ -n "$PASTA_PID" ] || die "pasta did not write its PID"
-ip -n "$NETNS" -brief address | grep -v '^lo ' | grep -q . || die "pasta did not configure the build network"
+    -q &
+PASTA_PID=$!
+for i in $(seq 40); do
+    kill -0 "$PASTA_PID" 2>/dev/null || die "pasta could not set up networking for the build"
+    ip -n "$NETNS" -4 -brief address | grep -v '^lo ' | grep -q '[0-9]\.[0-9]' && break
+    sleep 0.5
+done
+ip -n "$NETNS" -4 -brief address | grep -v '^lo ' | grep -q '[0-9]\.[0-9]' \
+    || die "pasta did not configure the build network"
+ip -n "$NETNS" -4 -brief address | grep -v '^lo '
 echo "Build network: namespace $NETNS, pasta pid $PASTA_PID"
 
 # The container cannot change the host: no network admin (firewall, WiFi), no
