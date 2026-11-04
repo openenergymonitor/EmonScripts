@@ -8,7 +8,7 @@ The SD Image is created primarily for user of the emonPi.
 
 1\. Flash Raspberry Pi OS Lite (64-bit) with Raspberry Pi Imager. In the Imager settings set the hostname to `emonpi`, the user to `pi` with password `emonsd`, and enable SSH for the build.
 
-2\. Partition the card into the emonSD layout: root shrunk to a fixed size (asked, default 5 GB) and an ext2 data partition at `/var/opt/emoncms` using the rest of the card. The script reboots once to do the partitioning before root is mounted; log in and run it again to finish.
+2\. Partition the card into the emonSD layout: root shrunk to a fixed size (asked, default 6 GB) and an ext2 data partition at `/var/opt/emoncms` using the rest of the card. The script reboots once to do the partitioning before root is mounted; log in and run it again to finish.
 
 ```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/partition.sh
@@ -34,7 +34,7 @@ cd /opt/openenergymonitor/EmonScripts/install
 
 5\. Add the image name, e.g. `emonSD-03Nov26`, to the `safe-update` list on the **master** branch. Without it, devices made from the image cannot update.
 
-6\. Prepare the card for imaging. This runs `verify.sh` again, then sets the WiFi country (`wifi_country` in `config.ini`, default `GB`), saves the current `emonhub.conf` as the factory default used by `other/factoryreset`, disables SSH, removes this card's SSH host keys, authorized_keys and saved WiFi networks, clears logs, build logs and shell history, resets the machine-id and shuts down. Copy off `~/main.sh.log` first if you want to keep it.
+6\. Prepare the card for imaging. This runs `verify.sh` again, then sets the WiFi country (`wifi_country` in `config.ini`, default `GB`), saves the current `emonhub.conf` as the factory default used by `other/factoryreset`, disables SSH, removes this card's SSH host keys, authorized_keys and saved WiFi networks, clears logs, build logs and shell history, resets the machine-id, sets the data partition to grow to fill the card on first boot and shuts down. Copy off `~/main.sh.log` first if you want to keep it.
 
 ```shell
 cd /opt/openenergymonitor/EmonScripts/install
@@ -57,13 +57,15 @@ EmonScripts is copied into the image from the local checkout at its current comm
 
 ```shell
 sudo apt install systemd-container qemu-user-binfmt passt
-sudo image/build.sh                  # root 5 GB, data 2 GB
-sudo image/build.sh --root-size 6    # if the root partition runs out of space
+sudo image/build.sh                  # root 6 GB, data 2 GB
+sudo image/build.sh --root-size 7    # if the root partition runs out of space
 ```
 
-The result is `~/emonsd-build/emonSD-DDMMMYY.img.xz`, with its sha256 and the build logs. Flash it with Raspberry Pi Imager (Choose OS, Use custom) and do not apply OS customisation: the image already has the `pi` user, hostname and settings. SSH is disabled as shipped; to log in, create an empty file named `ssh` on the boot partition after flashing.
+The result is `~/emonsd-build/emonSD-DDMMMYY.img.xz`, with its sha256 and the build logs. The minimum SD card size is 16 GB. Flash it with Raspberry Pi Imager (Choose OS, Use custom) and do not apply OS customisation: the image already has the `pi` user, hostname and settings. SSH is disabled as shipped; to log in, create an empty file named `ssh` on the boot partition after flashing.
 
-Not done yet: the data partition stays at the size it was built with (use `emonSDexpand` to grow it), and services are installed but never started during the build, so run `verify.sh` on the Pi after the first boot.
+On the first boot of each device, `emonsd-grow-data.service` grows the data partition to fill the card before it is mounted. This can add minutes to the first boot on a large card, so do not remove power during it. If it fails, the partition stays at its current size and it tries again on the next boot (`journalctl -u emonsd-grow-data`).
+
+Not done yet: services are installed but never started during the build, so run `verify.sh` on the Pi after the first boot.
 
 ## Logs, `journald` and `logrotate`
 

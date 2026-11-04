@@ -98,10 +98,6 @@ sudo usermod -a -G video www-data
 echo "-- Installing /etc/rc.local"
 sudo ln -sf $openenergymonitor_dir/EmonScripts/defaults/etc/rc.local /etc/rc.local
 
-# emonSDexpand
-echo "-- Installing /usr/bin/emonSDexpand"
-sudo ln -sf $emoncms_dir/modules/usefulscripts/sdpart/sdpart_imagefile /usr/bin/emonSDexpand
-
 # --------------------------------------------------------------------------------
 # Misc
 # --------------------------------------------------------------------------------

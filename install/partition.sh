@@ -6,7 +6,7 @@
 # Splits the card into the emonSD layout:
 #
 #   p1  /boot/firmware    vfat   (unchanged)
-#   p2  /                 ext4   shrunk to the chosen size, default 5 GB
+#   p2  /                 ext4   shrunk to the chosen size, default 6 GB
 #   p3  /var/opt/emoncms  ext2   1024 byte blocks, low write data partition
 #
 # Raspberry Pi OS grows the root partition to fill the card on first boot, and
@@ -29,7 +29,7 @@
 #                   (default stable, only used when not run from a checkout)
 # --------------------------------------------------------------------------------
 
-DEFAULT_ROOT_GB=5
+DEFAULT_ROOT_GB=6
 MIN_ROOT_GB=4
 MIN_DATA_GB=1
 SECTORS_PER_GB=2097152   # 1 GiB in 512 byte sectors

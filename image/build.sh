@@ -19,9 +19,9 @@
 #     sudo image/build.sh [options]
 #
 # Options:
-#   --root-size N   root partition size in GB (default 5)
-#   --data-size N   data partition size in GB (default 2). It does not grow to
-#                   fill the SD card yet: use emonSDexpand after flashing.
+#   --root-size N   root partition size in GB (default 6)
+#   --data-size N   data partition size in the image, in GB (default 2). It
+#                   grows to fill the SD card on the first boot of each device.
 #   --base URL      Raspberry Pi OS image to start from (.img.xz)
 #                   (default: latest Raspberry Pi OS Lite 64-bit)
 #   --work DIR      work and output directory (default ~/emonsd-build)
@@ -31,7 +31,7 @@
 # --------------------------------------------------------------------------------
 set -euo pipefail
 
-ROOT_GB=5
+ROOT_GB=6
 DATA_GB=2
 BASE_URL=https://downloads.raspberrypi.com/raspios_lite_arm64_latest
 COMPRESS=1
@@ -401,8 +401,10 @@ echo "  all checks passed"
 echo "=== install/prepare_image.sh"
 runuser -l pi -c 'export SYSTEMD_OFFLINE=1; cd /opt/openenergymonitor/EmonScripts/install && ./prepare_image.sh --yes --skip-verify --no-shutdown' \
     || fail "prepare_image.sh failed"
-state=$(systemctl is-enabled emonsd-ssh-keygen.service 2>/dev/null)
-[ "$state" = "enabled" ] || fail "emonsd-ssh-keygen.service is ${state:-missing}, expected enabled"
+for unit in emonsd-ssh-keygen emonsd-grow-data; do
+    state=$(systemctl is-enabled "$unit.service" 2>/dev/null)
+    [ "$state" = "enabled" ] || fail "$unit.service is ${state:-missing}, expected enabled"
+done
 
 rm -f /etc/sudoers.d/zz-emonsd-build
 exit 0

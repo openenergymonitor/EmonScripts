@@ -8,7 +8,7 @@ The installation process is broken out into separate scripts that can be run ind
 
 **[main.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/main.sh)** Loads the configuration file and runs the individual installation scripts as applicable. All output sent to screen also stored in the user's home directory `~/main.sh.log`.
 
-**[partition.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/partition.sh)** emonSD image builds only, run before `init.sh` on a fresh Raspberry Pi OS card. Shrinks the root partition (default 5 GB) and creates the low-write ext2 data partition at `/var/opt/emoncms`, then installs the emonSD `fstab`.
+**[partition.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/partition.sh)** emonSD image builds only, run before `init.sh` on a fresh Raspberry Pi OS card. Shrinks the root partition (default 6 GB) and creates the low-write ext2 data partition at `/var/opt/emoncms`, then installs the emonSD `fstab`.
 
 **[verify.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/verify.sh)** Read only check of a completed build: services, PHP and Python dependencies, database, MQTT, emoncms, repositories and the emonSD version file.
 

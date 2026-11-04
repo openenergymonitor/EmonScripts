@@ -249,9 +249,12 @@ if [ "$emonSD_pi_env" = "1" ]; then
     fi
 
     if mountpoint -q "$emoncms_datadir"; then
-        pass "$emoncms_datadir is a separate partition ($(findmnt -no FSTYPE "$emoncms_datadir"))"
+        pass "$emoncms_datadir is a separate partition ($(findmnt -no FSTYPE,SIZE "$emoncms_datadir"))"
     else
         warn "$emoncms_datadir is not a separate partition"
+    fi
+    if systemctl is-enabled --quiet emonsd-grow-data.service 2>/dev/null; then
+        fail "emonsd-grow-data.service has not grown the data partition yet, see: journalctl -u emonsd-grow-data"
     fi
 
     if sudo -n true 2>/dev/null; then

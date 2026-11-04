@@ -5,7 +5,7 @@ emonSD splits the SD card into three partitions:
 | Partition | Mount | Filesystem |
 |---|---|---|
 | `/dev/mmcblk0p1` | `/boot/firmware` | vfat |
-| `/dev/mmcblk0p2` | `/` | ext4, fixed size (default 5 GB) |
+| `/dev/mmcblk0p2` | `/` | ext4, fixed size (default 6 GB) |
 | `/dev/mmcblk0p3` | `/var/opt/emoncms` | ext2, rest of the card |
 
 Emoncms feed data is written to the separate data partition. It uses ext2 with a 1024 byte block size instead of the default 4096: emoncms makes small but frequent updates across many files, and a smaller block size significantly reduces the write load on the SD card. Ext2 is non-journaling, which reduces the write load a little further, at the cost of a longer `fsck` and harder data recovery than ext4.
@@ -16,7 +16,7 @@ Emoncms feed data is written to the separate data partition. It uses ext2 with a
 
 2\. Insert the card into the Pi and let it complete its first boot (be patient, it may reboot). Then SSH into the Pi, e.g. `ssh pi@192.168.1.100`.
 
-3\. Download and run the partition script. It asks for the root partition size (default 5 GB), then reboots to do the partitioning before the root filesystem is mounted.
+3\. Download and run the partition script. It asks for the root partition size (default 6 GB), then reboots to do the partitioning before the root filesystem is mounted.
 
 ```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/partition.sh

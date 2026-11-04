@@ -87,6 +87,7 @@ echo "  - disable SSH and remove this card's SSH host keys and authorized_keys"
 echo "  - remove saved WiFi client networks (this disconnects WiFi)"
 echo "  - clear logs, build logs (~/init.sh.log, ~/main.sh.log), shell history and caches"
 echo "  - reset the machine-id"
+echo "  - set the data partition to grow to fill the SD card on first boot"
 if [ "$shutdown_at_end" = "1" ]; then
     echo "  - shut down"
 fi
@@ -125,6 +126,15 @@ echo "-- Installing emonsd-ssh-keygen.service"
 sudo cp "$openenergymonitor_dir/EmonScripts/defaults/etc/systemd/system/emonsd-ssh-keygen.service" /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable emonsd-ssh-keygen.service
+
+# --------------------------------------------------------------------------------
+# The image can be flashed to any size of card: the first boot of each device
+# grows the data partition to fill it
+# --------------------------------------------------------------------------------
+echo "-- Installing emonsd-grow-data.service"
+sudo cp "$openenergymonitor_dir/EmonScripts/defaults/etc/systemd/system/emonsd-grow-data.service" /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable emonsd-grow-data.service
 
 echo "-- Disabling SSH (the current session stays open until shutdown)"
 sudo systemctl disable ssh.service 2>/dev/null

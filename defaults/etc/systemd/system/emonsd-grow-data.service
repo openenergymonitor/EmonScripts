@@ -1,0 +1,28 @@
+# Grow the emonSD data partition to fill the SD card on first boot.
+#
+# Installed by install/prepare_image.sh. Runs before the data partition is
+# checked and mounted (systemd-fsck@ and local mounts are ordered after
+# local-fs-pre.target). The mount does not depend on this service, so a failure
+# leaves the partition at its current size and the system still boots. It
+# disables itself on success, otherwise it runs again on the next boot.
+#
+# The device name matches defaults/etc/fstab.
+[Unit]
+Description=Grow the emonSD data partition to fill the SD card
+DefaultDependencies=no
+Wants=local-fs-pre.target dev-mmcblk0p3.device
+After=systemd-remount-fs.service dev-mmcblk0p3.device
+Before=local-fs-pre.target shutdown.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/openenergymonitor/EmonScripts/install/grow_data.sh
+ExecStartPost=/usr/bin/systemctl disable emonsd-grow-data.service
+# Large cards can take minutes, and it must not be interrupted
+TimeoutStartSec=0
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=sysinit.target
