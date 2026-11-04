@@ -139,6 +139,8 @@ cleanup() {
     set +e
     if [ -n "$PASTA_PID" ]; then
         kill "$PASTA_PID" 2>/dev/null
+        # pasta holds the namespace open until it exits, which blocks the umount
+        wait "$PASTA_PID" 2>/dev/null
     fi
     if [ -n "$NETNS_TMP" ]; then
         umount "$NETNS_TMP" 2>/dev/null
@@ -331,7 +333,11 @@ fi
 
 echo "=== install/main.sh"
 runuser -l pi -c 'export SYSTEMD_OFFLINE=1; cd /opt/openenergymonitor/EmonScripts/install && ./main.sh --yes'
+main_result=$?
 cp /home/pi/main.sh.log /root/emonsd-main.sh.log 2>/dev/null
+# main.sh does not stop or report when a component script fails: this only
+# catches main.sh not running to the end. The checks below find the rest.
+[ "$main_result" = "0" ] || fail "install/main.sh failed ($main_result)"
 
 echo "=== Finishing packages and initramfs"
 dpkg --configure -a
@@ -355,12 +361,18 @@ for kernel in $(ls /lib/modules); do
     fi
 done
 
-for unit in apache2 mariadb redis-server mosquitto feedwriter service-runner emoncms_mqtt emonhub emonsd-ssh-keygen; do
+for unit in apache2 mariadb redis-server mosquitto feedwriter service-runner emoncms_mqtt log2ram; do
     state=$(systemctl is-enabled "$unit.service" 2>/dev/null)
     [ "$state" = "enabled" ] || problem "$unit.service is ${state:-missing}, expected enabled"
 done
-state=$(systemctl is-enabled docker.service 2>/dev/null)
-[ "$state" = "disabled" ] || problem "docker.service is ${state:-missing}, expected disabled"
+# emonhub.service is a symlink to its unit file, so is-enabled reports "alias"
+# whether it is enabled or not: check for the link that enabling creates
+[ -e /etc/systemd/system/multi-user.target.wants/emonhub.service ] || problem "emonhub.service is not enabled"
+[ -x /usr/local/bin/log2ram ] || problem "/usr/local/bin/log2ram is missing"
+for unit in docker.service docker.socket containerd.service; do
+    state=$(systemctl is-enabled "$unit" 2>/dev/null)
+    [ "$state" = "disabled" ] || problem "$unit is ${state:-missing}, expected disabled"
+done
 
 tables=$(mariadb -N -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='emoncms'" 2>/dev/null)
 [ "${tables:-0}" -gt 0 ] || problem "emoncms database has no tables"
@@ -389,6 +401,8 @@ echo "  all checks passed"
 echo "=== install/prepare_image.sh"
 runuser -l pi -c 'export SYSTEMD_OFFLINE=1; cd /opt/openenergymonitor/EmonScripts/install && ./prepare_image.sh --yes --skip-verify --no-shutdown' \
     || fail "prepare_image.sh failed"
+state=$(systemctl is-enabled emonsd-ssh-keygen.service 2>/dev/null)
+[ "$state" = "enabled" ] || fail "emonsd-ssh-keygen.service is ${state:-missing}, expected enabled"
 
 rm -f /etc/sudoers.d/zz-emonsd-build
 exit 0
