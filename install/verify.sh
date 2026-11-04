@@ -36,6 +36,11 @@ check_service() {
     local active enabled
     active=$(systemctl is-active "$service" 2>/dev/null)
     enabled=$(systemctl is-enabled "$service" 2>/dev/null)
+    # A unit that is a symlink to its service file (emonhub) reports "alias"
+    # whether it is enabled or not: look for the link that enabling creates
+    if [ "$enabled" = "alias" ] && ls /etc/systemd/system/*.wants/"$service.service" >/dev/null 2>&1; then
+        enabled=enabled
+    fi
     if [ "$active" = "active" ] && [ "$enabled" = "enabled" ]; then
         pass "$service: active, enabled"
     elif [ "$required" = "required" ]; then
@@ -160,8 +165,10 @@ if [ "$install_mysql" = true ]; then
     fi
 fi
 
-if [ "$install_mosquitto_server" = true ] && command -v mosquitto_pub >/dev/null 2>&1; then
-    if mosquitto_pub -h localhost -u "$mqtt_user" -P "$mqtt_password" -t emonsd/verify -m test >/dev/null 2>&1; then
+if [ "$install_mosquitto_server" = true ]; then
+    if ! command -v mosquitto_pub >/dev/null 2>&1; then
+        warn "mosquitto login not checked, mosquitto_pub is not installed (mosquitto-clients)"
+    elif mosquitto_pub -h localhost -u "$mqtt_user" -P "$mqtt_password" -t emonsd/verify -m test >/dev/null 2>&1; then
         pass "mosquitto accepts $mqtt_user"
     else
         fail "mosquitto rejects $mqtt_user or is not listening"
