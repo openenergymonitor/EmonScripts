@@ -257,6 +257,15 @@ if [ "$emonSD_pi_env" = "1" ]; then
         fail "emonsd-grow-data.service has not grown the data partition yet, see: journalctl -u emonsd-grow-data"
     fi
 
+    # If log2ram cannot start, logs go straight to the SD card with no other warning
+    if [ "$install_emonsd" = true ]; then
+        if [ "$(findmnt -no FSTYPE --mountpoint /var/log)" = "tmpfs" ]; then
+            pass "/var/log is in RAM ($(findmnt -no SIZE --mountpoint /var/log))"
+        else
+            fail "/var/log is not in RAM, log2ram is not running, see: journalctl -u log2ram"
+        fi
+    fi
+
     if sudo -n true 2>/dev/null; then
         for file in /etc/sudoers.d/*; do
             [ -f "$file" ] || continue
