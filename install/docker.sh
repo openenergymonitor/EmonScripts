@@ -34,9 +34,11 @@ else
 fi
 
 # 6. Service Management
-echo "-- disable docker.service for now"
-sudo systemctl disable docker.service
+echo "-- disable docker for now"
+# The packages enable all three. With only docker.service disabled, containerd
+# still runs on every boot and anything using the socket starts Docker.
+sudo systemctl disable docker.service docker.socket containerd.service
 # Separate from disable: --now fails when systemd is not running (image/build.sh)
-sudo systemctl stop docker.service 2>/dev/null || true
+sudo systemctl stop docker.socket docker.service containerd.service 2>/dev/null || true
 
 echo "Done! Restart your session (log out and back in) to use docker without sudo."
