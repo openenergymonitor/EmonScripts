@@ -57,6 +57,13 @@ if [ "$start_confirm" != "n" ] && [ "$start_confirm" != "N" ]; then
     exit 0
 fi
 
+if [ "$emonSD_pi_env" = "1" ] && [ "$prune_os" = true ]; then
+    echo "-------------------------------------------------------------"
+    echo "Removing unused Raspberry Pi OS software"
+    echo "-------------------------------------------------------------"
+    $openenergymonitor_dir/EmonScripts/install/prune.sh
+fi
+
 if [ "$apt_get_upgrade_and_clean" = true ]; then
     echo "apt-get update"
     sudo apt-get update -y

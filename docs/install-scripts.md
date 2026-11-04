@@ -10,6 +10,8 @@ The installation process is broken out into separate scripts that can be run ind
 
 **[partition.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/partition.sh)** emonSD image builds only, run before `init.sh` on a fresh Raspberry Pi OS card. Shrinks the root partition (default 6 GB) and creates the low-write ext2 data partition at `/var/opt/emoncms`, then installs the emonSD `fstab`.
 
+**[prune.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/prune.sh)** emonSD image builds only, run at the start of `main.sh` (`prune_os` in `config.ini`). Removes video and camera software emonSD does not use.
+
 **[verify.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/verify.sh)** Read only check of a completed build: services, PHP and Python dependencies, database, MQTT, emoncms, repositories and the emonSD version file.
 
 **[prepare_image.sh:](https://github.com/openenergymonitor/EmonScripts/blob/stable/install/prepare_image.sh)** emonSD image builds only. Final step before imaging: removes the build card's SSH host keys, machine-id, saved WiFi networks, logs and history, then shuts down. See [developer notes](developer.md).

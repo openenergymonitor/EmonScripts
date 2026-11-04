@@ -115,7 +115,9 @@ if [ -b "$p3" ]; then
         echo "-- Formatting $p3 as ext2 with 1024 byte blocks"
         # Small blocks cut the write load from emoncms' many small appends.
         # ext2 has no journal, which also reduces writes.
-        sudo mkfs.ext2 -F -q -b 1024 -L emondata "$p3" || die "mkfs.ext2 failed"
+        # 1% reserved for root, not the default 5%: feed data is written by
+        # www-data, which cannot use it, and the OS is on its own partition.
+        sudo mkfs.ext2 -F -q -m 1 -b 1024 -L emondata "$p3" || die "mkfs.ext2 failed"
     elif [ "$fstype" != "ext2" ]; then
         die "$p3 already has a $fstype filesystem, not changing it"
     else

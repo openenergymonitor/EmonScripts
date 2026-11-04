@@ -81,7 +81,7 @@ sudo resize2fs /dev/mmcblk0p2
 8\. Format the new partition as ext2 with a 1024 byte block size
 
 ```shell
-sudo mkfs.ext2 -b 1024 /dev/mmcblk0p3
+sudo mkfs.ext2 -m 1 -b 1024 /dev/mmcblk0p3
 ```
 
 9\. Install the emonSD fstab (change `stable` to `master` if you want the master branch) and reboot

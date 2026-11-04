@@ -218,7 +218,8 @@ for n in 1 2 3; do
 done
 e2fsck -fy "${LOOP}p2" || [ $? -le 1 ]
 resize2fs "${LOOP}p2"
-mkfs.ext2 -F -q -b 1024 -L emondata "${LOOP}p3"
+# 1% reserved for root, as in install/partition.sh
+mkfs.ext2 -F -q -m 1 -b 1024 -L emondata "${LOOP}p3"
 
 # --------------------------------------------------------------------------------
 step "Mounting"
@@ -386,6 +387,10 @@ elif [ "$(systemctl is-enabled emonsd-firewall.service 2>/dev/null)" != "enabled
 else
     echo "  firewall: applied on first boot by emonsd-firewall.service"
 fi
+
+for package in mkvtoolnix rpicam-apps-lite v4l-utils; do
+    ! dpkg -s "$package" >/dev/null 2>&1 || problem "$package should have been removed by install/prune.sh"
+done
 
 php -m | grep -qx redis || problem "php redis extension missing"
 php -m | grep -qx mosquitto || problem "php mosquitto extension missing"
