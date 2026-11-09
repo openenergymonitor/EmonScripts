@@ -17,7 +17,7 @@ chmod +x partition.sh && ./partition.sh
 ./partition.sh
 ```
 
-3\. Run the build with defaults. The image version file `/boot/emonSD-DDMMMYY` is created automatically from the build date.
+3\. Run the build with defaults. The image version file `/boot/emonSD-DDMMMYY` is created automatically from the build date. The image is configured for the emonPi3 by default: its `emonhub.conf`, and GPIO17 held low with 1-Wire on GPIO27 and GPIO22 in `config.txt`. For emonPi2 or emonBase hardware set `emonsd_hardware=emonpi2` in `install/config.ini`.
 
 ```shell
 wget https://raw.githubusercontent.com/openenergymonitor/EmonScripts/stable/install/init.sh

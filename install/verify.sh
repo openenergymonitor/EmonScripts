@@ -266,6 +266,42 @@ if [ "$emonSD_pi_env" = "1" ]; then
         fi
     fi
 
+    # Hardware configuration, see emonsd_hardware in config.ini
+    hardware=${emonsd_hardware:-emonpi2}
+    boot_config=/boot/config.txt
+    [ -f /boot/firmware/config.txt ] && boot_config=/boot/firmware/config.txt
+    if [ "$install_emonsd" = true ]; then
+        expected=()
+        [ "$hardware" = "emonpi3" ] && expected+=("gpio=17=op,dl")
+        if [ "$enable_onewire" = true ]; then
+            case "$hardware" in
+                emonpi3) expected+=("dtoverlay=w1-gpio,gpiopin=27" "dtoverlay=w1-gpio,gpiopin=22") ;;
+                *) expected+=("dtoverlay=w1-gpio,gpiopin=17") ;;
+            esac
+        fi
+        for line in "${expected[@]}"; do
+            if grep -qx "$line" "$boot_config" 2>/dev/null; then
+                pass "$hardware: $line in $boot_config"
+            else
+                fail "$hardware: $line missing from $boot_config"
+            fi
+        done
+    fi
+    if [ "$install_emonhub" = true ] && [ "$hardware" = "emonpi3" ]; then
+        if grep -q '^\s*\[\[EmonPi3\]\]' /etc/emonhub/emonhub.conf 2>/dev/null; then
+            pass "emonhub.conf is the emonPi3 default"
+        else
+            fail "emonhub.conf is not the emonPi3 default (no [[EmonPi3]] interfacer)"
+        fi
+    fi
+    if [ "$install_firmware" = true ]; then
+        if [ -x "$openenergymonitor_dir/BOSSA/bin/bossac" ]; then
+            pass "bossac installed ($("$openenergymonitor_dir/BOSSA/bin/bossac" --version 2>&1 | head -n1 | grep -o 'Version.*'))"
+        else
+            fail "bossac not installed, emonPi3 firmware upload needs it"
+        fi
+    fi
+
     if sudo -n true 2>/dev/null; then
         for file in /etc/sudoers.d/*; do
             [ -f "$file" ] || continue

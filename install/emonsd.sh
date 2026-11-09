@@ -75,20 +75,51 @@ if [ -f /boot/firmware/config.txt ]; then
 fi
 echo "-- boot config directory: $boot_config"
 
-# One wire temperature sensing support for emonPi v2 
-# IMPORTANT: This will likely interfere with shutdown button on emonPi v1
-# It's best to disable onewire if using this image with an emonPi v1
+# Hardware specific GPIO and one wire lines, see emonsd_hardware in config.ini.
+# Lines are appended to the end of config.txt, which must be an [all] section.
+#   emonpi2: one wire on GPIO17. Also used for emonBase and emonPi v1, where
+#            one wire will likely interfere with the shutdown button, so it is
+#            best disabled (enable_onewire=false).
+#   emonpi3: GPIO17 held low as an output. It drives the emonPi3 board's
+#            DISABLE_EXT_INTFn input (emon32-fw src/board_def.h): low tells the
+#            emonPi3 microcontroller a Pi is attached, so it releases the
+#            RFM69 SPI bus and the two one wire / pulse inputs to the Pi, and
+#            stops reading and reporting them itself. Left high or floating
+#            the emonPi3 runs standalone and drives them itself.
+#            The Pi then reads one wire on GPIO27 and GPIO22, and the RFM69
+#            through emonhub's [[SPI]] interfacer.
+hardware=${emonsd_hardware:-emonpi2}
+case "$hardware" in
+    emonpi3) onewire_pins="27 22" ;;
+    emonpi2) onewire_pins="17" ;;
+    *) echo "-- ERROR: unknown emonsd_hardware=$hardware, expected emonpi3 or emonpi2"; exit 1 ;;
+esac
+echo "-- Configuring $boot_config for $hardware"
+
+# Remove lines from a previous run, so this is safe to run again
+sudo sed -i -e '/^#\?dtoverlay=w1-gpio/d' -e '/^gpio=17=op,dl/d' \
+    -e '/^# emonSD: /d' $boot_config
+
+last_section=$(grep -E '^\[[^]]+\]' $boot_config | tail -n1)
+if [ -n "$last_section" ] && [ "$last_section" != "[all]" ]; then
+    echo "[all]" | sudo tee -a $boot_config >/dev/null
+fi
+
+if [ "$hardware" = "emonpi3" ]; then
+    echo "-- Holding GPIO17 low"
+    printf '%s\n' "# emonSD: emonPi3 only, GPIO17 low = Pi attached, the Pi drives RFM69 and one wire" \
+        "gpio=17=op,dl" | sudo tee -a $boot_config >/dev/null
+fi
 
 if [ "$enable_onewire" == true ]; then
-    echo "-- Enabling one-wire, w1-gpio,gpiopin=17"
-    sudo sed -i -n '/dtoverlay=w1-gpio/!p;$a dtoverlay=w1-gpio,gpiopin=17' $boot_config
-    
+    for pin in $onewire_pins; do
+        echo "-- Enabling one-wire, w1-gpio,gpiopin=$pin"
+        echo "dtoverlay=w1-gpio,gpiopin=$pin" | sudo tee -a $boot_config >/dev/null
+    done
     sudo modprobe w1-gpio
     sudo modprobe w1-therm
 else
-    # Disable 1-Wire to prevent errors in logs
-    echo "-- Disabling 1-Wire - will take effect on next reboot"
-    sudo sed -i 's/dtoverlay=w1-gpio/#dtoverlay=w1-gpio/' $boot_config
+    echo "-- One-wire disabled, enable_onewire=false"
 fi
 
 # Setup user group to enable reading GPU temperature (pi only)
