@@ -352,12 +352,14 @@ problem() { echo "  PROBLEM: $*"; problems=$((problems+1)); }
 
 for kernel in $(ls /lib/modules); do
     [ -s "/boot/initrd.img-$kernel" ] || problem "no initramfs for kernel $kernel"
-    case "$kernel" in
-        *-2712) fw=/boot/firmware/initramfs_2712 ;;
-        *-v8)   fw=/boot/firmware/initramfs8 ;;
-        *)      fw="" ;;
-    esac
-    if [ -n "$fw" ] && ! cmp -s "/boot/initrd.img-$kernel" "$fw"; then
+done
+# The firmware boots the newest kernel of each flavour from /boot/firmware.
+# An apt upgrade during the build can leave the base image's older kernel
+# installed alongside it; that one is not booted, so is not compared.
+for flavour in 2712:initramfs_2712 v8:initramfs8; do
+    kernel=$(ls /lib/modules | grep -- "-${flavour%%:*}\$" | sort -V | tail -n1)
+    fw=/boot/firmware/${flavour#*:}
+    if [ -n "$kernel" ] && ! cmp -s "/boot/initrd.img-$kernel" "$fw"; then
         problem "$fw does not match /boot/initrd.img-$kernel"
     fi
 done
