@@ -7,13 +7,13 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 
 <summary><b>emonSD-10Nov26</b></summary>
 
-**Download (837 MB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov26.img.xz)
+**Download (832 MB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov26.img.xz)
 
 (eligible for updates)
 
 ```
-(.img.xz) SHA256: ca5278f724bc178056f1856a3d3deadb159322f42469124b8281264d1060ef3a
-(.img.xz) MD5:    f8cb1cef9b6b6fb7ab7c2c1e4506c893
+(.img.xz) SHA256: cf470e25fccd5458ef594e96c1fcbff4873a7f7190e246875beb3d0004fb929e
+(.img.xz) MD5:    ad5302329b7051ff07de390d18e4f711
 ```
 
 **Compatibility**
@@ -81,7 +81,7 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 
 | Component | Version | Branch |
 |---|---|---|
-| Emoncms Core | 12.2.0 | stable |
+| Emoncms Core | 12.2.1 | stable |
 | App | 3.8.4 | stable |
 | Config | 2.2.0 | stable |
 | Dashboard | 4.2.1 | stable |
