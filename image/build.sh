@@ -84,7 +84,7 @@ esac
 # --------------------------------------------------------------------------------
 step "Checking requirements"
 # --------------------------------------------------------------------------------
-for tool in systemd-nspawn pasta ip losetup sfdisk e2fsck resize2fs mkfs.ext2 xz curl sha256sum git mountpoint; do
+for tool in systemd-nspawn pasta ip losetup sfdisk e2fsck resize2fs mkfs.ext2 fstrim xz curl sha256sum git mountpoint; do
     command -v "$tool" >/dev/null 2>&1 || die "$tool not found (sudo apt install systemd-container qemu-user-binfmt passt)"
 done
 
@@ -340,6 +340,39 @@ cp /home/pi/main.sh.log /root/emonsd-main.sh.log 2>/dev/null
 # catches main.sh not running to the end. The checks below find the rest.
 [ "$main_result" = "0" ] || fail "install/main.sh failed ($main_result)"
 
+echo "=== Removing kernels the image does not boot"
+# An apt upgrade during the build can install a newer kernel and leave the base
+# image's one installed. The firmware only boots the newest kernel of each
+# flavour, so remove the older ones and their headers (a few hundred MB).
+keep=""
+for flavour in 2712 v8; do
+    keep="$keep $(ls /lib/modules | grep -- "-rpi-$flavour\$" | sort -V | tail -n1)"
+done
+old_packages=""
+for kernel in $(ls /lib/modules | grep -E -- '-rpi-(2712|v8)$'); do
+    case " $keep " in *" $kernel "*) continue ;; esac
+    version=${kernel%-rpi-*}
+    # linux-image/-headers/-base-VERSION-rpi-FLAVOUR, plus the shared
+    # linux-headers-VERSION-common-rpi and linux-kbuild-VERSION, unless a kept
+    # kernel is the same version
+    case " $keep " in *" $version-"*) pattern="linux-*-$kernel" ;; *) pattern="linux-*-$version*" ;; esac
+    old_packages="$old_packages $(dpkg-query -W -f '${db:Status-Abbrev} ${Package}\n' "$pattern" 2>/dev/null | awk '$1 == "ii" {print $2}')"
+done
+old_packages=$(echo $old_packages | tr ' ' '\n' | sort -u | xargs)
+if [ -n "$old_packages" ]; then
+    echo "Keeping:$keep"
+    echo "Removing: $old_packages"
+    apt-get purge -y $old_packages || fail "could not remove old kernels"
+    # Files depmod generated are not removed with the package
+    for kernel in $(ls /lib/modules | grep -E -- '-rpi-(2712|v8)$'); do
+        case " $keep " in *" $kernel "*) continue ;; esac
+        dpkg-query -W -f '${db:Status-Abbrev}' "linux-image-$kernel" 2>/dev/null | grep -q '^ii' \
+            || rm -rf "/lib/modules/$kernel"
+    done
+else
+    echo "none"
+fi
+
 echo "=== Finishing packages and initramfs"
 dpkg --configure -a
 update-initramfs -u -k all || fail "update-initramfs failed"
@@ -353,15 +386,17 @@ problem() { echo "  PROBLEM: $*"; problems=$((problems+1)); }
 for kernel in $(ls /lib/modules); do
     [ -s "/boot/initrd.img-$kernel" ] || problem "no initramfs for kernel $kernel"
 done
-# The firmware boots the newest kernel of each flavour from /boot/firmware.
-# An apt upgrade during the build can leave the base image's older kernel
-# installed alongside it; that one is not booted, so is not compared.
-for flavour in 2712:initramfs_2712 v8:initramfs8; do
-    kernel=$(ls /lib/modules | grep -- "-${flavour%%:*}\$" | sort -V | tail -n1)
-    fw=/boot/firmware/${flavour#*:}
-    if [ -n "$kernel" ] && ! cmp -s "/boot/initrd.img-$kernel" "$fw"; then
-        problem "$fw does not match /boot/initrd.img-$kernel"
-    fi
+# The firmware boots the newest kernel of each flavour from /boot/firmware
+for flavour in 2712:kernel_2712.img:initramfs_2712 v8:kernel8.img:initramfs8; do
+    IFS=: read -r name kernel_img initramfs <<< "$flavour"
+    kernel=$(ls /lib/modules | grep -- "-rpi-$name\$" | sort -V | tail -n1)
+    [ -n "$kernel" ] || { problem "no rpi-$name kernel installed"; continue; }
+    cmp -s "/boot/vmlinuz-$kernel" "/boot/firmware/$kernel_img" \
+        || problem "/boot/firmware/$kernel_img does not match /boot/vmlinuz-$kernel"
+    cmp -s "/boot/initrd.img-$kernel" "/boot/firmware/$initramfs" \
+        || problem "/boot/firmware/$initramfs does not match /boot/initrd.img-$kernel"
+    [ "$(ls /lib/modules | grep -c -- "-rpi-$name\$")" = "1" ] \
+        || problem "more than one rpi-$name kernel installed: $(ls /lib/modules | grep -- "-rpi-$name\$" | xargs)"
 done
 
 for unit in apache2 mariadb redis-server mosquitto feedwriter service-runner emoncms_mqtt log2ram; do
@@ -558,6 +593,13 @@ rm -f "$ROOT"/etc/ssh/ssh_host_* "$ROOT/root/.bash_history"
 image_name=$(ls "$ROOT/boot" | grep '^emonSD-' | head -n1)
 [ -n "$image_name" ] || die "no /boot/emonSD-* version file, the build did not complete"
 echo "Image version: $image_name"
+
+# Discard free space: on a loop device this punches holes in the image file,
+# so blocks of deleted files (apt's downloaded packages, removed kernels) read
+# back as zeros and compress to almost nothing
+for dir in "$ROOT/boot/firmware" "$ROOT/var/opt/emoncms" "$ROOT"; do
+    fstrim -v "$dir" || echo "WARNING: fstrim $dir failed, the compressed image will be larger"
+done
 
 umount -R "$ROOT"
 e2fsck -fy "${LOOP}p2" || [ $? -le 1 ]
