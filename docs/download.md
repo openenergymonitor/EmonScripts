@@ -5,6 +5,104 @@ emonSD is a pre-built SD card image for the Raspberry Pi to function as an OpenE
 ---
 <details>
 
+<summary><b>emonSD-10Nov26</b></summary>
+
+**Download (837 MB):** [UK Server](https://openenergymonitor.org/files/emonSD-10Nov26.img.xz)
+
+(eligible for updates)
+
+```
+(.img.xz) SHA256: ca5278f724bc178056f1856a3d3deadb159322f42469124b8281264d1060ef3a
+(.img.xz) MD5:    f8cb1cef9b6b6fb7ab7c2c1e4506c893
+```
+
+**Compatibility**
+
+- **This image is pre-configured for emonPi3.** For emonPi2 or emonBase hardware, see the comments in `emonhub.conf`.
+- Compatible with all 64 bit Raspberry Pi hardware: Zero 2, Model 3B, 3B+, 4 and 5
+- Minimum SD card size: 16 GB
+
+**Installation**
+
+- Flash with Raspberry Pi Imager (Choose OS > Use custom). Do not apply OS customisation: the image already has the `pi` user, hostname and settings.
+- On first boot the data partition grows to fill the SD card. This can take a few minutes on a large card; do not remove power during it.
+
+**Credentials**
+
+- **SSH:** username: `pi`, password: `emonsd` (default - please change)
+- **WiFi Access Point:** SSID: `emonPi`, Password: `emonpi2016`
+- **MQTT:** username: `emonpi`, password: `emonpimqtt2016`
+- **MySQL:** username: `emoncms`, password: `emonpiemoncmsmysql2016`
+
+*SSH access disabled by default. Long press emonPi LCD push button for 5s to enable. Or create an empty file named `ssh` in the FAT boot partition.*
+
+**Build**
+
+- Built with EmonScripts 2.1.1 (`image/build.sh`), see<br> [https://github.com/openenergymonitor/EmonScripts](https://github.com/openenergymonitor/EmonScripts).
+- Based on Raspberry Pi OS Lite (64-bit trixie), 6 Oct 2026, with all package updates to 10 Nov 2026 (Debian 13.7)
+- Partitions: boot 512 MB, root 6 GB, data 2 GB grown to fill the card on first boot
+- Emoncms data is logged to low-write ext2 partition mounted in `/var/opt/emoncms`
+- Log partition `/var/log` mounted as tmpfs using log2ram, persistent after reboot
+- Firewall (ufw) enabled, applied on first boot
+- Docker installed but disabled
+- emonPi3 config: GPIO17 held low, 1-Wire temperature sensing on GPIO27 and GPIO22, BOSSA pre-installed for emonPi3 firmware upload
+
+**Kernel**
+
+- Linux 6.18.60+rpt-rpi-v8 (Pi 3, 4, Zero 2) and 6.18.60+rpt-rpi-2712 (Pi 5), package 1:6.18.60-1+rpt1
+- raspi-firmware 1:1.20260915-1
+
+**System packages**
+
+| Package | Version |
+|---|---|
+| PHP | 8.4.27 (Debian 8.4.27-1~deb13u1) |
+| PHP Redis | 6.2.0 |
+| PHP Mosquitto | 0.5.1 (openenergymonitor/Mosquitto-PHP, built from source) |
+| Apache | 2.4.69 (2.4.69-1~deb13u1) |
+| MariaDB | 11.8.6 (1:11.8.6-0+deb13u1) |
+| Mosquitto | 2.0.21 (2.0.21-1) |
+| Redis | 8.0.2 (5:8.0.2-3+deb13u3) |
+| Python | 3.13.5 |
+| systemd | 257.13 |
+| NetworkManager | 1.52.1 |
+| OpenSSH | 10.0p1 |
+| ufw | 0.36.2 |
+| Docker | 29.9.3 (compose plugin 5.7.0, containerd 2.4.2) |
+| git | 2.47.3 |
+| avrdude | 7.1 |
+| BOSSA (bossac) | 1.9.1-14-g3532de8 |
+
+**Python packages**
+
+- paho-mqtt 1.6.1, python3-redis 6.1.0, python3-serial 3.5, python3-pymodbus 3.8.6, python3-smbus2 0.4.3, python3-rpi-lgpio 0.6, python3-gpiozero 2.0.1, minimalmodbus 2.1.1, sdm_modbus 0.7.0, py-sds011 0.9
+
+**Emoncms and components**
+
+| Component | Version | Branch |
+|---|---|---|
+| Emoncms Core | 12.2.0 | stable |
+| App | 3.8.4 | stable |
+| Config | 2.2.0 | stable |
+| Dashboard | 4.2.1 | stable |
+| Device | 2.6.2 | stable |
+| Graph | 3.5.0 | stable |
+| Setup | 1.1.0 | stable |
+| Backup | 2.6.0 | stable |
+| Network | 3.4.0 | stable |
+| Postprocess | 2.8.0 | stable |
+| Sync | 3.6.0 | stable |
+| Usefulscripts | 2.3.15 | stable |
+| EmonScripts | 2.1.1 | stable |
+| EmonHub | 2.8.5 | stable |
+| EmonPiLCD | 2.1.3 | stable |
+| RFM2Pi | 1.4.4 | master |
+| Avrdude-rpi | 1.0.3 | master |
+</details>
+
+
+<details>
+
 <summary><b>emonSD-10Mar26</b></summary>
 
 
