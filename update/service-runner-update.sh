@@ -22,8 +22,8 @@ fi
 cat /dev/null > /var/log/emoncms/emonupdate.log
 
 # Find largest log file and remove
-varlog_available=$(df --output=avail /var/log | tail -n 1)
-if [ "$varlog_available" -lt "1024" ]; then
+varlog_available=$(LC_ALL=C env -u POSIXLY_CORRECT df -Pk /var/log | awk 'NR == 2 {print $4}')
+if [[ "$varlog_available" =~ ^[0-9]+$ ]] && [ "$varlog_available" -lt "1024" ]; then
     largest_log_file=$(sudo find /var/log -type f -printf "%s\t%p\n" | sort -n | tail -1 | cut -f 2)
     sudo truncate -s 0 $largest_log_file
     echo "$largest_log_file truncated to make room for update log" 
