@@ -105,7 +105,8 @@ if not os.path.isfile(download_filename):
   print("Error: Firmware download failed")
 
 # Upload firmware
-cmd = ' avrdude -Cupdate/avrdude.conf -v -p' + f.core + ' -carduino -D -P' + str(serial_port) + ' -b' + str(f.baud) + ' -Uflash:w:' + download_filename
+cmd = ' avrdude -v -p' + f.core + ' -carduino -D -P' + str(serial_port) + ' -b' + str(f.baud) + ' -Uflash:w:' + download_filename
+#cmd = ' avrdude -Cupdate/avrdude.conf -v -p' + f.core + ' -carduino -D -P' + str(serial_port) + ' -b' + str(f.baud) + ' -Uflash:w:' + download_filename
 print(cmd)
 subprocess.call(cmd, shell=True)
 
