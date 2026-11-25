@@ -28,7 +28,7 @@ if [ -d "$M/.git" ]; then
         
         # update mysql database    
         result=$(php $openenergymonitor_dir/EmonScripts/common/emoncmsdbupdate.php)
-        if [ ! $result = "[]" ]; then 
+        if [ "$result" != "[]" ]; then
             echo "- database update: $result"
         else 
             echo "- database update: no changes"
