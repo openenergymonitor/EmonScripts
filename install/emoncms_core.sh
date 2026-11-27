@@ -35,12 +35,24 @@ else
 fi
 
 # Copy and install emonpi.settings.ini
-if [ ! -f $emoncms_www/settings.ini ]; then
+if [ ! -f "$emoncms_www/settings.ini" ]; then
     echo "-- installing default emoncms settings.ini"
-    cp $openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini $emoncms_www/settings.ini
-    sed -i "s~EMONCMS_DIR~$emoncms_dir~" $emoncms_www/settings.ini
-    sed -i "s~OPENENERGYMONITOR_DIR~$openenergymonitor_dir~" $emoncms_www/settings.ini
-    sed -i "s~EMONCMS_DATADIR~$emoncms_datadir~" $emoncms_www/settings.ini
+    settings_tmp=$(mktemp -d "$emoncms_www/.settings.XXXXXX") || exit 1
+    if cp "$openenergymonitor_dir/EmonScripts/defaults/emoncms/emonpi.settings.ini" "$settings_tmp/settings.ini" \
+        && emoncms_dir="$emoncms_dir" openenergymonitor_dir="$openenergymonitor_dir" \
+        emoncms_datadir="$emoncms_datadir" mysql_database="$mysql_database" \
+        mysql_user="$mysql_user" mysql_password="$mysql_password" \
+        mqtt_user="$mqtt_user" mqtt_password="$mqtt_password" \
+        php "$openenergymonitor_dir/EmonScripts/install/render_settings.php" > "$settings_tmp/settings.ini" \
+        && mv "$settings_tmp/settings.ini" "$emoncms_www/settings.ini"; then
+        rmdir "$settings_tmp"
+        echo "-- emoncms settings.ini installed"
+    else
+        rm -f "$settings_tmp/settings.ini"
+        rmdir "$settings_tmp"
+        echo "-- unable to create emoncms settings.ini" >&2
+        exit 1
+    fi
 else
     echo "-- emoncms settings.ini already exists"
 fi

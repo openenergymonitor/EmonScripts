@@ -97,6 +97,13 @@ It is possible to run the [scripts individually](https://github.com/openenergymo
 
 ## Post Install - Settings
 
+On a fresh install, the MySQL database, username and password and the MQTT
+username and password from `install/config.ini` are written to Emoncms'
+`settings.ini`. An existing `settings.ini` is left unchanged. Changing
+`config.ini` later does not change existing accounts or client settings.
+Configure remote broker connection details in `settings.ini` and any emonHub
+MQTT credentials in `/etc/emonhub/emonhub.conf` separately.
+
 If you have used EmonCMS before, you may need to edit the settings to suit your local setup. This is now an `ini` file called `settings.ini` in `/var/www/emoncms/`.
 
 ## Post Install - First Use
